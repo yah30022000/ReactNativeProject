@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# intellij idea
+.idea
+
+# android gradle
+android/.gradle
