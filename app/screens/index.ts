@@ -1,0 +1,5 @@
+export * from './home-tab/home-screen'
+export * from './home-tab/favorite-screen'
+export * from './home-tab/history-screen'
+export * from './home-tab/profile-screen'
+export * from './onboarding-screen'

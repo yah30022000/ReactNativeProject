@@ -1,8 +1,9 @@
 import React from "react";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
-import HomeScreen from "./screens/home-screen";
+import { AppNavigator } from "./navigators"
 import theme from "./theme/theme";
+
 
 const App = () => {
 
@@ -14,8 +15,10 @@ const App = () => {
       // }}
     >
       <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <HomeScreen />
-        {/*<OnboardingScreen/>*/}
+        <AppNavigator
+          // initialState={initialNavigationState}
+          // onStateChange={onNavigationStateChange}
+        />
       </SafeAreaProvider>
     </PaperProvider>
   );
