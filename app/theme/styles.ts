@@ -5,6 +5,18 @@ import { TextStyle, ViewStyle } from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
+export const HOME_BOTTOM_TAB: ViewStyle = {
+  backgroundColor: '#FFFFFF',
+  overflow: "hidden",
+  borderTopEndRadius: 30,
+  borderTopStartRadius: 30,
+  marginTop: -40,
+  height: 80,
+  shadowOpacity: 0.9,
+  shadowRadius: 10,
+  shadowColor: "#000",
+  elevation: 24,
+}
 
 /* Global Style ends */
 
@@ -12,6 +24,7 @@ import theme from "./theme";
 export const HOME_SCREEN_VIEW: ViewStyle = {
   flex: 1,
   paddingHorizontal: 20,
+  backgroundColor: "#f2f2f2"
 };
 
 export const HOME_SCREEN_UPPER_ROW: ViewStyle = {
@@ -106,7 +119,7 @@ export const HOME_SCREEN_IMAGE_RATING_WRAPPER: ViewStyle = {
   backgroundColor: 'rgba(150, 150, 150, 0.7)',
   borderRadius: 25,
   margin: 10,
-  width: "36%",
+  width: "40%",
 };
 
 export const HOME_SCREEN_IMAGE_TEXT: TextStyle = {

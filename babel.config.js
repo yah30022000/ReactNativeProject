@@ -8,7 +8,8 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js'],
         alias: {
           '@travelapp': './app',
-          '@travelasset': './assets'
+          '@travelasset': './assets',
+          '@travelroot': './'
         }
       }
     ],

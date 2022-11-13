@@ -12,6 +12,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GestureResponderEvent, TextStyle, View, ViewStyle } from "react-native";
+import { StackNavigatorParamList, TabNavigatorParamList } from "../navigators";
 
 
 export interface ButtonProp {
@@ -20,7 +21,7 @@ export interface ButtonProp {
   backgroundColor?: string
   iconName: string;
   label?: string;
-  route?: string;
+  route?: keyof StackNavigatorParamList | keyof TabNavigatorParamList;
   iconProvider: "AntDesign" |
     "Entypo" |
     "EvilIcons" |

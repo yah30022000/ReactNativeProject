@@ -29,15 +29,15 @@ const theme: ReactNativePaper.Theme = {
   colors: {
     ...DefaultTheme.colors,
     mint: "#4D94A0",
-    mintLight: "#F1F6F7",
+    mintLight: "#e8fdff",
     black: "#202224",
     grey: "#A0A0A0",
     purple: "#5C3B5D",
-    purpleLight: "#F4F3FC",
+    purpleLight: "#fbe8ff",
     yellow: "#EEAF12",
     yellowLight: "#FFF7F2",
     coral: "#F9A978",
-    coralLight: "#FFF5F5"
+    coralLight: "#fff3e8"
   },
 };
 

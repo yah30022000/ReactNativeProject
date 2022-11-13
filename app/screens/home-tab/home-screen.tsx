@@ -6,7 +6,7 @@ import {
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
-import React from "react";
+import React, { FC } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   HOME_SCREEN_DIVIDER_LINE,
@@ -27,13 +27,21 @@ import {
   HOME_SCREEN_TITLE,
   HOME_SCREEN_UPPER_ROW,
   HOME_SCREEN_VIEW,
-} from "../theme/styles";
-import { ImageBackground, ScrollView, ScrollViewComponent, TouchableOpacity, View } from "react-native";
+} from "../../theme";
+import { ImageBackground, ScrollView, TouchableOpacity, View } from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import ButtonWithColorBg, { ButtonProp } from "../components/ButtonWithColorBg";
+import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
+import { TabNavigatorParamList } from "../../navigators";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
 
-export default function HomeScreen() {
 
+export interface HomeScreenProps {
+}
+
+export const HomeScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamList, "home">> = ({ route, navigation }) => {
+
+  /* props */
+  // const {}: HomeScreenProps = route.params;
 
   const { colors } = useTheme();
 
@@ -45,7 +53,7 @@ export default function HomeScreen() {
       iconName: "bed",
       iconProvider: "MaterialCommunityIcons",
       label: "HOTELS",
-      route: "/hotel",
+      route: "hotelSearch",
     },
     {
       color: colors.coral,
@@ -54,7 +62,7 @@ export default function HomeScreen() {
       iconName: "airplane",
       iconProvider: "MaterialCommunityIcons",
       label: "FLIGHTS",
-      route: "/flight",
+      // route: "/flight",
     },
     {
       color: colors.yellow,
@@ -63,7 +71,7 @@ export default function HomeScreen() {
       iconName: "hamburger",
       iconProvider: "MaterialCommunityIcons",
       label: "FOODS",
-      route: "/food",
+      // route: "/food",
     },
     {
       color: colors.purple,
@@ -72,7 +80,7 @@ export default function HomeScreen() {
       iconName: "event",
       iconProvider: "MaterialIcons",
       label: "EVENTS",
-      route: "/event",
+      // route: "event",
     },
   ];
 
@@ -153,7 +161,9 @@ export default function HomeScreen() {
             <ButtonWithColorBg
               key={index}
               {...btn}
-              // onPress={()=>console.log("button pressed!!!")}
+              onPress={btn.route != null
+                ? () => navigation.navigate(btn.route as any)
+                : () => {}}
             />
           );
         })}
