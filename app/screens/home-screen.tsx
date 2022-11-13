@@ -7,7 +7,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {SafeAreaView} from "react-native-safe-area-context";
 import {
   HOME_SCREEN_DIVIDER_LINE,
   HOME_SCREEN_IMAGE_FIRST_WRAPPER,
@@ -28,14 +28,17 @@ import {
   HOME_SCREEN_UPPER_ROW,
   HOME_SCREEN_VIEW,
 } from "../theme/styles";
-import { ImageBackground, ScrollView, ScrollViewComponent, TouchableOpacity, View } from "react-native";
+import {
+  ImageBackground,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import ButtonWithColorBg, { ButtonProp } from "../components/ButtonWithColorBg";
+import ButtonWithColorBg, {ButtonProp} from "../components/ButtonWithColorBg";
 
 export default function HomeScreen() {
-
-
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   let middleButtons: Array<ButtonProp> = [
     {
@@ -79,22 +82,22 @@ export default function HomeScreen() {
   let regionCategories = [
     {
       regionName: "Japan",
-      image: require("@travelasset/images/japan.jpeg"),
+      image: require("@travelasset/images/japan1.jpeg"),
       rating: "5.0",
     },
     {
       regionName: "Korea",
-      image: require("@travelasset/images/korea.jpeg"),
+      image: require("@travelasset/images/korea1.jpeg"),
       rating: "4.2",
     },
     {
       regionName: "Norway",
-      image: require("@travelasset/images/norway.jpeg"),
+      image: require("@travelasset/images/norway1.jpeg"),
       rating: "5.0",
     },
     {
       regionName: "Malaysia",
-      image: require("@travelasset/images/malaysia.jpeg"),
+      image: require("@travelasset/images/malaysia1.jpeg"),
       rating: "4.8",
     },
     {
@@ -104,7 +107,7 @@ export default function HomeScreen() {
     },
     {
       regionName: "Germany",
-      image: require("@travelasset/images/germany.jpeg"),
+      image: require("@travelasset/images/berlin1.jpeg"),
       rating: "4.9",
     },
   ];
@@ -113,8 +116,6 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={HOME_SCREEN_VIEW}>
-
-
       {/* Upper Row */}
       <View style={HOME_SCREEN_UPPER_ROW}>
         <View>
@@ -122,10 +123,14 @@ export default function HomeScreen() {
           <PaperText style={HOME_SCREEN_TITLE}>Hi Monroe !</PaperText>
           <PaperText style={HOME_SCREEN_SUBTITLE}>
             You are in
-            <PaperText style={{ color: colors.coral }}> Hong Kong</PaperText>
+            <PaperText style={{color: colors.coral}}> Hong Kong</PaperText>
             <PaperIconButton
-              icon={({ size, color }) => (
-                <FontAwesomeIcon name="chevron-down" size={size} color={color} />
+              icon={({size, color}) => (
+                <FontAwesomeIcon
+                  name="chevron-down"
+                  size={size}
+                  color={color}
+                />
               )}
               color={colors.grey}
               size={20}
@@ -136,7 +141,7 @@ export default function HomeScreen() {
         <View>
           {/* Search Logo, maybe not necessary */}
           <PaperIconButton
-            icon={({ size, color }) => (
+            icon={({size, color}) => (
               <FontAwesomeIcon name="search" size={size} color={color} />
             )}
             color={colors.grey}
@@ -174,69 +179,60 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}
-                  scrollEventThrottle={0}
-      >
+      <ScrollView contentContainerStyle={{flexGrow: 1}} scrollEventThrottle={0}>
         {/* Image Row */}
         <View style={HOME_SCREEN_IMAGE_ROW}>
-
           {/* Bottom Left Image Row */}
           <View style={HOME_SCREEN_IMAGE_ROW_LEFT}>
-            {regionCategories.slice(0, regionCategoriesHalf).map((cat, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => {
-                  }}>
-                  <ImageBackground
-                    source={cat.image}
-                    resizeMode="cover"
-                    style={{
-                      ...HOME_SCREEN_REGION_IMAGE,
-                      height: index % 2 == 0 ? 180
-                        : 300,
-                    }}
-                  >
-                    <View style={HOME_SCREEN_IMAGE_TEXT_CONTAINER}>
-                      <View style={HOME_SCREEN_IMAGE_FIRST_WRAPPER}>
-                        <PaperText style={HOME_SCREEN_IMAGE_TEXT}>{cat.regionName}</PaperText>
+            {regionCategories
+              .slice(0, regionCategoriesHalf)
+              .map((cat, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => {}}>
+                    <ImageBackground
+                      source={cat.image}
+                      resizeMode="cover"
+                      style={{
+                        ...HOME_SCREEN_REGION_IMAGE,
+                        height: index % 2 == 0 ? 180 : 300,
+                      }}>
+                      <View style={HOME_SCREEN_IMAGE_TEXT_CONTAINER}>
+                        <View style={HOME_SCREEN_IMAGE_FIRST_WRAPPER}>
+                          <PaperText style={HOME_SCREEN_IMAGE_TEXT}>
+                            {cat.regionName}
+                          </PaperText>
+                        </View>
+                        <View style={HOME_SCREEN_IMAGE_RATING_WRAPPER}>
+                          <PaperText style={HOME_SCREEN_IMAGE_RATING_TEXT}>
+                            {cat.rating}
+                            {"   "}
+                            <FontAwesomeIcon name={"star"} color={"white"} />
+                          </PaperText>
+                        </View>
                       </View>
-                      <View style={HOME_SCREEN_IMAGE_RATING_WRAPPER}>
-                        <PaperText style={HOME_SCREEN_IMAGE_RATING_TEXT}>
-                          {cat.rating}
-                          {"   "}
-                          <FontAwesomeIcon name={"star"} color={"white"} />
-                        </PaperText>
-
-                      </View>
-                    </View>
-
-                  </ImageBackground>
-                </TouchableOpacity>
-              );
-            })}
+                    </ImageBackground>
+                  </TouchableOpacity>
+                );
+              })}
           </View>
 
           {/* Bottom Left Right Row */}
           <View style={HOME_SCREEN_IMAGE_ROW_RIGHT}>
             {regionCategories.slice(regionCategoriesHalf).map((cat, index) => {
               return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => {
-                  }}>
+                <TouchableOpacity key={index} onPress={() => {}}>
                   <ImageBackground
                     source={cat.image}
                     resizeMode="cover"
                     style={{
                       ...HOME_SCREEN_REGION_IMAGE,
-                      height: index % 2 != 0 ? 180
-                        : 300,
-                    }}
-                  >
+                      height: index % 2 != 0 ? 180 : 300,
+                    }}>
                     <View style={HOME_SCREEN_IMAGE_TEXT_CONTAINER}>
                       <View style={HOME_SCREEN_IMAGE_FIRST_WRAPPER}>
-                        <PaperText style={HOME_SCREEN_IMAGE_TEXT}>{cat.regionName}</PaperText>
+                        <PaperText style={HOME_SCREEN_IMAGE_TEXT}>
+                          {cat.regionName}
+                        </PaperText>
                       </View>
                       <View style={HOME_SCREEN_IMAGE_RATING_WRAPPER}>
                         <PaperText style={HOME_SCREEN_IMAGE_RATING_TEXT}>
@@ -244,10 +240,8 @@ export default function HomeScreen() {
                           {"   "}
                           <FontAwesomeIcon name={"star"} color={"white"} />
                         </PaperText>
-
                       </View>
                     </View>
-
                   </ImageBackground>
                 </TouchableOpacity>
               );
@@ -255,7 +249,6 @@ export default function HomeScreen() {
           </View>
         </View>
       </ScrollView>
-
     </SafeAreaView>
   );
 }

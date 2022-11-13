@@ -1,7 +1,7 @@
 /**
  * CSS Styles
  * */
-import { TextStyle, ViewStyle } from "react-native";
+import {TextStyle, ViewStyle} from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -76,11 +76,13 @@ export const HOME_SCREEN_IMAGE_ROW: ViewStyle = {
 };
 
 export const HOME_SCREEN_IMAGE_ROW_LEFT: ViewStyle = {
-  width: "50%", paddingRight: 15,
+  width: "50%",
+  paddingRight: 15,
 };
 
 export const HOME_SCREEN_IMAGE_ROW_RIGHT: ViewStyle = {
-  width: "50%", paddingLeft: 15,
+  width: "50%",
+  paddingLeft: 15,
 };
 
 export const HOME_SCREEN_REGION_IMAGE: ViewStyle = {
@@ -89,13 +91,13 @@ export const HOME_SCREEN_REGION_IMAGE: ViewStyle = {
   height: 150,
   borderRadius: 25,
   overflow: "hidden",
-  opacity: 0.9
+  opacity: 0.9,
 };
 
 export const HOME_SCREEN_IMAGE_TEXT_CONTAINER: ViewStyle = {
   justifyContent: "flex-end",
   flexDirection: "column",
-  flex: 1
+  flex: 1,
 };
 
 export const HOME_SCREEN_IMAGE_FIRST_WRAPPER: ViewStyle = {
@@ -103,25 +105,56 @@ export const HOME_SCREEN_IMAGE_FIRST_WRAPPER: ViewStyle = {
 };
 
 export const HOME_SCREEN_IMAGE_RATING_WRAPPER: ViewStyle = {
-  backgroundColor: 'rgba(150, 150, 150, 0.7)',
+  backgroundColor: "rgba(150, 150, 150, 0.7)",
   borderRadius: 25,
   margin: 10,
   width: "36%",
 };
 
 export const HOME_SCREEN_IMAGE_TEXT: TextStyle = {
-  color: 'white',
+  color: "white",
   marginVertical: 5,
   marginHorizontal: 10,
   fontSize: 18,
-  fontWeight: "bold"
+  fontWeight: "bold",
 };
 
 export const HOME_SCREEN_IMAGE_RATING_TEXT: TextStyle = {
-  color: 'white',
+  color: "white",
   marginVertical: 5,
   marginHorizontal: 10,
   fontSize: 14,
-  fontWeight: "bold"
+  fontWeight: "bold",
 };
 /* HomeScreen ends */
+
+/* HotelSearchScreen stat*/
+export const HOTEL_SEARCH_SCREEN: ViewStyle = {
+  flex: 1,
+  paddingTop: 60,
+};
+
+export const HOTEL_BACK_BUTTON: ViewStyle = {
+  paddingHorizontal: 20,
+};
+
+export const HOTEL_SEARCH_SCREEN_TITLE_ROW: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  marginVertical: 40,
+  height: "15%",
+};
+export const HOTEL_SEARCH_SCREEN_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  lineHeight: 60,
+  fontSize: 30,
+};
+
+export const HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT: TextStyle = {
+  fontSize: 14,
+};
+
+export const HOTEL_BOTTOM_SHEET: ViewStyle = {
+  flex: 1,
+  backgroundColor: "grey"
+}
