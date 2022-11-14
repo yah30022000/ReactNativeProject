@@ -12,7 +12,6 @@ yarn install
 
 ### iOS Setting
 
-
 ```bash
 brew install node
 brew install watchman
@@ -49,6 +48,44 @@ rm -rf build
 cd ../<project-root>
 ```
 
+### Android Setting
+
+1. Commands
+```bash
+brew install node
+brew install watchman
+brew tap homebrew/cask-versions
+brew install --cask zulu11
+```
+2. [**Install Android Studio**](https://developer.android.com/studio)
+With below items checked
+
+- Android SDK
+- Android SDK Platform
+- Android Virtual Device
+
+3. Install the Android SDK, Android 12 (S) works with this project, and check following items
+
+- Android SDK Platform 31
+- Intel x86 Atom_64 System Image / Google APIs Intel x86 Atom System Image
+
+4.  Commands
+```bash
+nano ~/.bash_profile
+# or
+nano ~/.zshrc
+
+# insert
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+```
+
+5. Create a new Android emulator for testing
+https://developer.android.com/studio/run/managing-avds
+
+---
+
 ## Run the App
 
 ```bash
@@ -63,7 +100,60 @@ npx react-native run-ios --simulator="iPhone 13 Pro Max"
 npx react-native run-ios --device "iPhone"
 ```
 
-### React Native Vector Icons issue
+## React Navigation
+
+### Route Architecture
+
+> [**Nesting Navigators**](https://reactnavigation.org/docs/nesting-navigators)
+> 
+> Route Links of this project:
+> 
+> AppNavigator/NavigationContainer <br>
+> ┣ SplashStack (not yet) <br>
+> &nbsp;&nbsp; ┣ SplashScreen <br>
+> ┣ AuthStack (not yet) <br>
+> &nbsp;&nbsp; ┣ OnBoardingScreen <br>
+> &nbsp;&nbsp; ┣ Login/RegisterScreen <br>
+> &nbsp;&nbsp; ┣ Login/RegisterScreen (OAuth) <br>
+> ┣ AppStack <br>
+> &nbsp;&nbsp; ┣ HomeBottomTab <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ┣ HomeScreen (default landing page) <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ┣ FavoriteScreen <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ┣ HistoryScreen <br>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ┣ ProfileScreen <br>
+> &nbsp;&nbsp; ┣ HotelSearchScreen <br>
+> &nbsp;&nbsp; ┣ HotelListScreen <br>
+> &nbsp;&nbsp; ┣ HotelDetailScreen <br>
+> &nbsp;&nbsp; ┣ HotelRoomSelectScreen <br>
+> &nbsp;&nbsp; ┣ PaymentScreen <br>
+> &nbsp;&nbsp; ┣ PaymentCompleteScreen <br>
+
+### Create new screens
+
+1. At ```app/screens```, add new page ```new-screen.tsx```  
+2. At ```app/navigators/app-stack.tsx```, add new property at param list and new screen in stack navigator
+    ```typescript
+    export type StackNavigatorParamList = {
+      newScreen: NewScreenProps
+    }
+      
+    <Stack.Navigator>
+      <Stack.Screen name="newScreen" component={NewScreen} />
+    </Stack.Navigator>
+    ```
+3. At ```app/screens/new-screen.tsx```, need to ensure the function component has this setting
+    ```typescript
+    export interface NewScreenProps{}
+   
+    export const NewScreen: FC<StackScreenProps<StackNavigatorParamList, "newScreen">> =
+    ({ route,navigation }) => {
+      return .... 
+    }
+    ```
+
+---
+
+## React Native Vector Icons issue
 
 iOS - https://github.com/oblador/react-native-vector-icons#ios
 
@@ -96,3 +186,4 @@ import { IconButton as PaperIconButton } from "react-native-paper";
 <AwesomeIcon name="rocket" size={10} color={'red'} />
 <MaterialIcon name="airplane" size={20} color={'blue'} />
 ```
+
