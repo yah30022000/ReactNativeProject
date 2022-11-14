@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  IconButton as PaperIconButton,
-  Text as PaperText,
-} from "react-native-paper";
+import {Text as PaperText} from "react-native-paper";
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
@@ -15,6 +12,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GestureResponderEvent, TextStyle, View, ViewStyle} from "react-native";
+import {StackNavigatorParamList, TabNavigatorParamList} from "../navigators";
 
 export interface ButtonProp {
   size: number;
@@ -22,7 +20,7 @@ export interface ButtonProp {
   backgroundColor?: string;
   iconName: string;
   label?: string;
-  route?: string;
+  route?: keyof StackNavigatorParamList | keyof TabNavigatorParamList;
   iconProvider:
     | "AntDesign"
     | "Entypo"

@@ -5,6 +5,18 @@ import {TextStyle, ViewStyle} from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
+export const HOME_BOTTOM_TAB: ViewStyle = {
+  backgroundColor: "#FFFFFF",
+  overflow: "hidden",
+  borderTopEndRadius: 30,
+  borderTopStartRadius: 30,
+  marginTop: -40,
+  height: 80,
+  shadowOpacity: 0.9,
+  shadowRadius: 10,
+  shadowColor: "#000",
+  elevation: 24,
+};
 
 /* Global Style ends */
 
@@ -12,6 +24,7 @@ import theme from "./theme";
 export const HOME_SCREEN_VIEW: ViewStyle = {
   flex: 1,
   paddingHorizontal: 20,
+  backgroundColor: "#f2f2f2",
 };
 
 export const HOME_SCREEN_UPPER_ROW: ViewStyle = {
@@ -108,7 +121,7 @@ export const HOME_SCREEN_IMAGE_RATING_WRAPPER: ViewStyle = {
   backgroundColor: "rgba(150, 150, 150, 0.7)",
   borderRadius: 25,
   margin: 10,
-  width: "36%",
+  width: "40%",
 };
 
 export const HOME_SCREEN_IMAGE_TEXT: TextStyle = {
@@ -128,7 +141,7 @@ export const HOME_SCREEN_IMAGE_RATING_TEXT: TextStyle = {
 };
 /* HomeScreen ends */
 
-/* HotelSearchScreen stat*/
+/* HotelSearchScreen start*/
 export const HOTEL_SEARCH_SCREEN: ViewStyle = {
   flex: 1,
   paddingTop: 60,
@@ -136,6 +149,68 @@ export const HOTEL_SEARCH_SCREEN: ViewStyle = {
 
 export const HOTEL_BACK_BUTTON: ViewStyle = {
   paddingHorizontal: 20,
+};
+
+export const HOTEL_LOCATION_BUTTON: ViewStyle = {
+  paddingHorizontal: 30,
+  display: "flex",
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const LOCATION_TEXT: ViewStyle = {
+  paddingLeft: 15,
+};
+
+export const DATE_TEXT: ViewStyle = {
+  paddingLeft: 15,
+};
+
+export const USER_TEXT: ViewStyle = {
+  paddingLeft: 15,
+};
+
+export const HOTEL_DATE_BUTTON: ViewStyle = {
+  paddingHorizontal: 30,
+  display: "flex",
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+export const HOTEL_USER_BUTTON: ViewStyle = {
+  paddingHorizontal: 30,
+  display: "flex",
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+export const HOTEL_SEARCH_SCREEN_LOCATION_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
+};
+export const HOTEL_SEARCH_SCREEN_DESTINATION_TEXT: TextStyle = {
+  fontSize: 16,
+  color: "grey",
+  marginTop: 10,
+};
+
+export const HOTEL_SEARCH_SCREEN_DATE_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
+};
+
+export const HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT: TextStyle = {
+  fontSize: 16,
+  color: "grey",
+  marginTop: 10,
+};
+
+export const HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT: TextStyle = {
+  fontSize: 16,
+  color: "grey",
+  marginTop: 10,
+};
+export const HOTEL_SEARCH_SCREEN_USER_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
 };
 
 export const HOTEL_SEARCH_SCREEN_TITLE_ROW: ViewStyle = {
@@ -148,13 +223,28 @@ export const HOTEL_SEARCH_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
   lineHeight: 60,
   fontSize: 30,
+  color: "white",
 };
 
 export const HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT: TextStyle = {
   fontSize: 14,
+  color: "white",
 };
 
 export const HOTEL_BOTTOM_SHEET: ViewStyle = {
   flex: 1,
-  backgroundColor: "grey"
-}
+  backgroundColor: "grey",
+};
+
+export const HOTEL_SEARCH_SCREEN_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  marginVertical: 20,
+  marginHorizontal: 13,
+};
+
+export const HOTEL_SEARCH_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+/* HotelSearchScreen ends */
