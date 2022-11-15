@@ -10,7 +10,7 @@ import FoundationIcon from "react-native-vector-icons/Foundation";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import {TouchableOpacity} from "react-native";
 import {GestureResponderEvent, TextStyle, View, ViewStyle} from "react-native";
 import {StackNavigatorParamList, TabNavigatorParamList} from "../navigators";
 
