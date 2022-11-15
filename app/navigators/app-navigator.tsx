@@ -8,6 +8,7 @@ interface NavigationProps extends Partial<React.ComponentProps<typeof Navigation
 
 export const AppNavigator = (props: NavigationProps) => {
 
+
   return (
     <NavigationContainer
       {...props}

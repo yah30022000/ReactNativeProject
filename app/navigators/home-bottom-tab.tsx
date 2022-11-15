@@ -13,7 +13,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { HOME_BOTTOM_TAB } from "../theme";
 import { StackNavigatorParamList } from "./app-stack";
 import { StackScreenProps } from "@react-navigation/stack";
-import { FC } from "react";
+import React, { FC } from "react";
 
 
 export type TabNavigatorParamList = {
@@ -26,12 +26,13 @@ export type TabNavigatorParamList = {
 const Tab = createMaterialBottomTabNavigator<TabNavigatorParamList>();
 
 export interface HomeBottomTabProps {
+  // setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const HomeBottomTab: FC<StackScreenProps<StackNavigatorParamList, "homeTab">> = ({ route, navigation }) => {
 
   /* props */
-  // const {}: HomeBottomTabProps = route.params;
+  // const {setIsLoggedIn}: HomeBottomTabProps = route.params;
 
   const { colors } = useTheme();
 
@@ -75,6 +76,7 @@ export const HomeBottomTab: FC<StackScreenProps<StackNavigatorParamList, "homeTa
       <Tab.Screen
         name={"profile"}
         component={ProfileScreen}
+        // initialParams={{setIsLoggedIn: setIsLoggedIn}}
         options={{
           // tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
