@@ -3,9 +3,18 @@ import {
   Divider as PaperDivider,
   IconButton as PaperIconButton,
   Text as PaperText,
+  Searchbar as PaperSearchbar,
   useTheme,
 } from "react-native-paper";
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {Calendar, CalendarList} from "react-native-calendars";
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import BottomSheet, {BottomSheetFlatList} from "@gorhom/bottom-sheet";
 import ButtonWithColorBg, {
@@ -21,12 +30,19 @@ import {
   HOTEL_DATE_BUTTON,
   HOTEL_USER_BUTTON,
   HOTEL_BOTTOM_SHEET,
+  HOTEL_SEARCH_BAR,
   HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
   HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
   HOTEL_SEARCH_SCREEN_DATE_TEXT,
   HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT,
   HOTEL_SEARCH_SCREEN_USER_TEXT,
   HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
+  HOTEL_SEARCH_BOOKING_HOTELS,
+  HOTEL_SEARCH_BOOKING_HOTELS_TEXT,
+  HOTEL_SEARCH_BOOKING_DATE_TEXT,
+  HOTEL_SEARCH_BOOKING_HOTELS_DESTINATION_TEXT,
+  HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION,
+  HOTEL_SEARCH_DESTINATION_BUTTON,
   HOTEL_LOCATION_BUTTON,
   HOTEL_SEARCH_BUTTON,
   LOCATION_TEXT,
@@ -37,7 +53,9 @@ import {
 import {
   FlatList,
   ImageBackground,
+  NativeSyntheticEvent,
   ScrollView,
+  TextInputFocusEventData,
   TextStyle,
   TouchableHighlight,
   TouchableOpacity,
@@ -47,7 +65,6 @@ import {
 import {StackNavigatorParamList} from "../../navigators";
 import {StackScreenProps} from "@react-navigation/stack";
 import {color} from "react-native-reanimated";
-
 
 // import FeatherIcon from 'react-native-vector-icons/Feather'
 // <FeatherIcon name=""/>
@@ -69,6 +86,7 @@ export const HotelSearchScreen: FC<
   const [destinationViewOn, setDestinationViewOn] = useState<boolean>(false);
   const [dateViewOn, setDateViewOn] = useState<boolean>(false);
   const [userViewOn, setUserViewOn] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
 
   type ButtonItem = {
     key: number;
@@ -209,7 +227,6 @@ export const HotelSearchScreen: FC<
             2,133 World Class Hotel For You and Your Family
           </PaperText>
         </View>
-
         <BottomSheet
           ref={bottomSheetRef}
           index={0}
@@ -217,13 +234,64 @@ export const HotelSearchScreen: FC<
           onChange={handleSheetChanges}
           style={{borderRadius: 25, overflow: "hidden"}}>
           {destinationViewOn ? (
-            <View>
-              <PaperText>Search Your Destination</PaperText>
+            <View style={HOTEL_SEARCH_BOOKING_HOTELS}>
+              <PaperText style={HOTEL_SEARCH_BOOKING_HOTELS_TEXT}>
+                Search Your Destination
+              </PaperText>
+              <View style={HOTEL_SEARCH_DESTINATION_BUTTON}>
+                <PaperSearchbar
+                  style={HOTEL_SEARCH_BAR}
+                  onBlur={(
+                    event: NativeSyntheticEvent<TextInputFocusEventData>,
+                  ) => {
+                    event.target;
+                  }}
+                  onFocus={(
+                    event: NativeSyntheticEvent<TextInputFocusEventData>,
+                  ) => {
+                    event.target;
+                  }}
+                  onChangeText={event => setInputValue(event)}
+                  value={inputValue}
+                />
+              </View>
+              <View style={HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION}>
+                <ButtonWithColorBg
+                  size={20}
+                  color={colors.black}
+                  iconName={"location-arrow"}
+                  iconProvider={"FontAwesome"}
+                />
+                <PaperText
+                  style={{
+                    paddingLeft: 20,
+                    paddingBottom: 10,
+                  }}>
+                  Search Nearby Destination
+                </PaperText>
+              </View>
             </View>
           ) : null}
           {dateViewOn ? (
             <View>
-              <PaperText>Search Dates</PaperText>
+              <PaperText style={HOTEL_SEARCH_BOOKING_DATE_TEXT}>
+                Select Dates
+              </PaperText>
+              <Calendar
+                style={{marginTop: 30}}
+                minDate={"2022-01-01"}
+                maxDate={"2026-12-31"}
+                onDayPress={day => {
+                  console.log("selected day", day);
+                }}
+                onDayLongPress={day => {
+                  console.log("selected day", day);
+                }}
+                monthFormat={"yyyy MMM"}
+                onMonthChange={month => {
+                  console.log("month changed", month);
+                }}
+              />
             </View>
           ) : null}
           {userViewOn ? (
@@ -313,10 +381,3 @@ export const HotelSearchScreen: FC<
     </ImageBackground>
   );
 };
-
-/*
-{state == true ? (
-  <Text>123</Text>
-  : <Text>456</Text>
-)}
-*/
