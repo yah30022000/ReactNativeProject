@@ -5,7 +5,7 @@ import {
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
-import React, {FC, useCallback, useMemo, useRef, useState} from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import BottomSheet, {BottomSheetFlatList} from "@gorhom/bottom-sheet";
 import ButtonWithColorBg, {
@@ -47,6 +47,7 @@ import {
 import {StackNavigatorParamList} from "../../navigators";
 import {StackScreenProps} from "@react-navigation/stack";
 import {color} from "react-native-reanimated";
+
 
 // import FeatherIcon from 'react-native-vector-icons/Feather'
 // <FeatherIcon name=""/>
@@ -211,7 +212,7 @@ export const HotelSearchScreen: FC<
 
         <BottomSheet
           ref={bottomSheetRef}
-          index={1}
+          index={0}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           style={{borderRadius: 25, overflow: "hidden"}}>
