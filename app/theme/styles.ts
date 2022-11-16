@@ -249,4 +249,48 @@ export const HOTEL_SEARCH_BUTTON: ViewStyle = {
   justifyContent: "center",
 };
 
+export const HOTEL_SEARCH_BOOKING_HOTELS_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  marginTop: 20,
+  paddingBottom: 20,
+  paddingLeft: 35,
+};
+
+// export const HOTEL_SEARCH_BOOKING_HOTELS_DESTINATION_TEXT: TextStyle = {
+//   // flex: 1,
+//   // justifyContent: "center",
+//   // alignItems: "center",
+//   backgroundColor: "green",
+//   // flexDirection: "column",
+// };
+
+export const HOTEL_SEARCH_BAR: ViewStyle = {
+  borderRadius: 20,
+};
+
+export const HOTEL_SEARCH_BOOKING_DATE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  marginTop: 20,
+  paddingBottom: 20,
+  paddingLeft: 20,
+};
+
+export const HOTEL_SEARCH_DESTINATION_BUTTON: ViewStyle = {
+  paddingHorizontal: 30,
+  display: "flex",
+  justifyContent: "flex-start",
+  flexDirection: "column",
+};
+
+export const HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION: ViewStyle = {
+  marginTop: 20,
+  paddingLeft: 30,
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  paddingTop:10
+};
+
 /* HotelSearchScreen ends */
