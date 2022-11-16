@@ -9,8 +9,6 @@ import { PaymentCompleteScreen, PaymentCompleteScreenProps } from "../screens/pa
 import { LoginScreen, LoginScreenProps } from "../screens/login/login-screen";
 import { OnboardingScreen } from "../screens";
 import { useSelector } from "react-redux";
-import userSlice, { UserState } from "../redux/user/userSlice";
-import { useEffect } from "react";
 import { RootState } from "../redux/store";
 
 /**

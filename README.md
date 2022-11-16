@@ -180,7 +180,7 @@ pod install
 
 Android - https://github.com/oblador/react-native-vector-icons#android
 
-#### How to use React Native Vector Icons within React Native Paper
+### How to use React Native Vector Icons within React Native Paper
 
 React Native Vector Icons List
 https://oblador.github.io/react-native-vector-icons/
@@ -202,3 +202,41 @@ import { IconButton as PaperIconButton } from "react-native-paper";
 <MaterialIcon name="airplane" size={20} color={'blue'} />
 ```
 
+---
+
+## Redux
+
+### Create new Reducer/Slice
+
+[**Typescript Quick start**](https://redux-toolkit.js.org/tutorials/typescript)
+
+1. At ```app/redux```, add new folder and ```newSlice.ts```
+2. The content can refer to ```user/userSlice.ts```
+3. At ```app/redux/store.ts```, add new reducer/slice
+   ```typescript
+   import newFeatureReducer from './new-feature/newSlice'
+   
+   export const store = configureStore({
+    reducer: {
+      users: usersReducer,
+      newFeature: newFeatureReducer
+    }
+   })
+   ```
+4. To use it, at any React Component under App Tree (wrapped by App.tsx)
+   ```typescript
+   import { useSelector } from "react-redux";
+   import { RootState } from "../redux/store";
+   
+   export function NewScreen(){
+      const newState = useSelector<RootState>((state) => state.newFeature.newState);
+   
+      useEffect(()=>{
+        ...
+      },[])
+   
+      return (
+        ...
+      )
+   }
+   ```
