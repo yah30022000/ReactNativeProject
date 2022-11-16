@@ -149,6 +149,8 @@ export const HOTEL_SEARCH_SCREEN: ViewStyle = {
 
 export const HOTEL_BACK_BUTTON: ViewStyle = {
   paddingHorizontal: 20,
+  justifyContent: "flex-start",
+  width: 80,
 };
 
 export const HOTEL_LOCATION_BUTTON: ViewStyle = {

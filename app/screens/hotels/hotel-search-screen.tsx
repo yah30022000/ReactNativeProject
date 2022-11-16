@@ -63,6 +63,12 @@ export const HotelSearchScreen: FC<
   // variables
   const snapPoints = useMemo<Array<string>>(() => ["60%", "80%"], []);
 
+  // current snapPoints
+  const [snapState, setSnapState] = useState<number>(0);
+  const [destinationViewOn, setDestinationViewOn] = useState<boolean>(false);
+  const [dateViewOn, setDateViewOn] = useState<boolean>(false);
+  const [userViewOn, setUserViewOn] = useState<boolean>(false);
+
   type ButtonItem = {
     key: number;
     buttonStyle: ViewStyle;
@@ -75,8 +81,8 @@ export const HotelSearchScreen: FC<
     textSubtitleStyle: TextStyle;
     textTitle: string | number;
     textSubtitle: string | number;
+    onPress: () => void;
   };
-
   type ButtonItemAndIndex = {
     item: ButtonItem;
     index: number;
@@ -95,6 +101,15 @@ export const HotelSearchScreen: FC<
       textSubtitleStyle: HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
       textTitle: "DESTINATION",
       textSubtitle: "Enter your destination",
+      onPress: () => {
+        if (snapState == 0) {
+          setSnapState(1);
+          bottomSheetRef.current?.snapTo(1);
+          setDestinationViewOn(true);
+          setDateViewOn(false);
+          setUserViewOn(false);
+        }
+      },
     },
     {
       key: 2,
@@ -108,6 +123,15 @@ export const HotelSearchScreen: FC<
       textSubtitleStyle: HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT,
       textTitle: "SELECT DATE",
       textSubtitle: "18 Sep - 20 Sep(2 night)",
+      onPress: () => {
+        if (snapState == 0) {
+          setSnapState(1);
+          bottomSheetRef.current?.snapTo(1);
+          setDestinationViewOn(false);
+          setDateViewOn(true);
+          setUserViewOn(false);
+        }
+      },
     },
     {
       key: 3,
@@ -121,11 +145,17 @@ export const HotelSearchScreen: FC<
       textSubtitleStyle: HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
       textTitle: "ROOMS AND GUESTS",
       textSubtitle: "1 room, 1 guest",
+      onPress: () => {
+        if (snapState == 0) {
+          setSnapState(1);
+          bottomSheetRef.current?.snapTo(1);
+          setDestinationViewOn(false);
+          setDateViewOn(false);
+          setUserViewOn(true);
+        }
+      },
     },
   ];
-
-  // current snapPoints
-  const [snapState, setSnapState] = useState<number>(0);
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -134,17 +164,7 @@ export const HotelSearchScreen: FC<
 
   // render
   const renderItem = ({item, index}: ButtonItemAndIndex) => (
-    <TouchableHighlight
-      onPress={() => {
-        if (snapState == 0) {
-          setSnapState(1);
-          bottomSheetRef.current?.snapTo(1);
-        } else {
-          setSnapState(0);
-          bottomSheetRef.current?.snapTo(0);
-        }
-      }}
-      underlayColor={colors.white}>
+    <TouchableHighlight onPress={item.onPress} underlayColor={colors.white}>
       <View style={item.buttonStyle}>
         <ButtonWithColorBg
           size={20}
@@ -168,7 +188,7 @@ export const HotelSearchScreen: FC<
       source={require("@travelasset/images/crown-hotel.jpeg")}
       style={{flex: 1}}
       resizeMode="cover">
-      <View style={HOTEL_SEARCH_SCREEN}>
+      <SafeAreaView style={HOTEL_SEARCH_SCREEN}>
         <View style={HOTEL_BACK_BUTTON}>
           <ButtonWithColorBg
             size={20}
@@ -195,45 +215,100 @@ export const HotelSearchScreen: FC<
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
           style={{borderRadius: 25, overflow: "hidden"}}>
-          <FlatList
-            data={buttonList}
-            keyExtractor={buttonItem => buttonItem.key.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={{backgroundColor: "white"}}
-            ItemSeparatorComponent={() => (
-              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
-            )}
-            style={{paddingTop: 25}}
-          />
+          {destinationViewOn ? (
+            <View>
+              <PaperText>Search Your Destination</PaperText>
+            </View>
+          ) : null}
+          {dateViewOn ? (
+            <View>
+              <PaperText>Search Dates</PaperText>
+            </View>
+          ) : null}
+          {userViewOn ? (
+            <View>
+              <PaperText>Rooms & Guests</PaperText>
+            </View>
+          ) : null}
+          {!destinationViewOn && !dateViewOn && !userViewOn ? (
+            <FlatList
+              data={buttonList}
+              keyExtractor={buttonItem => buttonItem.key.toString()}
+              renderItem={renderItem}
+              contentContainerStyle={{backgroundColor: "white"}}
+              ItemSeparatorComponent={() => (
+                <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              )}
+              style={{paddingTop: 25}}
+            />
+          ) : null}
         </BottomSheet>
 
-        <TouchableHighlight
+        <View
           style={{
             position: "absolute",
-            bottom: 0,
+            bottom: 80,
             width: "100%",
-            display: "flex",
-            justifyContent: "center",
             flexDirection: "row",
-          }}
-          onPress={() => navigation.navigate("hotelList" as any)}
-          underlayColor={"azure"}>
-          <View
+            justifyContent: "center",
+          }}>
+          <TouchableHighlight
             style={{
-              height: 50,
               width: 200,
-              borderRadius: 25,
-              backgroundColor: colors.mint,
-              marginVertical: 70,
+              height: 50,
+              display: "flex",
               justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <View style={HOTEL_SEARCH_BUTTON}>
-              <PaperText style={{color: "white"}}>SEARCH HOTELS</PaperText>
+              flexDirection: "row",
+            }}
+            onPress={
+              destinationViewOn
+                ? () => {
+                    setSnapState(0);
+                    bottomSheetRef.current?.snapTo(0);
+                    setDestinationViewOn(false);
+                    setDateViewOn(false);
+                    setUserViewOn(false);
+                  }
+                : dateViewOn
+                ? () => {
+                    setSnapState(0);
+                    bottomSheetRef.current?.snapTo(0);
+                    setDestinationViewOn(false);
+                    setDateViewOn(false);
+                    setUserViewOn(false);
+                  }
+                : userViewOn
+                ? () => {
+                    setSnapState(0);
+                    bottomSheetRef.current?.snapTo(0);
+                    setDestinationViewOn(false);
+                    setDateViewOn(false);
+                    setUserViewOn(false);
+                  }
+                : () => navigation.navigate("hotelList" as any)
+            }
+            underlayColor={"white"}>
+            <View
+              style={{
+                height: "100%",
+                width: "100%",
+                borderRadius: 25,
+                backgroundColor: colors.mint,
+                // marginVertical: 70,
+                justifyContent: "center",
+                alignItems: "center",
+              }}>
+              <View style={HOTEL_SEARCH_BUTTON}>
+                {destinationViewOn || dateViewOn || userViewOn ? (
+                  <PaperText style={{color: "white"}}>DONE</PaperText>
+                ) : (
+                  <PaperText style={{color: "white"}}>SEARCH HOTELS</PaperText>
+                )}
+              </View>
             </View>
-          </View>
-        </TouchableHighlight>
-      </View>
+          </TouchableHighlight>
+        </View>
+      </SafeAreaView>
     </ImageBackground>
   );
 };
