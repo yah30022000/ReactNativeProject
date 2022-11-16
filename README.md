@@ -92,12 +92,27 @@ https://developer.android.com/studio/run/managing-avds
 # watcher mode for debug purpose, enable instant hot reload
 npx react-native start
 
+
+# iOS
 # open another terminal
 npx react-native run-ios
 # or specific simulator
+xcrun simctl list devices # <- find all available iOS simulators
 npx react-native run-ios --simulator="iPhone 13 Pro Max"
 # or plug in USB to deploy to real iPhone device, "iPhone" is the name of your device
 npx react-native run-ios --device "iPhone"
+
+
+# Android
+# open another terminal
+npx react-native run-android
+# or specific simulator
+$ANDROID_HOME/tools/emulator -list-avds # <- find all available Android simulators
+npx react-native run-android --deviceId="Pixel_3a_API_31"
+# or plug in USB to deploy to real iPhone device, "iPhone" is the name of your device
+adb devices
+npx react-native run-android --deviceId="Samsung Galaxy S22"
+
 ```
 
 ## React Navigation
