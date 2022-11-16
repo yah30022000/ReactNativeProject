@@ -240,3 +240,35 @@ import { IconButton as PaperIconButton } from "react-native-paper";
       )
    }
    ```
+
+
+---
+
+## Amadeus - Hotel & Flight Booking API
+
+[**Amadeus Self Service (Personal Account) API Setup Guide**](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
+
+1. Register Account - https://developers.amadeus.com/register, Create account, Confirm my account
+2. Go to [**My Self-Service Workspace**](https://developers.amadeus.com/my-apps), Create New App, Keep your ```API Key``` & ```API Secret``` somewhere safe
+
+### API Call Sample (without Node SDK)
+
+Postman API Spec: https://documenter.getpostman.com/view/2672636/RWEcPfuJ#8196c48f-30f9-4e3b-8590-e22f96da8326
+
+API Reference: https://developers.amadeus.com/self-service/category/hotel/api-doc/hotel-search
+
+API Cheatsheet: https://possible-quilt-2ff.notion.site/Cheat-sheet-e059caf4fcd342b78705f9f3d6f88f1d
+
+#### Get Access Token API (expires every 30 minutes)
+
+https://developers.amadeus.com/self-service/apis-docs/guides/authorization-262
+
+![Get Access Token!](assets/images/readme/amadeus_post_access_token.png "Get Access Token")
+
+The Rest of other APIs using Access Token
+
+![Find Hotel by City!](assets/images/readme/amadeus_get_hotels_by_city.png "Find Hotel by City")
+
+
+
+---
