@@ -1,9 +1,23 @@
-import { Divider as PaperDivider, Searchbar as PaperSearchbar, Text as PaperText, useTheme } from "react-native-paper";
-import { Calendar, DateData } from "react-native-calendars";
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Divider as PaperDivider,
+  Searchbar as PaperSearchbar,
+  Text as PaperText,
+  useTheme,
+} from "react-native-paper";
+import {Calendar, DateData} from "react-native-calendars";
+import React, {
+  FC,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {SafeAreaView} from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
-import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
+import ButtonWithColorBg, {
+  ButtonProp,
+} from "../../components/ButtonWithColorBg";
 import {
   DATE_TEXT,
   HOTEL_BACK_BUTTON,
@@ -40,19 +54,16 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { StackNavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack";
-import { MarkedDates } from "react-native-calendars/src/types";
+import {StackNavigatorParamList} from "../../navigators";
+import {StackScreenProps} from "@react-navigation/stack";
+import {MarkedDates} from "react-native-calendars/src/types";
 
+export interface HotelSearchScreenProps {}
 
-export interface HotelSearchScreenProps {
-}
-
-export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelSearch">> = ({
-                                                                                                  route,
-                                                                                                  navigation,
-                                                                                                }) => {
-  const { colors } = useTheme();
+export const HotelSearchScreen: FC<
+  StackScreenProps<StackNavigatorParamList, "hotelSearch">
+> = ({route, navigation}) => {
+  const {colors} = useTheme();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -186,20 +197,30 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
   const changeMarkedDatesCallBack = (day: DateData) => {
     console.log("selected Day: ", day);
-    if (!(day.dateString in markedDates)
-      && (Object.keys(markedDates).length < 3)
+    if (
+      !(day.dateString in markedDates) &&
+      Object.keys(markedDates).length < 3
     ) {
-      markedDates[day.dateString] = { color: colors.mint, startingDay: true };
+      markedDates[day.dateString] = {color: colors.mint, startingDay: true};
 
-      for (const [index, [key, value]] of Object.entries(Object.entries(markedDates))) {
+      for (const [index, [key, value]] of Object.entries(
+        Object.entries(markedDates),
+      )) {
         let parsedIndex = parseInt(index);
 
         if (parsedIndex == 0) {
-          markedDates[key] = { color: colors.mint, startingDay: true };
+          markedDates[key] = {color: colors.mint, startingDay: true};
         } else if (parsedIndex + 1 == Object.entries(markedDates).length) {
-          markedDates[key] = { color: colors.mint, endingDay: true };
-        } else if (parsedIndex != 0 && parseInt(index) != Object.entries(markedDates).length) {
-          markedDates[key] = { color: colors.mint, startingDay: false, endingDay: false };
+          markedDates[key] = {color: colors.mint, endingDay: true};
+        } else if (
+          parsedIndex != 0 &&
+          parseInt(index) != Object.entries(markedDates).length
+        ) {
+          markedDates[key] = {
+            color: colors.mint,
+            startingDay: false,
+            endingDay: false,
+          };
         }
       }
       setMarkedDates(markedDates);
@@ -207,14 +228,14 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setMarkedDates(markedDates);
-  },[markedDates])
+  }, [markedDates]);
 
   return (
     <ImageBackground
       source={require("@travelasset/images/crown-hotel.jpeg")}
-      style={{ flex: 1 }}
+      style={{flex: 1}}
       resizeMode="cover">
       <SafeAreaView style={HOTEL_SEARCH_SCREEN}>
         <View style={HOTEL_BACK_BUTTON}>
@@ -287,7 +308,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                 Select Dates
               </PaperText>
               <Calendar
-                style={{ marginTop: 30 }}
+                style={{marginTop: 30}}
                 monthFormat={"yyyy MMM"}
                 minDate={"2022-01-01"}
                 maxDate={"2026-12-31"}
