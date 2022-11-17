@@ -1,26 +1,27 @@
-import {
-  Divider as PaperDivider,
-  Searchbar as PaperSearchbar,
-  Text as PaperText,
-  useTheme,
-} from "react-native-paper";
-import {Calendar, DateData} from "react-native-calendars";
-import React, {FC, useCallback, useMemo, useRef, useState} from "react";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { Divider as PaperDivider, Searchbar as PaperSearchbar, Text as PaperText, useTheme } from "react-native-paper";
+import { Calendar, DateData } from "react-native-calendars";
+import React, { FC, useCallback, useMemo, useRef, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
-import ButtonWithColorBg, {
-  ButtonProp,
-} from "../../components/ButtonWithColorBg";
+import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
 import {
   DATE_TEXT,
+  HOTEL_ADULTS_ADD_BUTTON,
+  HOTEL_ADULTS_MINUS_BUTTON,
   HOTEL_BACK_BUTTON,
   HOTEL_DATE_BUTTON,
   HOTEL_LOCATION_BUTTON,
+  HOTEL_SEARCH_ADULTS_TEXT,
   HOTEL_SEARCH_BAR,
+  HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_ROW,
   HOTEL_SEARCH_BOOKING_DATE_TEXT,
   HOTEL_SEARCH_BOOKING_HOTELS_TEXT,
+  HOTEL_SEARCH_BOOKING_ROOM_TEXT,
   HOTEL_SEARCH_BUTTON,
   HOTEL_SEARCH_DESTINATION_BUTTON,
+  HOTEL_SEARCH_ROOM_TEXT,
   HOTEL_SEARCH_SCREEN,
   HOTEL_SEARCH_SCREEN_DATE_TEXT,
   HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
@@ -33,17 +34,9 @@ import {
   HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
   HOTEL_SEARCH_SCREEN_USER_TEXT,
   HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION,
-  HOTEL_SEARCH_BOOKING_ROOM_TEXT,
-  HOTEL_SEARCH_ROOM_TEXT,
   HOTEL_USER_BUTTON,
-  HOTEL_ADULTS_ADD_BUTTON,
-  HOTEL_ADULTS_MINUS_BUTTON,
   LOCATION_TEXT,
   USER_TEXT,
-  HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN,
-  HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN,
-  HOTEL_SEARCH_BOOKING_ADULTS_ROW,
-  HOTEL_SEARCH_ADULTS_TEXT,
 } from "../../theme/styles";
 import {
   FlatList,
@@ -55,16 +48,23 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import {StackNavigatorParamList} from "../../navigators";
-import {StackScreenProps} from "@react-navigation/stack";
-import {MarkedDates} from "react-native-calendars/src/types";
+import { StackNavigatorParamList } from "../../navigators";
+import { StackScreenProps } from "@react-navigation/stack";
+import { MarkedDates } from "react-native-calendars/src/types";
+import { HotelCityCode, hotelCityCodes } from "../../helper/amadeus";
+import { useDispatch } from "react-redux";
+import { chooseCityCode } from "../../redux/hotel/hotelSlice";
 
-export interface HotelSearchScreenProps {}
+export interface HotelSearchScreenProps {
+}
 
-export const HotelSearchScreen: FC<
-  StackScreenProps<StackNavigatorParamList, "hotelSearch">
-> = ({route, navigation}) => {
-  const {colors} = useTheme();
+export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelSearch">> = ({
+                                                                                                  route,
+                                                                                                  navigation,
+                                                                                                }) => {
+  const { colors } = useTheme();
+
+  const dispatch = useDispatch();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -187,8 +187,23 @@ export const HotelSearchScreen: FC<
     console.log("handleSheetChanges", index);
   }, []);
 
+  const [hotelCityCodesLocalState, setHotelCityCodesLocalState] = useState<Array<HotelCityCode>>([]);
+
+  const findHotelCityCodes = (searchInput?: string) => {
+    if (searchInput) {
+      let newhotelCityCodesLocalState = hotelCityCodes.filter((cityObject) => {
+        return cityObject.cityName.includes(searchInput);
+      });
+      setHotelCityCodesLocalState(newhotelCityCodesLocalState);
+      console.log("newhotelCityCodesLocalState: ", newhotelCityCodesLocalState);
+      setInputValue(searchInput);
+    } else {
+      setInputValue("");
+    }
+  };
+
   // render
-  const renderItem = ({item, index}: ButtonItemAndIndex) => (
+  const renderItem = ({ item, index }: ButtonItemAndIndex) => (
     <TouchableHighlight onPress={item.onPress} underlayColor={colors.white}>
       <View style={item.buttonStyle}>
         <ButtonWithColorBg
@@ -291,34 +306,69 @@ export const HotelSearchScreen: FC<
               <View style={HOTEL_SEARCH_DESTINATION_BUTTON}>
                 <PaperSearchbar
                   style={HOTEL_SEARCH_BAR}
+                  onChangeText={findHotelCityCodes}
                   onBlur={(
                     event: NativeSyntheticEvent<TextInputFocusEventData>,
                   ) => {
                     event.target;
                   }}
-                  onFocus={(
-                    event: NativeSyntheticEvent<TextInputFocusEventData>,
-                  ) => {
-                    event.target;
-                  }}
-                  onChangeText={event => setInputValue(event)}
+                  // onFocus={(
+                  //   event: NativeSyntheticEvent<TextInputFocusEventData>,
+                  // ) => {
+                  //   event.target;
+                  // }}
+
                   value={inputValue}
                 />
               </View>
               <View style={HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION}>
-                <ButtonWithColorBg
-                  size={20}
-                  color={colors.black}
-                  iconName={"location-arrow"}
-                  iconProvider={"FontAwesome"}
-                />
-                <PaperText
-                  style={{
-                    paddingLeft: 20,
-                    paddingBottom: 10,
-                  }}>
-                  Search Nearby Destination
-                </PaperText>
+                {
+                  hotelCityCodesLocalState.length > 0 ? (
+                    <FlatList
+                      data={hotelCityCodesLocalState}
+                      renderItem={({ item, index, separators }) => (
+                        <TouchableHighlight
+                          key={item.cityCode}
+                          onPress={() => {
+                            dispatch(chooseCityCode(item.cityCode));
+                            setSnapState(0);
+                            bottomSheetRef.current?.snapTo(0);
+                            setDestinationViewOn(false);
+                            setDateViewOn(false);
+                            setUserViewOn(false);
+                          }}
+                          onShowUnderlay={separators.highlight}
+                          onHideUnderlay={separators.unhighlight}>
+                          <View style={{ backgroundColor: "azure" }}>
+                            <PaperText>{item.cityName}</PaperText>
+                          </View>
+                        </TouchableHighlight>
+                      )}
+                      ItemSeparatorComponent={() => (
+                        <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+                      )}
+                    />
+                  ) : (
+                    <>
+                      <ButtonWithColorBg
+                        size={20}
+                        color={colors.black}
+                        iconName={"location-arrow"}
+                        iconProvider={"FontAwesome"}
+                      />
+                      <PaperText
+                        style={{
+                          paddingLeft: 20,
+                          paddingBottom: 10,
+                        }}>
+                        {hotelCityCodesLocalState.length < 1 ?
+                          "Enter Your Destination" :
+                          hotelCityCodesLocalState[0].cityName}
+                      </PaperText>
+                    </>
+                  )
+                }
+
               </View>
             </View>
           ) : null}

@@ -11,7 +11,7 @@ import { OnboardingScreen } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useEffect } from "react";
-import { getAccessTokenRequestBody } from "../helper/amadeus/get-access-token-request-response";
+import { getAccessTokenRequestBody } from "../helper/amadeus";
 import { getAmadeusAccessToken } from "../redux/hotel/hotelSlice";
 import { useAppDispatch } from "../redux/hooks";
 

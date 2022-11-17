@@ -1,8 +1,8 @@
 // Define a type for the slice state
 import { HotelListRequest, HotelListResponse } from "../../helper/amadeus/hotel-list-request-response";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import QueryString from "qs";
-import { GetAccessTokenRequest, GetAccessTokenResponse } from "../../helper/amadeus/get-access-token-request-response";
+import { GetAccessTokenRequest, GetAccessTokenResponse } from "../../helper/amadeus";
 
 let amadeusTestApiUrl = "https://test.api.amadeus.com";
 
@@ -45,9 +45,14 @@ export const hotelSlice = createSlice({
   name: "hotel",
   initialState,
   reducers: {
-    // login: (state) => {
-    //   // state.isLoggedIn = true;
-    // },
+    chooseCityCode: (state,action: PayloadAction<string>) => {
+      if(!state.hotelListRequest){
+        state.hotelListRequest = {cityCode: action.payload}
+      }else{
+        state.hotelListRequest.cityCode = action.payload
+      }
+      console.log('chooseCityCode: ', state.hotelListRequest);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
@@ -59,7 +64,7 @@ export const hotelSlice = createSlice({
   },
 });
 
-// export const { login } = hotelSlice.actions;
+export const { chooseCityCode } = hotelSlice.actions;
 
 
 // Other code such as selectors can use the imported `RootState` type
