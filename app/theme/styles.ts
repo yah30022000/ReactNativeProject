@@ -257,14 +257,6 @@ export const HOTEL_SEARCH_BOOKING_HOTELS_TEXT: TextStyle = {
   paddingLeft: 35,
 };
 
-// export const HOTEL_SEARCH_BOOKING_HOTELS_DESTINATION_TEXT: TextStyle = {
-//   // flex: 1,
-//   // justifyContent: "center",
-//   // alignItems: "center",
-//   backgroundColor: "green",
-//   // flexDirection: "column",
-// };
-
 export const HOTEL_SEARCH_BAR: ViewStyle = {
   borderRadius: 20,
 };
@@ -275,6 +267,12 @@ export const HOTEL_SEARCH_BOOKING_DATE_TEXT: TextStyle = {
   marginTop: 20,
   paddingBottom: 20,
   paddingLeft: 20,
+};
+
+export const HOTEL_SEARCH_ROOM_TEXT: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+  textAlign: "center",
 };
 
 export const HOTEL_SEARCH_DESTINATION_BUTTON: ViewStyle = {
@@ -290,7 +288,50 @@ export const HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION: ViewStyle = {
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  paddingTop:10
+  paddingTop: 10,
+};
+
+export const HOTEL_SEARCH_BOOKING_ROOM_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  marginTop: 20,
+  paddingLeft: 20,
+};
+
+export const HOTEL_SEARCH_BOOKING_ADULTS_ROW: TextStyle = {
+  fontSize: 16,
+  marginTop: 10,
+  marginBottom: 10,
+  paddingLeft: 20,
+  height: "12%",
+  justifyContent: "space-between",
+  flexDirection: "row",
+};
+
+export const HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN: ViewStyle = {
+  flexGrow: 1,
+  flexDirection: "row",
+  alignItems: "center",
+};
+
+export const HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN: ViewStyle = {
+  flexGrow: 1,
+  flexDirection: "row",
+  justifyContent: "space-around",
+  alignItems: "center",
+  paddingHorizontal: 50,
+};
+
+export const HOTEL_ADULTS_MINUS_BUTTON: ViewStyle = {
+  marginBottom: -10,
+};
+
+export const HOTEL_ADULTS_ADD_BUTTON: ViewStyle = {
+  marginBottom: -10,
+};
+
+export const HOTEL_SEARCH_ADULTS_TEXT: TextStyle = {
+  fontSize: 18,
 };
 
 /* HotelSearchScreen ends */

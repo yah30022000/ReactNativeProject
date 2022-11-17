@@ -5,14 +5,7 @@ import {
   useTheme,
 } from "react-native-paper";
 import {Calendar, DateData} from "react-native-calendars";
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, {FC, useCallback, useMemo, useRef, useState} from "react";
 import {SafeAreaView} from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
 import ButtonWithColorBg, {
@@ -40,9 +33,17 @@ import {
   HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
   HOTEL_SEARCH_SCREEN_USER_TEXT,
   HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION,
+  HOTEL_SEARCH_BOOKING_ROOM_TEXT,
+  HOTEL_SEARCH_ROOM_TEXT,
   HOTEL_USER_BUTTON,
+  HOTEL_ADULTS_ADD_BUTTON,
+  HOTEL_ADULTS_MINUS_BUTTON,
   LOCATION_TEXT,
   USER_TEXT,
+  HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_ROW,
+  HOTEL_SEARCH_ADULTS_TEXT,
 } from "../../theme/styles";
 import {
   FlatList,
@@ -76,6 +77,22 @@ export const HotelSearchScreen: FC<
   const [dateViewOn, setDateViewOn] = useState<boolean>(false);
   const [userViewOn, setUserViewOn] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [adults, setAdults] = useState<number>(1);
+
+  const minusAdults = () => {
+    if (adults <= 1) {
+      return;
+    } else {
+      setAdults(adults - 1);
+    }
+  };
+  const addAdults = () => {
+    if (adults >= 9) {
+      return;
+    } else {
+      setAdults(adults + 1);
+    }
+  };
 
   type ButtonItem = {
     key: number;
@@ -196,41 +213,44 @@ export const HotelSearchScreen: FC<
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
 
   const changeMarkedDatesCallBack = (day: DateData) => {
-    console.log("selected Day: ", day);
+    const updateMarkedDates = {...markedDates};
     if (
-      !(day.dateString in markedDates) &&
-      Object.keys(markedDates).length < 3
+      !(day.dateString in updateMarkedDates) &&
+      Object.keys(updateMarkedDates).length < 3
     ) {
-      markedDates[day.dateString] = {color: colors.mint, startingDay: true};
+      updateMarkedDates[day.dateString] = {
+        color: colors.mint,
+        startingDay: true,
+      };
 
       for (const [index, [key, value]] of Object.entries(
-        Object.entries(markedDates),
+        Object.entries(updateMarkedDates),
       )) {
         let parsedIndex = parseInt(index);
 
-        if (parsedIndex == 0) {
-          markedDates[key] = {color: colors.mint, startingDay: true};
-        } else if (parsedIndex + 1 == Object.entries(markedDates).length) {
-          markedDates[key] = {color: colors.mint, endingDay: true};
+        if (parsedIndex === 0) {
+          updateMarkedDates[key] = {color: colors.mint, startingDay: true};
         } else if (
-          parsedIndex != 0 &&
-          parseInt(index) != Object.entries(markedDates).length
+          parsedIndex + 1 ===
+          Object.entries(updateMarkedDates).length
         ) {
-          markedDates[key] = {
-            color: colors.mint,
+          updateMarkedDates[key] = {color: colors.mint, endingDay: true};
+        } else if (
+          parsedIndex !== 0 &&
+          parseInt(index) !== Object.entries(updateMarkedDates).length
+        ) {
+          updateMarkedDates[key] = {
+            color: colors.mintLight,
             startingDay: false,
             endingDay: false,
           };
         }
       }
-      setMarkedDates(markedDates);
+      setMarkedDates(updateMarkedDates);
+
       // console.log("markedDates: ", markedDates);
     }
   };
-
-  useEffect(() => {
-    setMarkedDates(markedDates);
-  }, [markedDates]);
 
   return (
     <ImageBackground
@@ -323,7 +343,45 @@ export const HotelSearchScreen: FC<
           ) : null}
           {userViewOn ? (
             <View>
-              <PaperText>Rooms & Guests</PaperText>
+              <PaperText style={HOTEL_SEARCH_BOOKING_ROOM_TEXT}>
+                Rooms & Guests
+              </PaperText>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              <PaperText style={HOTEL_SEARCH_ROOM_TEXT}>Room 1</PaperText>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              {/* Adults row */}
+              <View style={HOTEL_SEARCH_BOOKING_ADULTS_ROW}>
+                <View style={HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN}>
+                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>Adults</PaperText>
+                </View>
+                <View style={HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN}>
+                  {/* minus button */}
+                  <View style={HOTEL_ADULTS_MINUS_BUTTON}>
+                    <ButtonWithColorBg
+                      size={25}
+                      color={colors.mint}
+                      iconName={"minuscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={minusAdults}
+                    />
+                  </View>
+                  {/* adult count */}
+                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>
+                    {adults}
+                  </PaperText>
+                  {/* add button */}
+                  <View style={HOTEL_ADULTS_ADD_BUTTON}>
+                    <ButtonWithColorBg
+                      size={25}
+                      color={colors.mint}
+                      iconName={"pluscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={addAdults}
+                    />
+                  </View>
+                </View>
+              </View>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
             </View>
           ) : null}
           {!destinationViewOn && !dateViewOn && !userViewOn ? (
