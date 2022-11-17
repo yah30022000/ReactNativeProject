@@ -1,9 +1,16 @@
-import { Divider as PaperDivider, Searchbar as PaperSearchbar, Text as PaperText, useTheme } from "react-native-paper";
-import { Calendar, DateData } from "react-native-calendars";
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Divider as PaperDivider,
+  Searchbar as PaperSearchbar,
+  Text as PaperText,
+  useTheme,
+} from "react-native-paper";
+import {Calendar, DateData} from "react-native-calendars";
+import React, {FC, useCallback, useMemo, useRef, useState} from "react";
+import {SafeAreaView} from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
-import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
+import ButtonWithColorBg, {
+  ButtonProp,
+} from "../../components/ButtonWithColorBg";
 import {
   DATE_TEXT,
   HOTEL_BACK_BUTTON,
@@ -26,9 +33,17 @@ import {
   HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
   HOTEL_SEARCH_SCREEN_USER_TEXT,
   HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION,
+  HOTEL_SEARCH_BOOKING_ROOM_TEXT,
+  HOTEL_SEARCH_ROOM_TEXT,
   HOTEL_USER_BUTTON,
+  HOTEL_ADULTS_ADD_BUTTON,
+  HOTEL_ADULTS_MINUS_BUTTON,
   LOCATION_TEXT,
   USER_TEXT,
+  HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADULTS_ROW,
+  HOTEL_SEARCH_ADULTS_TEXT,
 } from "../../theme/styles";
 import {
   FlatList,
@@ -40,19 +55,16 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { StackNavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack";
-import { MarkedDates } from "react-native-calendars/src/types";
+import {StackNavigatorParamList} from "../../navigators";
+import {StackScreenProps} from "@react-navigation/stack";
+import {MarkedDates} from "react-native-calendars/src/types";
 
+export interface HotelSearchScreenProps {}
 
-export interface HotelSearchScreenProps {
-}
-
-export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelSearch">> = ({
-                                                                                                  route,
-                                                                                                  navigation,
-                                                                                                }) => {
-  const { colors } = useTheme();
+export const HotelSearchScreen: FC<
+  StackScreenProps<StackNavigatorParamList, "hotelSearch">
+> = ({route, navigation}) => {
+  const {colors} = useTheme();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -65,6 +77,22 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const [dateViewOn, setDateViewOn] = useState<boolean>(false);
   const [userViewOn, setUserViewOn] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [adults, setAdults] = useState<number>(1);
+
+  const minusAdults = () => {
+    if (adults <= 1) {
+      return;
+    } else {
+      setAdults(adults - 1);
+    }
+  };
+  const addAdults = () => {
+    if (adults >= 9) {
+      return;
+    } else {
+      setAdults(adults + 1);
+    }
+  };
 
   type ButtonItem = {
     key: number;
@@ -185,36 +213,49 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const [markedDates, setMarkedDates] = useState<MarkedDates>({});
 
   const changeMarkedDatesCallBack = (day: DateData) => {
-    console.log("selected Day: ", day);
-    if (!(day.dateString in markedDates)
-      && (Object.keys(markedDates).length < 3)
+    const updateMarkedDates = {...markedDates};
+    if (
+      !(day.dateString in updateMarkedDates) &&
+      Object.keys(updateMarkedDates).length < 3
     ) {
-      markedDates[day.dateString] = { color: colors.mint, startingDay: true };
+      updateMarkedDates[day.dateString] = {
+        color: colors.mint,
+        startingDay: true,
+      };
 
-      for (const [index, [key, value]] of Object.entries(Object.entries(markedDates))) {
+      for (const [index, [key, value]] of Object.entries(
+        Object.entries(updateMarkedDates),
+      )) {
         let parsedIndex = parseInt(index);
 
-        if (parsedIndex == 0) {
-          markedDates[key] = { color: colors.mint, startingDay: true };
-        } else if (parsedIndex + 1 == Object.entries(markedDates).length) {
-          markedDates[key] = { color: colors.mint, endingDay: true };
-        } else if (parsedIndex != 0 && parseInt(index) != Object.entries(markedDates).length) {
-          markedDates[key] = { color: colors.mint, startingDay: false, endingDay: false };
+        if (parsedIndex === 0) {
+          updateMarkedDates[key] = {color: colors.mint, startingDay: true};
+        } else if (
+          parsedIndex + 1 ===
+          Object.entries(updateMarkedDates).length
+        ) {
+          updateMarkedDates[key] = {color: colors.mint, endingDay: true};
+        } else if (
+          parsedIndex !== 0 &&
+          parseInt(index) !== Object.entries(updateMarkedDates).length
+        ) {
+          updateMarkedDates[key] = {
+            color: colors.mintLight,
+            startingDay: false,
+            endingDay: false,
+          };
         }
       }
-      setMarkedDates(markedDates);
+      setMarkedDates(updateMarkedDates);
+
       // console.log("markedDates: ", markedDates);
     }
   };
 
-  useEffect(()=>{
-    setMarkedDates(markedDates);
-  },[markedDates])
-
   return (
     <ImageBackground
       source={require("@travelasset/images/crown-hotel.jpeg")}
-      style={{ flex: 1 }}
+      style={{flex: 1}}
       resizeMode="cover">
       <SafeAreaView style={HOTEL_SEARCH_SCREEN}>
         <View style={HOTEL_BACK_BUTTON}>
@@ -287,7 +328,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                 Select Dates
               </PaperText>
               <Calendar
-                style={{ marginTop: 30 }}
+                style={{marginTop: 30}}
                 monthFormat={"yyyy MMM"}
                 minDate={"2022-01-01"}
                 maxDate={"2026-12-31"}
@@ -302,7 +343,45 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
           ) : null}
           {userViewOn ? (
             <View>
-              <PaperText>Rooms & Guests</PaperText>
+              <PaperText style={HOTEL_SEARCH_BOOKING_ROOM_TEXT}>
+                Rooms & Guests
+              </PaperText>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              <PaperText style={HOTEL_SEARCH_ROOM_TEXT}>Room 1</PaperText>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              {/* Adults row */}
+              <View style={HOTEL_SEARCH_BOOKING_ADULTS_ROW}>
+                <View style={HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN}>
+                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>Adults</PaperText>
+                </View>
+                <View style={HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN}>
+                  {/* minus button */}
+                  <View style={HOTEL_ADULTS_MINUS_BUTTON}>
+                    <ButtonWithColorBg
+                      size={25}
+                      color={colors.mint}
+                      iconName={"minuscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={minusAdults}
+                    />
+                  </View>
+                  {/* adult count */}
+                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>
+                    {adults}
+                  </PaperText>
+                  {/* add button */}
+                  <View style={HOTEL_ADULTS_ADD_BUTTON}>
+                    <ButtonWithColorBg
+                      size={25}
+                      color={colors.mint}
+                      iconName={"pluscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={addAdults}
+                    />
+                  </View>
+                </View>
+              </View>
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
             </View>
           ) : null}
           {!destinationViewOn && !dateViewOn && !userViewOn ? (
