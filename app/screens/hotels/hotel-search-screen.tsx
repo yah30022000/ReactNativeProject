@@ -12,21 +12,21 @@ import ButtonWithColorBg, {
   ButtonProp,
 } from "../../components/ButtonWithColorBg";
 import {
-  DATE_TEXT,
+  FILTER_TEXT,
   HOTEL_BACK_BUTTON,
   HOTEL_DATE_BUTTON,
   HOTEL_LOCATION_BUTTON,
   HOTEL_SEARCH_BAR,
-  HOTEL_SEARCH_BOOKING_DATE_TEXT,
+  // HOTEL_SEARCH_BOOKING_DATE_TEXT,
   HOTEL_SEARCH_BOOKING_HOTELS_TEXT,
   HOTEL_SEARCH_BUTTON,
   HOTEL_SEARCH_DESTINATION_BUTTON,
   HOTEL_SEARCH_SCREEN,
-  HOTEL_SEARCH_SCREEN_DATE_TEXT,
+  HOTEL_SEARCH_SCREEN_FILTER_TEXT,
   HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
   HOTEL_SEARCH_SCREEN_DIVIDER_LINE,
   HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
-  HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT,
+  HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT,
   HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT,
   HOTEL_SEARCH_SCREEN_TITLE_ROW,
   HOTEL_SEARCH_SCREEN_TITLE_TEXT,
@@ -78,6 +78,7 @@ export const HotelSearchScreen: FC<
   const [userViewOn, setUserViewOn] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [adults, setAdults] = useState<number>(1);
+  const [ratingViewOn, setRatingViewOn] = useState<boolean>(false);
 
   const minusAdults = () => {
     if (adults <= 1) {
@@ -131,7 +132,7 @@ export const HotelSearchScreen: FC<
           setSnapState(1);
           bottomSheetRef.current?.snapTo(1);
           setDestinationViewOn(true);
-          setDateViewOn(false);
+          setRatingViewOn(false);
           setUserViewOn(false);
         }
       },
@@ -141,19 +142,19 @@ export const HotelSearchScreen: FC<
       buttonStyle: HOTEL_DATE_BUTTON,
       color: colors.mint,
       backgroundColor: colors.mintLight,
-      iconName: "date-range",
-      iconProvider: "MaterialIcons",
-      textStyle: DATE_TEXT,
-      textTitleStyle: HOTEL_SEARCH_SCREEN_DATE_TEXT,
-      textSubtitleStyle: HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT,
-      textTitle: "SELECT DATE",
+      iconName: "filter",
+      iconProvider: "FontAwesome",
+      textStyle: FILTER_TEXT,
+      textTitleStyle: HOTEL_SEARCH_SCREEN_FILTER_TEXT,
+      textSubtitleStyle: HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT,
+      textTitle: "RATING SELECT",
       textSubtitle: "18 Sep - 20 Sep(2 night)",
       onPress: () => {
         if (snapState == 0) {
           setSnapState(1);
           bottomSheetRef.current?.snapTo(1);
           setDestinationViewOn(false);
-          setDateViewOn(true);
+          setRatingViewOn(true);
           setUserViewOn(false);
         }
       },
@@ -175,7 +176,7 @@ export const HotelSearchScreen: FC<
           setSnapState(1);
           bottomSheetRef.current?.snapTo(1);
           setDestinationViewOn(false);
-          setDateViewOn(false);
+          setRatingViewOn(false);
           setUserViewOn(true);
         }
       },
@@ -210,47 +211,47 @@ export const HotelSearchScreen: FC<
 
   // calendar items
 
-  const [markedDates, setMarkedDates] = useState<MarkedDates>({});
+  // const [markedDates, setMarkedDates] = useState<MarkedDates>({});
 
-  const changeMarkedDatesCallBack = (day: DateData) => {
-    const updateMarkedDates = {...markedDates};
-    if (
-      !(day.dateString in updateMarkedDates) &&
-      Object.keys(updateMarkedDates).length < 3
-    ) {
-      updateMarkedDates[day.dateString] = {
-        color: colors.mint,
-        startingDay: true,
-      };
+  // const changeMarkedDatesCallBack = (day: DateData) => {
+  //   const updateMarkedDates = {...markedDates};
+  //   if (
+  //     !(day.dateString in updateMarkedDates) &&
+  //     Object.keys(updateMarkedDates).length < 3
+  //   ) {
+  //     updateMarkedDates[day.dateString] = {
+  //       color: colors.mint,
+  //       startingDay: true,
+  //     };
 
-      for (const [index, [key, value]] of Object.entries(
-        Object.entries(updateMarkedDates),
-      )) {
-        let parsedIndex = parseInt(index);
+  //     for (const [index, [key, value]] of Object.entries(
+  //       Object.entries(updateMarkedDates),
+  //     )) {
+  //       let parsedIndex = parseInt(index);
 
-        if (parsedIndex === 0) {
-          updateMarkedDates[key] = {color: colors.mint, startingDay: true};
-        } else if (
-          parsedIndex + 1 ===
-          Object.entries(updateMarkedDates).length
-        ) {
-          updateMarkedDates[key] = {color: colors.mint, endingDay: true};
-        } else if (
-          parsedIndex !== 0 &&
-          parseInt(index) !== Object.entries(updateMarkedDates).length
-        ) {
-          updateMarkedDates[key] = {
-            color: colors.mintLight,
-            startingDay: false,
-            endingDay: false,
-          };
-        }
-      }
-      setMarkedDates(updateMarkedDates);
+  //       if (parsedIndex === 0) {
+  //         updateMarkedDates[key] = {color: colors.mint, startingDay: true};
+  //       } else if (
+  //         parsedIndex + 1 ===
+  //         Object.entries(updateMarkedDates).length
+  //       ) {
+  //         updateMarkedDates[key] = {color: colors.mint, endingDay: true};
+  //       } else if (
+  //         parsedIndex !== 0 &&
+  //         parseInt(index) !== Object.entries(updateMarkedDates).length
+  //       ) {
+  //         updateMarkedDates[key] = {
+  //           color: colors.mintLight,
+  //           startingDay: false,
+  //           endingDay: false,
+  //         };
+  //       }
+  //     }
+  //     setMarkedDates(updateMarkedDates);
 
-      // console.log("markedDates: ", markedDates);
-    }
-  };
+  //     // console.log("markedDates: ", markedDates);
+  //   }
+  // };
 
   return (
     <ImageBackground
@@ -322,25 +323,28 @@ export const HotelSearchScreen: FC<
               </View>
             </View>
           ) : null}
-          {dateViewOn ? (
-            <View>
-              <PaperText style={HOTEL_SEARCH_BOOKING_DATE_TEXT}>
-                Select Dates
-              </PaperText>
-              <Calendar
-                style={{marginTop: 30}}
-                monthFormat={"yyyy MMM"}
-                minDate={"2022-01-01"}
-                maxDate={"2026-12-31"}
-                markingType={"period"}
-                markedDates={markedDates}
-                onDayPress={changeMarkedDatesCallBack}
-                onMonthChange={month => {
-                  console.log("month changed", month);
-                }}
-              />
-            </View>
-          ) : null}
+          {
+            /* {dateViewOn ? (
+            // <View>
+            //   <PaperText style={HOTEL_SEARCH_BOOKING_DATE_TEXT}>
+            //     Select Dates
+            //   </PaperText>
+            //   <Calendar
+            //     style={{marginTop: 30}}
+            //     monthFormat={"yyyy MMM"}
+            //     minDate={"2022-01-01"}
+            //     maxDate={"2026-12-31"}
+            //     markingType={"period"}
+            //     markedDates={markedDates}
+            //     onDayPress={changeMarkedDatesCallBack}
+            //     onMonthChange={month => {
+            //       console.log("month changed", month);
+            //     }}
+            //   />
+            // </View>
+          ) : null} */
+            ratingViewOn ? <View></View> : null
+          }
           {userViewOn ? (
             <View>
               <PaperText style={HOTEL_SEARCH_BOOKING_ROOM_TEXT}>

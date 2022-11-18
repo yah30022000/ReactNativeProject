@@ -164,7 +164,7 @@ export const LOCATION_TEXT: ViewStyle = {
   paddingLeft: 15,
 };
 
-export const DATE_TEXT: ViewStyle = {
+export const FILTER_TEXT: ViewStyle = {
   paddingLeft: 15,
 };
 
@@ -194,12 +194,12 @@ export const HOTEL_SEARCH_SCREEN_DESTINATION_TEXT: TextStyle = {
   marginTop: 10,
 };
 
-export const HOTEL_SEARCH_SCREEN_DATE_TEXT: TextStyle = {
+export const HOTEL_SEARCH_SCREEN_FILTER_TEXT: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
 };
 
-export const HOTEL_SEARCH_SCREEN_SELECT_DATE_TEXT: TextStyle = {
+export const HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT: TextStyle = {
   fontSize: 16,
   color: "grey",
   marginTop: 10,
@@ -261,13 +261,13 @@ export const HOTEL_SEARCH_BAR: ViewStyle = {
   borderRadius: 20,
 };
 
-export const HOTEL_SEARCH_BOOKING_DATE_TEXT: TextStyle = {
-  fontWeight: "bold",
-  fontSize: 20,
-  marginTop: 20,
-  paddingBottom: 20,
-  paddingLeft: 20,
-};
+// export const HOTEL_SEARCH_BOOKING_DATE_TEXT: TextStyle = {
+//   fontWeight: "bold",
+//   fontSize: 20,
+//   marginTop: 20,
+//   paddingBottom: 20,
+//   paddingLeft: 20,
+// };
 
 export const HOTEL_SEARCH_ROOM_TEXT: TextStyle = {
   fontSize: 16,
