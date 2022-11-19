@@ -1,42 +1,66 @@
 // Define a type for the slice state
-import { HotelListRequest, HotelListResponse } from "../../helper/amadeus/hotel-list-request-response";
+import { HotelListRequest, HotelListResponse } from "../../helper/amadeus";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import QueryString from "qs";
-import { GetAccessTokenRequest, GetAccessTokenResponse } from "../../helper/amadeus";
+import { API as AmplifyAPI } from "aws-amplify";
 
-let amadeusTestApiUrl = "https://test.api.amadeus.com";
+
 
 export interface HotelState {
-  accessToken?: string;
+  // accessToken?: string;
   hotelListRequest?: HotelListRequest;
   hotelListResponse?: HotelListResponse;
 }
 
-
 // Define the initial state using that type
 const initialState: HotelState = {};
 
-export const getAmadeusAccessToken = createAsyncThunk<GetAccessTokenResponse, GetAccessTokenRequest>(
-  "hotel/getAmadeusAccessToken",
-  async (requestBody: GetAccessTokenRequest, thunkAPI) => {
+// let amadeusTestApiUrl = "https://test.api.amadeus.com";
 
-    console.log("getAccessToken before: ", requestBody);
+// export const getAmadeusAccessToken = createAsyncThunk<GetAccessTokenResponse, GetAccessTokenRequest>(
+//   "hotel/getAmadeusAccessToken",
+//   async (requestBody: GetAccessTokenRequest, thunkAPI) => {
+//
+//     console.log("getAccessToken before: ", requestBody);
+//
+//     const response = await fetch(`${amadeusTestApiUrl}/v1/security/oauth2/token`, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/x-www-form-urlencoded"
+//         },
+//         body: QueryString.stringify(requestBody)
+//       })
+//     if (response.status < 200 || response.status >= 300) {
+//       return thunkAPI.rejectWithValue((await response.json()));
+//     }
+//
+//     let data: GetAccessTokenResponse = await response.json();
+//
+//     console.log("getAccessToken after: ", data);
+//     return data;
+//   },
+// );
 
-    const response = await fetch(`${amadeusTestApiUrl}/v1/security/oauth2/token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: QueryString.stringify(requestBody)
-      })
+export const getAmadeusHotelList = createAsyncThunk<HotelListResponse, HotelListRequest>(
+  "hotel/getAmadeusHotelList",
+  async (requestBody: HotelListRequest, thunkAPI) => {
+
+    console.log("getAmadeusHotelList request body: ", requestBody);
+
+    let apiName = "amadeusAPI";
+    const path = "/amadeus/hotel-list";
+    const option = {
+      headers: {}, // OPTIONAL
+      // response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+      queryStringParameters: requestBody,
+    };
+
+    let response: HotelListResponse = await AmplifyAPI.get(apiName, path, option);
+
     if (response.status < 200 || response.status >= 300) {
-      return thunkAPI.rejectWithValue((await response.json()));
+      return thunkAPI.rejectWithValue(response);
     }
-
-    let data: GetAccessTokenResponse = await response.json()
-
-    console.log("getAccessToken after: ", data);
-    return data;
+    console.log("getAmadeusHotelList after: ", response.data);
+    return response;
   },
 );
 
@@ -45,21 +69,27 @@ export const hotelSlice = createSlice({
   name: "hotel",
   initialState,
   reducers: {
-    chooseCityCode: (state,action: PayloadAction<string>) => {
-      if(!state.hotelListRequest){
-        state.hotelListRequest = {cityCode: action.payload}
-      }else{
-        state.hotelListRequest.cityCode = action.payload
+    chooseCityCode: (state, action: PayloadAction<string>) => {
+      if (!state.hotelListRequest) {
+        state.hotelListRequest = { cityCode: action.payload };
+      } else {
+        state.hotelListRequest.cityCode = action.payload;
       }
-      console.log('chooseCityCode: ', state.hotelListRequest);
+      console.log("chooseCityCode: ", state.hotelListRequest);
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
-      state.accessToken = action.payload.access_token;
+    // builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
+    //   state.accessToken = action.payload.access_token;
+    // });
+    // builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
+    //   state.accessToken = "";
+    // });
+    builder.addCase(getAmadeusHotelList.fulfilled, (state, action) => {
+      state.hotelListResponse = action.payload
     });
-    builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
-      state.accessToken = "";
+    builder.addCase(getAmadeusHotelList.rejected, (state, action) => {
+      console.error('getAmadeusHotelList redux error, no data input')
     });
   },
 });

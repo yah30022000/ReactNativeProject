@@ -1,0 +1,30 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hotelapp-dev-120912-authRole",
+      "UnauthRoleArn": "arn:aws:iam::479503181726:role/amplify-hotelapp-dev-120912-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::479503181726:role/amplify-hotelapp-dev-120912-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+      "UnauthRoleName": "amplify-hotelapp-dev-120912-unauthRole",
+      "StackName": "amplify-hotelapp-dev-120912",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:479503181726:stack/amplify-hotelapp-dev-120912/c3480b60-66f6-11ed-a894-02aa7fad9754",
+      "AmplifyAppId": "d1448zlrk0oot2"
+    },
+    "categories": {
+      "function": {
+        "amadeusfunction": {},
+        "hotelapp76cfda0e": {},
+        "amadeusHotelList": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelList-7878444c516931365779-build.zip"
+        }
+      },
+      "api": {
+        "amadeusAPI": {}
+      }
+    }
+  }
+}

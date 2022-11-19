@@ -241,7 +241,140 @@ import { IconButton as PaperIconButton } from "react-native-paper";
    }
    ```
 
+5. (API Call) add ```createAsyncThunk``` callback function inside slice file, DO NOT USE ```Axios``` inside thunk function, you must use ```fetch``` !!!
+```typescript
+export const getAmadeusAccessToken = createAsyncThunk<GetAccessTokenResponse, GetAccessTokenRequest>(
+        "hotel/getAmadeusAccessToken",
+        async (requestBody: GetAccessTokenRequest, thunkAPI) => {
+          
+           const response = await fetch(`${amadeusTestApiUrl}/v1/security/oauth2/token`, {
+              method: "POST",
+              headers: {
+                 "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: QueryString.stringify(requestBody)
+           })
+           if (response.status < 200 || response.status >= 300) {
+              return thunkAPI.rejectWithValue((await response.json()));
+           }
 
+           let data: GetAccessTokenResponse = await response.json()
+
+           return data;
+        },
+)
+```
+6. (API Call) and then add builder.Case function inside ```extraReducer``` of ```createSlice```
+```typescript
+export const hotelSlice = createSlice({
+   name: "hotel",
+   initialState,
+   reducers: {
+      ...
+   },
+   extraReducers: (builder) => {
+      builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
+         state.accessToken = action.payload.access_token;
+      });
+      builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
+         state.accessToken = "";
+      });
+   },
+});
+
+```
+
+---
+## AWS Amplify
+
+[**Getting Started - React Native**](https://docs.amplify.aws/start/getting-started/installation/q/integration/react-native/)
+1. Install Amplify CLI locally
+   ```bash
+   npm install -g @aws-amplify/cli
+   # or
+   yarn global add @aws-amplify/cli
+   ```
+   
+2. Create Amplify profile, note that this will replace your access ID and access secret during setup of EC2
+   ```bash
+   amplify configure
+   
+   # After login AWS Console >>>
+   Specify the AWS Region
+   > region: ap-southeast-1
+   Specify the username of the new IAM user:
+   > user name: your-name
+   ```
+
+   Remember to save down the access ID and access secret (better download CSV)
+   ![Amplify User Creation!](assets/images/readme/amplify-user-creation.gif "Amplify User Creation")
+
+   ```bash
+   Enter the access key of the newly created user:
+   > accessKeyId:  <ACCESSKEYID>
+   > secretAccessKey:  <ACCESSKEY>
+   This would update/create the AWS Profile in your local machine
+   > Profile Name: default
+   ```
+
+   ### If encounter error like "amplify" command not found, try to add path at root
+   ```bash
+   nano ~/.zshrc 
+   # or
+   nano ~/.bash_profile
+   
+   # insert the below statement and save
+   export PATH = ${PATH}:/usr/local/bin/amplify
+   ```
+   
+3. Invite other users to Amplify Studio, using their own email, and not related to existing AWS account
+   ![Amplify Studio_Invite1!](assets/images/readme/amplify-studio-invite1.png "Amplify Studio Invite 1")
+   ![Amplify Studio_Invite2!](assets/images/readme/amplify-studio-invite2.png "Amplify Studio Invite 2")
+
+4. Add access for other user for accessing your Amplify cloud using their Amplify CLI (not related to Amplify Studio access)
+   Follow the step 2 above, share access ID and access secret for new user (download CSV)
+   ![Amplify IAM_Add_User 1!](assets/images/readme/amplify-iam-add-user1.png "Amplify IAM Add User 1")
+
+5. Newly added user need to add AWS profile in their PC locally, whether or not executed ```amplify configure``` themselves
+   ```bash
+   nano ~/.aws/credentials
+   
+   # add below
+   [your-new-profile-name]
+   aws_access_key_id=123456ABCDE
+   aws_secret_access_key=23456TYUIO
+   
+   nano ~/.aws/config
+   # add below
+   [profile your-new-profile-name]
+   region=ap-southeast-1
+   output=json
+   ```
+
+6. At project root, install the following dependencies which we already done
+   ```bash
+   npm install aws-amplify amazon-cognito-identity-js @react-native-community/netinfo @react-native-async-storage/async-storage
+   # or
+   yarn add aws-amplify amazon-cognito-identity-js @react-native-community/netinfo @react-native-async-storage/async-storage
+   
+   cd ios
+   pod update
+   ```
+   
+7. Init or pull local Amplify Backend
+   ### !!! Amplify folder is ignored by .gitignore
+   ```bash
+   # if no existing Amplify backend at Amplify Studio (cloud)
+   amplify init
+   # otherwise
+   amplify pull
+   
+   # if you need to add new category like API
+   amplify api add
+   
+   # after you finish editing code
+   amplify push
+   ```
 ---
 
 ## Amadeus - Hotel & Flight Booking API

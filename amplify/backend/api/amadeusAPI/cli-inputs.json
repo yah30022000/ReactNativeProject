@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/amadeus/hotel-list": {
+      "name": "/amadeus/hotel-list",
+      "lambdaFunction": "amadeusHotelList",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

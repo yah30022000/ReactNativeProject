@@ -42,6 +42,7 @@ export interface HotelListResponseData {
 }
 
 export interface HotelListResponse {
+  status: number | string
   data: Array<HotelListResponseData>
 }
 

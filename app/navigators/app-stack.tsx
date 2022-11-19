@@ -10,10 +10,7 @@ import { LoginScreen, LoginScreenProps } from "../screens/login/login-screen";
 import { OnboardingScreen } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { useEffect } from "react";
-import { getAccessTokenRequestBody } from "../helper/amadeus";
-import { getAmadeusAccessToken } from "../redux/hotel/hotelSlice";
-import { useAppDispatch } from "../redux/hooks";
+
 
 /**
  * For every new screens added within Tab stack
@@ -45,12 +42,6 @@ export const AppStack = () => {
 
   const isLoggedIn = useSelector<RootState>((state) => state.user.isLoggedIn);
 
-  // useDispatch is not available here for async thunk
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(getAmadeusAccessToken(getAccessTokenRequestBody));
-  }, []);
 
   return (
     <Stack.Navigator
