@@ -8,8 +8,6 @@ import { store } from "./redux/store";
 
 const App = () => {
 
-  console.log('store: ', store.getState())
-
   return (
     <PaperProvider
       theme={theme}
