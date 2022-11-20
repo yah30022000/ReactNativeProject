@@ -10,16 +10,15 @@ See the License for the specific language governing permissions and limitations 
 /* Amplify Params - DO NOT EDIT
 	ENV
 	REGION
-	client_id
-	client_secret
+	API_ID
 Amplify Params - DO NOT EDIT */
 
 const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
-let Amadeus = require("amadeus")
+let amadeus = require("amadeus");
 
-let amadeusInstance = new Amadeus({
+let amadeusInstance = new amadeus({
   clientId: process.env.client_id,
   clientSecret: process.env.client_secret,
 });
@@ -40,23 +39,52 @@ app.use(function(req, res, next) {
 });
 
 
-app.get('/amadeus/hotel-offers', async function(req, res) {
-  
-  try {
-    // check request params
-    console.log("Get /amadeus/hotel-offers: ", req.query);
+/****************************
+* Example post method *
+****************************/
 
-    let response = await amadeusInstance.shopping.hotelOffersSearch.get(
-      req.query
-    )
-
-    let body = JSON.parse(response.body);
-    console.log("hotelOffers: ", body);
-
-    res.json({ status: 200, data: body.data});
-  } catch (err) {
-    res.status(500).send({err});
-  }
+amadeus.shopping.hotelOffers.get({
+  cityCode: 'LON'
+}).then(function (hotels) {
+  return amadeus.shopping.hotelOffersByHotel.get({
+    'hotelId': hotels.data[0].hotel.hotelId,
+    'checkInDate': '2022-11-21',
+    'checkOutDate': '2022-11-22'
+  });
+}).then(function (hotelOffers) {
+  return amadeus.shopping.hotelOffer(hotelOffers.data.offers[0].id).get();
+}).then(function (pricingResponse) {
+  return amadeus.booking.hotelBookings.post(
+    JSON.stringify({
+      'data': {
+        'offerId': pricingResponse.data.offers[0].id,
+        'guests': [{
+          'id': 1,
+          'name': {
+            'title': 'MR',
+            'firstName': 'BOB',
+            'lastName': 'SMITH'
+          },
+          'contact': {
+            'phone': '+33679278416',
+            'email': 'bob.smith@email.com'
+          }
+        }],
+        'payments': [{
+          'id': 1,
+          'method': 'creditCard',
+          'card': {
+            'vendorCode': 'VI',
+            'cardNumber': '4151289722471370',
+            'expiryDate': '2027-08'
+          }
+        }]
+      }
+    }));
+}).then(function (response) {
+  console.log(response);
+}).catch(function (response) {
+  console.error(response);
 });
 
 
