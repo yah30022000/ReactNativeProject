@@ -1,76 +1,71 @@
-import { FC } from "react";
-import { StackScreenProps } from "@react-navigation/stack";
-import { StackNavigatorParamList } from "../../navigators";
-import { Text as PaperText } from "react-native-paper";
-import { TouchableHighlight, View } from "react-native";
+import {FC} from "react";
+import {StackScreenProps} from "@react-navigation/stack";
+import {StackNavigatorParamList} from "../../navigators";
+import {Text as PaperText} from "react-native-paper";
+import {TouchableHighlight, View} from "react-native";
 
-export interface HotelRoomSelectScreenProps {
+export interface HotelRoomSelectScreenProps {}
 
-}
+export const HotelRoomSelectScreen: FC<
+  StackScreenProps<StackNavigatorParamList, "hotelRoomSelect">
+> = ({route, navigation}) => {
+  /* props */
+  // const {}: HotelRoomSelectScreenProps = route.params;
 
-export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelRoomSelect">> =
-  ({ route, navigation }) => {
+  return (
+    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+      <PaperText>HotelRoomSelectScreen</PaperText>
 
-    /* props */
-    // const {}: HotelRoomSelectScreenProps = route.params;
-
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <PaperText>HotelRoomSelectScreen</PaperText>
-
-        <TouchableHighlight
-          onPress={()=>navigation.navigate("payment" as any)}
-          underlayColor={"azure"}>
-          <View style={{
+      <TouchableHighlight
+        onPress={() => navigation.navigate("payment" as any)}
+        underlayColor={"azure"}>
+        <View
+          style={{
             height: 50,
             width: 200,
             borderRadius: 25,
             backgroundColor: "orange",
             margin: 50,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}>
-            <PaperText style={{color: "white"}}>
-              To Payment Page
-            </PaperText>
-          </View>
-        </TouchableHighlight>
+          <PaperText style={{color: "white"}}>To Payment Page</PaperText>
+        </View>
+      </TouchableHighlight>
 
-        <TouchableHighlight
-          onPress={()=>navigation.goBack()}
-          underlayColor={"azure"}>
-          <View style={{
+      <TouchableHighlight
+        onPress={() => navigation.goBack()}
+        underlayColor={"azure"}>
+        <View
+          style={{
             height: 50,
             width: 200,
             borderRadius: 25,
             backgroundColor: "grey",
             margin: 50,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}>
-            <PaperText style={{color: "white"}}>
-              Back Button
-            </PaperText>
-          </View>
-        </TouchableHighlight>
+          <PaperText style={{color: "white"}}>Back Button</PaperText>
+        </View>
+      </TouchableHighlight>
 
-        <TouchableHighlight
-          onPress={()=>navigation.popToTop()}
-          underlayColor={"azure"}>
-          <View style={{
+      <TouchableHighlight
+        onPress={() => navigation.popToTop()}
+        underlayColor={"azure"}>
+        <View
+          style={{
             height: 50,
             width: 200,
             borderRadius: 25,
             backgroundColor: "pink",
             margin: 50,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}>
-            <PaperText style={{color: "white"}}>
-              To Home Page
-            </PaperText>
-          </View>
-        </TouchableHighlight>
-      </View>
-    );
-  };
+          <PaperText style={{color: "white"}}>To Home Page</PaperText>
+        </View>
+      </TouchableHighlight>
+    </View>
+  );
+};

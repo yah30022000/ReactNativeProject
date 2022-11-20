@@ -1,18 +1,18 @@
-// Define a type for the slice state
 import { HotelListRequest, HotelListResponse } from "../../helper/amadeus";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { API as AmplifyAPI } from "aws-amplify";
-
-
 
 export interface HotelState {
   // accessToken?: string;
   hotelListRequest?: HotelListRequest;
   hotelListResponse?: HotelListResponse;
+  hotelListSearching: "loading" | "completed" | "failed" | "none"
 }
 
 // Define the initial state using that type
-const initialState: HotelState = {};
+const initialState: HotelState = {
+  hotelListSearching: "none"
+};
 
 // let amadeusTestApiUrl = "https://test.api.amadeus.com";
 
@@ -64,7 +64,6 @@ export const getAmadeusHotelList = createAsyncThunk<HotelListResponse, HotelList
   },
 );
 
-
 export const hotelSlice = createSlice({
   name: "hotel",
   initialState,
@@ -77,29 +76,46 @@ export const hotelSlice = createSlice({
       }
       console.log("chooseCityCode: ", state.hotelListRequest);
     },
+    selectRating: (state, action: PayloadAction<number>) => {
+      if (!state.hotelListRequest) {
+        state.hotelListRequest = {
+          cityCode: "HKG",
+          ratings: Array.from([action.payload]),
+        };
+      } else {
+        state.hotelListRequest.ratings = Array.from([action.payload]);
+      }
+      console.log("selectedRating: ", state.hotelListRequest);
+    },
+    changeHotelSearching: (state, action: PayloadAction<HotelState["hotelListSearching"]>) => {
+      state.hotelListSearching = action.payload
+    },
   },
-  extraReducers: (builder) => {
-    // builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
-    //   state.accessToken = action.payload.access_token;
-    // });
-    // builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
-    //   state.accessToken = "";
-    // });
-    builder.addCase(getAmadeusHotelList.fulfilled, (state, action) => {
-      state.hotelListResponse = action.payload
-    });
-    builder.addCase(getAmadeusHotelList.rejected, (state, action) => {
-      console.error('getAmadeusHotelList redux error, no data input')
-    });
-  },
-});
+    extraReducers: (builder) => {
+      // builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
+      //   state.accessToken = action.payload.access_token;
+      // });
+      // builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
+      //   state.accessToken = "";
+      // });
+      builder.addCase(getAmadeusHotelList.pending, (state, action) => {
+        state.hotelListSearching = "loading";
+      });
+      builder.addCase(getAmadeusHotelList.fulfilled, (state, action) => {
+        state.hotelListResponse = action.payload;
+        state.hotelListSearching = "completed";
+      });
+      builder.addCase(getAmadeusHotelList.rejected, (state, action) => {
+        console.error("getAmadeusHotelList redux error, no data input");
+        state.hotelListSearching = "failed";
+      });
+    },
+  })
+;
 
-export const { chooseCityCode } = hotelSlice.actions;
-
+export const { chooseCityCode, selectRating, changeHotelSearching } = hotelSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value
 
 export default hotelSlice.reducer;
-
-

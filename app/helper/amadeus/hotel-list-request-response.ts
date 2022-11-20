@@ -9,7 +9,7 @@ export interface HotelListRequest {
   radiusUnit?: string;
   chainCodes?: Array<string>;
   amenities?: Array<HotelAmenities>;
-  ratings?: Array<string>;
+  ratings?: Array<number>;
   hotelSource?: string;
 }
 
