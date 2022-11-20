@@ -14,6 +14,7 @@ import { HOME_BOTTOM_TAB } from "../theme";
 import { StackNavigatorParamList } from "./app-stack";
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { FC } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 export type TabNavigatorParamList = {
@@ -35,6 +36,7 @@ export const HomeBottomTab: FC<StackScreenProps<StackNavigatorParamList, "homeTa
   // const {setIsLoggedIn}: HomeBottomTabProps = route.params;
 
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -42,6 +44,11 @@ export const HomeBottomTab: FC<StackScreenProps<StackNavigatorParamList, "homeTa
       activeColor={colors.mint}
       inactiveColor={colors.grey}
       barStyle={HOME_BOTTOM_TAB}
+      sceneAnimationEnabled={true}
+      keyboardHidesNavigationBar={true}
+      shifting={true}
+      labeled={true}
+      safeAreaInsets={insets}
     >
       <Tab.Screen
         name={"home"}
