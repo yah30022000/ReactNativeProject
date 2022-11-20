@@ -1,7 +1,7 @@
 /**
  * CSS Styles
  * */
-import {TextStyle, ViewStyle} from "react-native";
+import { TextStyle, ViewStyle } from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -239,21 +239,11 @@ export const HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT: TextStyle = {
   color: "white",
 };
 
-export const HOTEL_BOTTOM_SHEET: ViewStyle = {
-  flex: 1,
-  backgroundColor: "grey",
-};
-
 export const HOTEL_SEARCH_SCREEN_DIVIDER_LINE: ViewStyle = {
   backgroundColor: theme.colors.grey,
   marginVertical: 18,
   marginHorizontal: 40,
   flexDirection: "column",
-};
-
-export const HOTEL_SEARCH_BUTTON: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
 };
 
 export const HOTEL_SEARCH_BOOKING_HOTELS_TEXT: TextStyle = {
@@ -296,6 +286,11 @@ export const HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION: ViewStyle = {
   flexDirection: "row",
   alignItems: "center",
   paddingTop: 10,
+};
+
+export const HOTEL_SEARCH_BOOKING_DESTINATION_TEXT: TextStyle = {
+  paddingLeft: 20,
+  paddingBottom: 10,
 };
 
 export const HOTEL_SEARCH_BOOKING_ROOM_TEXT: TextStyle = {
@@ -349,6 +344,45 @@ export const HOTEL_SEARCH_HOTEL_RATING: ViewStyle = {
 export const HOTEL_SEARCH_HOTEL_CLASS_TEXT: TextStyle = {
   fontWeight: "bold",
   fontSize: 20,
+};
+
+export const HOTEL_SEARCH_FLAT_LIST_WRAPPER: ViewStyle = {
+  height: "100%",
+};
+
+export const HOTEL_SEARCH_FLAT_LIST: ViewStyle = { paddingTop: 25, flex: 1 };
+
+export const HOTEL_SEARCH_RATING_ROW: ViewStyle = { width: "100%", height: "15%" };
+
+export const HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
+  position: "absolute",
+  bottom: 80,
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "center",
+}
+
+export const HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: 200,
+  height: 50,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+}
+
+export const HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+    width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mint,
+  // marginVertical: 70,
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+export const HOTEL_SEARCH_BOTTOM_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
 };
 
 /* HotelSearchScreen ends */

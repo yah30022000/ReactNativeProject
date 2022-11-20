@@ -287,6 +287,26 @@ export const hotelSlice = createSlice({
 ---
 ## AWS Amplify
 
+Useful Links
+
+[**AWS Amplify Library Doc**](https://docs.amplify.aws/lib/restapi/getting-started/q/platform/js/)
+
+[**AWS Amplify CLI Doc**](https://docs.amplify.aws/cli/)
+
+[**AWS Amplify Studio**](https://ap-southeast-1.admin.amplifyapp.com/admin/d1448zlrk0oot2/dev/rest)
+
+[**AWS Amplify Console**](https://ap-southeast-1.console.aws.amazon.com/amplify/home?region=ap-southeast-1#/d1448zlrk0oot2/settings/general)
+
+[**AWS CloudFormation**](https://ap-southeast-1.console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false)
+
+[**AWS API Gateway**](https://ap-southeast-1.console.aws.amazon.com/apigateway/main/apis?region=ap-southeast-1#)
+
+[**AWS Lambda Function**](https://ap-southeast-1.console.aws.amazon.com/lambda/home?region=ap-southeast-1#/functions)
+
+[**AWS CloudWatch**](https://ap-southeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-1#logsV2:log-groups)
+
+---
+
 [**Getting Started - React Native**](https://docs.amplify.aws/start/getting-started/installation/q/integration/react-native/)
 1. Install Amplify CLI locally
    ```bash
@@ -327,13 +347,16 @@ export const hotelSlice = createSlice({
    export PATH = ${PATH}:/usr/local/bin/amplify
    ```
    
+
 3. Invite other users to Amplify Studio, using their own email, and not related to existing AWS account
    ![Amplify Studio_Invite1!](assets/images/readme/amplify-studio-invite1.png "Amplify Studio Invite 1")
    ![Amplify Studio_Invite2!](assets/images/readme/amplify-studio-invite2.png "Amplify Studio Invite 2")
 
+
 4. Add access for other user for accessing your Amplify cloud using their Amplify CLI (not related to Amplify Studio access)
    Follow the step 2 above, share access ID and access secret for new user (download CSV)
    ![Amplify IAM_Add_User 1!](assets/images/readme/amplify-iam-add-user1.png "Amplify IAM Add User 1")
+
 
 5. Newly added user need to add AWS profile in their PC locally, whether or not executed ```amplify configure``` themselves
    ```bash
@@ -362,19 +385,241 @@ export const hotelSlice = createSlice({
    ```
    
 7. Init or pull local Amplify Backend
-   ### !!! Amplify folder is ignored by .gitignore
+   #### !!! Amplify init will add list of paths and files in <span style="color: orange">.gitignore</span>
    ```bash
    # if no existing Amplify backend at Amplify Studio (cloud)
    amplify init
-   # otherwise
-   amplify pull
    
-   # if you need to add new category like API
+   # if have existing amplify project, make sure the following files are at amplify folder before pull
+   - amplify/backend/backend-config.json
+   - amplify/backend/amplify-meta.json
+   - amplify/#current-cloud-backend/amplify-meta.json
+      
+   amplify pull
+   # or pull from specific project, env
+   amplify pull --appId d1448zlrk0oot2 --envName dev
+   
+   # if you need to add API (will deploy to API Gateway after push)
    amplify api add
+   
+   # if you need to add function (will deploy to Lambda after push)
+   amplify function add
    
    # after you finish editing code
    amplify push
    ```
+   
+8. Enable Amplify in project
+   
+   For each time ```amplify push``` and ```amplify pull``` executed, a file ```src/aws-export.js``` will be created or updated.
+   
+   ```javascript
+   const awsmobile = {
+    "aws_project_region": "ap-southeast-1",
+      "aws_cloud_logic_custom": [
+        {
+          "name": "amadeusAPI",
+          "endpoint": "https://ixzkcz9ip2.execute-api.ap-southeast-1.amazonaws.com/dev",
+          "region": "ap-southeast-1"
+        }
+      ]
+    };
+   export default awsmobile;
+   ```
+   
+   At ```App.tsx```, import that for Amplify configuration before AppRegistry
+   
+   Reference: https://docs.amplify.aws/lib/client-configuration/configuring-amplify-categories/q/platform/js/#scoped-configuration---graphql-api
+   ```typescript
+   import { AppRegistry } from "react-native";
+   import App from "./app/App";
+   import { name as appName } from "./app.json";
+   import "react-native-gesture-handler";
+   import { Amplify } from "aws-amplify";
+   import awsmobile from "./src/aws-exports";
+   
+   Amplify.configure(awsmobile);
+   
+   AppRegistry.registerComponent(appName, () => App);
+   ```
+
+### API - AWS Amplify -> AWS API Gateway
+
+1. Create a new API (~ MVC Controller)
+
+   [**Create new REST API Amplify Doc**](https://docs.amplify.aws/lib/restapi/getting-started/q/platform/react-native/)
+
+   ```bash
+   amplify api add
+   
+   Select from one of the below mentioned services:
+   > REST
+   
+   Would you like to add a new path to an existing REST API:
+   > N
+   
+   Provide a friendly name for your resource to be used as a label for this category in the project:
+   > controllerAPI
+   
+   Provide a path:
+   > /route-name/route1
+   
+   # create a new service function and bind to this route
+   Choose a Lambda source:
+   > Create a new Lambda function
+   
+   Provide an AWS Lambda function name:
+   > newFunction
+   
+   Choose the runtime that you want to use:
+   > NodeJS
+   
+   Choose the function template that you want to use:
+   # recommended option
+   > Serverless ExpressJS function (Integration with API Gateway)
+   # or easier option
+   > Hello World
+   
+   Do you want to configure advanced settings?
+   # if we want to use process.env
+   > Y
+   -> Do you want to access other resources in this project from your Lambda function?
+      > N
+   -> Do you want to invoke this function on a recurring schedule?
+      > N
+   -> Do you want to enable Lambda layers for this function?
+      > N
+   -> Do you want to configure environment variables for this function?
+      > Y
+      -> Enter the environment variable name:
+         > API_ID
+      -> Enter the environment variable value:
+         > 123456
+      -> Select what you want to do with environment variables:
+         > I'm done'
+   -> Do you want to configure secret values this function can access?
+      > N
+  
+   Do you want to edit the local lambda function now?
+   > N
+   
+   Restrict API access?
+   > N
+   
+   Do you want to add another path?
+   > N
+   
+   # to check afterwards
+   amplify status
+   
+   # if everything confirmed, push
+   amplify push
+   ```
+
+2. Update an existing API (add path at the controller)
+
+   ```bash
+   amplify api update
+   
+   Select from one of the below mentioned services:
+   > REST
+   
+   What would you like to do?
+   > Add another path
+   
+   /* Repeat the add path steps at creating API */
+   
+   # if everything confirmed, push
+   amplify push
+   ```
+   
+A new endpoint at API Gateway will be generated, e.g. https://ixzkcz9ip2.execute-api.ap-southeast-1.amazonaws.com/dev
+
+If the last path of the API controller is removed, the endpoint will be removed as well.
+
+Newly generated API will be allocated with another endpoint
+
+Can check at [**AWS API Gateway**](https://ap-southeast-1.console.aws.amazon.com/apigateway/home?region=ap-southeast-1#/apis/ixzkcz9ip2/resources/di2zt6/methods/ANY) 
+and ```amplify/backend/api/<api-name>/cli-inputs.json```
+
+![AWS_API_Gateway!](assets/images/readme/aws-api-gateway1.png "AWS API Gateway")
+
+### API - AWS Amplify -> AWS Lambda Function
+
+1. To install NPM dependencies and build Lambda function (express.js)
+
+   at ```amplify/backend/function/<function-name>/src/package.json```
+
+   ```json
+   {
+      "dependencies": {
+        "amadeus": "^7.1.0"
+      }
+   }   
+   ```
+   
+   Run this command to build ```dist``` folder and ```node_modules```
+   ```bash
+   amplify function build
+   ```
+   
+2. Modify the Lambda function source code
+
+   at ```amplify/backend/function/<function-name>/src/app.js```, remove all HTTP request methods except the one you need
+
+   ```javascript
+   /* commented methods are not necessary
+   app.get('/amadeus/hotel-offers', function(req, res) {
+      res.json({success: 'get call succeed!', url: req.url});
+   });
+   app.post('/amadeus/hotel-offers', function(req, res) {
+      res.json({success: 'post call succeed!', url: req.url, body: req.body})
+   }); 
+   */
+   
+   app.put('/amadeus/hotel-offers', function(req, res) {
+      res.json({success: 'put call succeed!', url: req.url, body: req.body})
+   });
+   
+   ```
+   
+   Make sure these code snippets exist, to allow two request headers content type
+   GET ```'Content-Type': 'application/x-www-form-urlencoded'```
+
+   POST ```'Content-Type': 'application/json'```
+
+   ```javascript
+   app.use(bodyParser.json());
+   app.use(bodyParser.urlencoded({ extended: true }));
+   app.use(express.urlencoded());
+   app.use(express.json());
+   ```
+
+   If everything confirmed
+   ```bash
+   amplify push
+   ```
+
+   [**AWS Lambda Reference Link**](https://ap-southeast-1.console.aws.amazon.com/lambda/home?region=ap-southeast-1#/functions)
+
+   ![AWS_Lambda1!](assets/images/readme/aws-lambda1.png "AWS Lambda 1")
+   ![AWS_Lambda2!](assets/images/readme/aws-lambda2.png "AWS Lambda 2")
+   ![AWS_Lambda3!](assets/images/readme/aws-lambda3.png "AWS Lambda 3")
+
+### Deployment Tracker - AWS Amplify -> AWS CloudFormation
+
+[**AWS CloudFormation Reference Link**](https://ap-southeast-1.console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false)
+
+![Amplify_Push!](assets/images/readme/amplify-push.png "Amplify Push")
+
+![AWS_CloudFormation!](assets/images/readme/aws-cloudformation1.png "AWS CloudFormation")
+
+### Logger - AWS Amplify -> AWS CloudWatch
+
+![AWS_CloudWatch1!](assets/images/readme/aws-cloudwatch1.png "AWS CloudWatch 1")
+![AWS_CloudWatch2!](assets/images/readme/aws-cloudwatch2.png "AWS CloudWatch 2")
+![AWS_CloudWatch3!](assets/images/readme/aws-cloudwatch3.png "AWS CloudWatch 3")
+
 ---
 
 ## Amadeus - Hotel & Flight Booking API

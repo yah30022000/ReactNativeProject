@@ -1,4 +1,4 @@
-import { ImageBackground, TouchableHighlight, View } from "react-native";
+import { ImageBackground, StatusBar, TouchableHighlight, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FC } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -15,7 +15,11 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
     return (
       <ImageBackground source={require("@travelasset/images/mount-titlis.jpeg")}>
         <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-
+          <StatusBar
+            animated={true}
+            barStyle={"light-content"}
+            // hidden={true}
+          />
           <TouchableHighlight
             onPress={()=>navigation.navigate("login" as any)}
             underlayColor={"azure"}>
