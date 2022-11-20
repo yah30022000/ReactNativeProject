@@ -59,7 +59,7 @@ export const getAmadeusHotelList = createAsyncThunk<HotelListResponse, HotelList
     if (response.status < 200 || response.status >= 300) {
       return thunkAPI.rejectWithValue(response);
     }
-    console.log("getAmadeusHotelList after: ", response.data);
+    console.log("getAmadeusHotelList after: ", response.data.length);
     return response;
   },
 );

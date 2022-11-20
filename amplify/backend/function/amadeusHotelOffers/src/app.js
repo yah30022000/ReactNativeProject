@@ -17,11 +17,20 @@ Amplify Params - DO NOT EDIT */
 const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+let Amadeus = require("amadeus")
+
+let amadeusInstance = new Amadeus({
+  clientId: process.env.client_id,
+  clientSecret: process.env.client_secret,
+});
 
 // declare a new express app
-const app = express()
-app.use(bodyParser.json())
-app.use(awsServerlessExpressMiddleware.eventContext())
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded());
+app.use(express.json());
+app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -31,61 +40,25 @@ app.use(function(req, res, next) {
 });
 
 
-/**********************
- * Example get method *
- **********************/
+app.get('/amadeus/hotel-offers', async function(req, res) {
+  
+  try {
+    // check request params
+    console.log("Get /amadeus/hotel-offers: ", req.query);
 
-app.get('/amadeus/hotel-offers', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
+    let response = await amadeusInstance.shopping.hotelOffersSearch.get(
+      req.query
+    )
+
+    let body = JSON.parse(response.body);
+    console.log("hotelOffers: ", body);
+
+    res.json({ status: 200, data: body.data});
+  } catch (err) {
+    res.status(500).send({err});
+  }
 });
 
-app.get('/amadeus/hotel-offers/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-/****************************
-* Example post method *
-****************************/
-
-app.post('/amadeus/hotel-offers', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-app.post('/amadeus/hotel-offers/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/amadeus/hotel-offers', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/amadeus/hotel-offers/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/amadeus/hotel-offers', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/amadeus/hotel-offers/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
 
 app.listen(3000, function() {
     console.log("App started")
