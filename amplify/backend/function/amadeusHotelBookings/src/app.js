@@ -16,11 +16,20 @@ Amplify Params - DO NOT EDIT */
 const express = require('express')
 const bodyParser = require('body-parser')
 const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+let amadeus = require("amadeus");
+
+let amadeusInstance = new amadeus({
+  clientId: process.env.client_id,
+  clientSecret: process.env.client_secret,
+});
 
 // declare a new express app
-const app = express()
-app.use(bodyParser.json())
-app.use(awsServerlessExpressMiddleware.eventContext())
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded());
+app.use(express.json());
+app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all methods
 app.use(function(req, res, next) {
@@ -30,61 +39,54 @@ app.use(function(req, res, next) {
 });
 
 
-/**********************
- * Example get method *
- **********************/
-
-app.get('/amadeus/hotel-bookings', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
-app.get('/amadeus/hotel-bookings/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
-});
-
 /****************************
 * Example post method *
 ****************************/
 
-app.post('/amadeus/hotel-bookings', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
+amadeus.shopping.hotelOffers.get({
+  cityCode: 'LON'
+}).then(function (hotels) {
+  return amadeus.shopping.hotelOffersByHotel.get({
+    'hotelId': hotels.data[0].hotel.hotelId,
+    'checkInDate': '2022-11-21',
+    'checkOutDate': '2022-11-22'
+  });
+}).then(function (hotelOffers) {
+  return amadeus.shopping.hotelOffer(hotelOffers.data.offers[0].id).get();
+}).then(function (pricingResponse) {
+  return amadeus.booking.hotelBookings.post(
+    JSON.stringify({
+      'data': {
+        'offerId': pricingResponse.data.offers[0].id,
+        'guests': [{
+          'id': 1,
+          'name': {
+            'title': 'MR',
+            'firstName': 'BOB',
+            'lastName': 'SMITH'
+          },
+          'contact': {
+            'phone': '+33679278416',
+            'email': 'bob.smith@email.com'
+          }
+        }],
+        'payments': [{
+          'id': 1,
+          'method': 'creditCard',
+          'card': {
+            'vendorCode': 'VI',
+            'cardNumber': '4151289722471370',
+            'expiryDate': '2027-08'
+          }
+        }]
+      }
+    }));
+}).then(function (response) {
+  console.log(response);
+}).catch(function (response) {
+  console.error(response);
 });
 
-app.post('/amadeus/hotel-bookings/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/amadeus/hotel-bookings', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/amadeus/hotel-bookings/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/amadeus/hotel-bookings', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/amadeus/hotel-bookings/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
 
 app.listen(3000, function() {
     console.log("App started")
