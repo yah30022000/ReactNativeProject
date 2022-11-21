@@ -1,16 +1,18 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeBottomTab, HomeBottomTabProps } from "./home-bottom-tab";
-import { HotelSearchScreen, HotelSearchScreenProps, PreLoginScreen } from "../screens";
-import { HotelListScreen, HotelSearchListProps } from "../screens";
-import { HotelDetailScreen, HotelDetailScreenProps } from "../screens";
-import { HotelRoomSelectScreen, HotelRoomSelectScreenProps } from "../screens";
-import { PaymentScreen, PaymentScreenProps } from "../screens/payment/payment-screen";
-import { PaymentCompleteScreen, PaymentCompleteScreenProps } from "../screens/payment/payment-complete-screen";
-import { LoginScreen, LoginScreenProps } from "../screens";
-import { OnboardingScreen } from "../screens";
+import { HotelSearchScreen, HotelSearchScreenProps,
+  PreLoginScreen, PreLoginScreenProps,
+  HotelListScreen, HotelSearchListProps,
+  HotelDetailScreen, HotelDetailScreenProps,
+  HotelRoomSelectScreen, HotelRoomSelectScreenProps,
+  PaymentScreen, PaymentScreenProps,
+  PaymentCompleteScreen, PaymentCompleteScreenProps,
+  LoginScreen, LoginScreenProps,
+  OnboardingScreen,
+} from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { PreLoginScreenProps } from "../screens";
+
 
 
 /**
@@ -58,6 +60,10 @@ export const AppStack = () => {
           <Stack.Screen name="preLogin" component={PreLoginScreen} />
           <Stack.Screen name="login" component={LoginScreen}
             // initialParams={{setIsLoggedIn: setIsLoggedIn}}
+            options={{
+              title: "",
+              headerShown: true
+            }}
           />
         </Stack.Group>
       ) : (

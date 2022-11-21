@@ -1,7 +1,7 @@
 /**
  * CSS Styles
  * */
-import { ImageResizeMode, ImageStyle, TextStyle, ViewStyle } from "react-native";
+import { ImageStyle, TextStyle, ViewStyle } from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -58,13 +58,86 @@ export const PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE: ViewStyle = {
 export const PRE_LOGIN_SCREEN_LOWER_ROW_LOGIN_REGISTER: ViewStyle = {
   width: "100%",
   flexDirection: "row",
-  justifyContent: "space-around"
-}
+  justifyContent: "space-around",
+};
 
 export const PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM: ViewStyle = {
-  width: "50%"
-}
+  width: "50%",
+};
 /* PreLogin Screen ends */
+
+/* Login Screen start*/
+
+export const LOGIN_SCREEN_FORGOT_PASSWORD: ViewStyle = {
+  width: "100%",
+  alignItems: "flex-end",
+  marginBottom: 24,
+};
+
+export const LOGIN_SCREEN_FORGOT_PASSWORD_TEXT: TextStyle = {
+  flexDirection: "row",
+  marginTop: 4,
+  color: "grey",
+};
+
+export const LOGIN_SCREEN_LOGIN_TAB_VIEW: ViewStyle = {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const LOGIN_SCREEN_REGISTER_TAB_VIEW: ViewStyle = {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const LOGIN_SCREEN_UPPER_ROW: ViewStyle = {
+  width: "100%",
+  height: "60%",
+  paddingHorizontal: "10%"
+}
+
+export const LOGIN_SCREEN_TEXT_INPUT_WRAPPER: ViewStyle = {
+  marginVertical: 10
+}
+
+export const LOGIN_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
+  position: "absolute",
+  bottom: 80,
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "center",
+};
+
+export const LOGIN_SCREEN_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "75%",
+  height: 60,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mint,
+  // marginVertical: 70,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const LOGIN_SCREEN_BOTTOM_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+};
+export const LOGIN_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
+  color: "white",
+  fontSize: 20,
+};
+
+/* Login Screen end */
 
 /* HomeScreen starts */
 export const HOME_SCREEN_VIEW: ViewStyle = {
@@ -480,3 +553,5 @@ export const HOTEL_LIST_HOTEL_ADDRESS_TEXT: TextStyle = {
   color: "grey",
   marginTop: 10,
 };
+/*HotelListScreen end */
+

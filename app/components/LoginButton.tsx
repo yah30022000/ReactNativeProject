@@ -6,7 +6,7 @@ import React from "react";
 
 export interface LoginButtonProps {
   label: string;
-  authProvider: "aws" | "apple" | "facebook" | "google" | "register" | "login" | "logout";
+  authProvider: "aws" | "apple" | "facebook" | "google" | "register" | "login" | "logout"
   onPress: () => void;
   customStyle?: ViewStyle;
 }
@@ -20,7 +20,7 @@ export function LoginButton(props: LoginButtonProps) {
     height: 60,
     borderRadius: 15,
     backgroundColor:
-      props.authProvider == "aws" ? "#F2F3F3" :
+      props.authProvider == "aws" ? "#304150" :
         props.authProvider == "apple" ? colors.white :
           props.authProvider == "facebook" ? "#3B65BF" :
             props.authProvider == "google" ? colors.white :
@@ -33,7 +33,12 @@ export function LoginButton(props: LoginButtonProps) {
   };
 
   return (
-    <TouchableOpacity style={PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE}>
+    // wrapper
+    <TouchableOpacity
+      style={PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE}
+      onPress={props.onPress}
+    >
+      {/* touchable button */}
       <View style={
         props.customStyle ? { ...loginButtonViewStyle, ...props.customStyle } :
           loginButtonViewStyle

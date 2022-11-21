@@ -9,6 +9,8 @@ export * from './hotels/hotel-search-screen'
 export * from './hotels/hotel-list-screen'
 export * from './hotels/hotel-room-select-screen'
 export * from './hotels/hotel-detail-screen'
+export * from './payment/payment-screen'
+export * from './payment/payment-complete-screen'
 
 
 

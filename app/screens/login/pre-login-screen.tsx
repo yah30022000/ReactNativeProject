@@ -3,7 +3,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Text as PaperText, useTheme } from "react-native-paper";
 import { Image, ImageBackground, StatusBar, View } from "react-native";
-import { useDispatch } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM,
@@ -22,14 +21,17 @@ export interface PreLoginScreenProps {
 export const PreLoginScreen: FC<StackScreenProps<StackNavigatorParamList, "preLogin">> =
   ({ route, navigation }) => {
 
-    const dispatch = useDispatch();
     // const windowWidth = Dimensions.get("window").width;
     // const windowHeight = Dimensions.get("window").height;
 
     const { colors } = useTheme();
 
     return (
-      <ImageBackground source={require("@travelasset/images/azure-sky.jpeg")} style={{ flex: 1 }}>
+      <ImageBackground
+        source={require("@travelasset/images/fuji-japan.jpeg")}
+        style={{ flex: 1 }}
+        blurRadius={5}
+      >
         <SafeAreaView style={PRE_LOGIN_SCREEN_VIEW}>
           <StatusBar
             animated={true}
@@ -52,6 +54,8 @@ export const PreLoginScreen: FC<StackScreenProps<StackNavigatorParamList, "preLo
             }} />
             <LoginButton label={"Login with Apple"} authProvider={"apple"} onPress={() => {
             }} />
+            {/*<LoginButton label={"Login with Amazon"} authProvider={"aws"} onPress={() => {*/}
+            {/*}} />*/}
             <View>
               <PaperText style={{ color: colors.white }}>Or</PaperText>
             </View>
@@ -59,15 +63,13 @@ export const PreLoginScreen: FC<StackScreenProps<StackNavigatorParamList, "preLo
               <LoginButton
                 label={"Login"}
                 authProvider={"login"}
-                onPress={() => {
-                }}
+                onPress={() => navigation.navigate("login" as any, {initialPage: "login"})}
                 customStyle={PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM}
               />
               <LoginButton
                 label={"Register"}
                 authProvider={"register"}
-                onPress={() => {
-                }}
+                onPress={() => navigation.navigate("login" as any, {initialPage: "register"})}
                 customStyle={PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM}
               />
             </View>
