@@ -434,3 +434,18 @@ export const HOTEL_LIST_HOTEL_ADDRESS_TEXT: TextStyle = {
   color: "grey",
   marginTop: 10,
 };
+/*HotelListScreen end */
+
+/*LoginPage start*/
+
+export const LOGIN_SCREEN_FORGOT_PASSWORD: ViewStyle = {
+  width: '100%',
+  alignItems: 'flex-end',
+  marginBottom: 24,
+};
+
+export const LOGIN_SCREEN_FORGOT_PASSWORD_TEXT: TextStyle = {
+  flexDirection: 'row',
+    marginTop: 4,
+    color: "grey",
+};
