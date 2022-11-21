@@ -606,6 +606,28 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
    ![AWS_Lambda2!](assets/images/readme/aws-lambda2.png "AWS Lambda 2")
    ![AWS_Lambda3!](assets/images/readme/aws-lambda3.png "AWS Lambda 3")
 
+
+3. This app makes API call at Redux level, can refer to ```app/redux/hotel/hotelSlice.ts```
+   
+   ```typescript
+   import { API as AmplifyAPI } from "aws-amplify";
+   
+   export const getAmadeusHotelList = createAsyncThunk<HotelListResponse, HotelListRequest>(
+   "hotel/getAmadeusHotelList",
+      async (requestBody: HotelListRequest, thunkAPI) => {
+          let apiName = "amadeusAPI";
+          const path = "/amadeus/hotel-list";
+          const option = {
+              headers: {}, // OPTIONAL
+              // response: true, // OPTIONAL (return the entire Axios response object instead of only response.data)
+              queryStringParameters: requestBody,
+          };
+
+          let response: HotelListResponse = await AmplifyAPI.get(apiName, path, option);
+      }
+   );
+   ```
+
 ### Deployment Tracker - AWS Amplify -> AWS CloudFormation
 
 [**AWS CloudFormation Reference Link**](https://ap-southeast-1.console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false)

@@ -13,7 +13,7 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
     // const {}: OnboardingScreenProps = route.params;
 
     return (
-      <ImageBackground source={require("@travelasset/images/mount-titlis.jpeg")}>
+      <ImageBackground source={require("@travelasset/images/mount-titlis.jpeg")} style={{flex: 1}}>
         <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
           <StatusBar
             animated={true}
@@ -21,7 +21,7 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
             // hidden={true}
           />
           <TouchableHighlight
-            onPress={()=>navigation.navigate("login" as any)}
+            onPress={()=>navigation.navigate("preLogin" as any)}
             underlayColor={"azure"}>
             <View style={{
               height: 50,

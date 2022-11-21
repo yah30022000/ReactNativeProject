@@ -1,7 +1,7 @@
 /**
  * CSS Styles
  * */
-import { TextStyle, ViewStyle } from "react-native";
+import { ImageResizeMode, ImageStyle, TextStyle, ViewStyle } from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -19,6 +19,52 @@ export const HOME_BOTTOM_TAB: ViewStyle = {
 };
 
 /* Global Style ends */
+
+/* PreLogin Screen starts */
+export const PRE_LOGIN_SCREEN_VIEW: ViewStyle = {
+  flex: 1,
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const PRE_LOGIN_SCREEN_UPPER_ROW: ViewStyle = {
+  flexGrow: 1,
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+};
+
+export const PRE_LOGIN_SCREEN_UPPER_ROW_BRAND_LOGO: ImageStyle = {
+  height: 250,
+  width: 250,
+};
+
+export const PRE_LOGIN_SCREEN_LOWER_ROW: ViewStyle = {
+  flexGrow: 1,
+  // height: "60%",
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "space-around",
+};
+
+export const PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE: ViewStyle = {
+  width: "80%",
+  height: 50,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+}
+
+export const PRE_LOGIN_SCREEN_LOWER_ROW_LOGIN_REGISTER: ViewStyle = {
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "space-around"
+}
+
+export const PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM: ViewStyle = {
+  width: "50%"
+}
+/* PreLogin Screen ends */
 
 /* HomeScreen starts */
 export const HOME_SCREEN_VIEW: ViewStyle = {
