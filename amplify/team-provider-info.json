@@ -36,6 +36,9 @@
       },
       "api": {
         "amadeusAPI": {}
+      },
+      "auth": {
+        "TripTroopAuth": {}
       }
     }
   }
