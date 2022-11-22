@@ -10,7 +10,7 @@ export const HOME_BOTTOM_TAB: ViewStyle = {
   overflow: "hidden",
   borderTopEndRadius: 30,
   borderTopStartRadius: 30,
-  // marginTop: -40,
+  marginTop: -40,
   // height: 80,
   shadowOpacity: 0.9,
   shadowRadius: 10,
@@ -86,17 +86,16 @@ export const LOGIN_SCREEN_LOGIN_TAB_VIEW: ViewStyle = {
   alignItems: "center",
 };
 
-export const LOGIN_SCREEN_REGISTER_TAB_VIEW: ViewStyle = {
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-export const LOGIN_SCREEN_UPPER_ROW: ViewStyle = {
+export const LOGIN_SCREEN_LOGIN_TAB_UPPER_ROW: ViewStyle = {
   width: "100%",
   height: "60%",
   paddingHorizontal: "10%"
 }
+
+export const LOGIN_SCREEN_LOGIN_TAB_FORGOT_PASSWORD_TEXT: TextStyle = {
+  color: "#A0A0A0",
+  textAlign: "center",
+};
 
 export const LOGIN_SCREEN_TEXT_INPUT_WRAPPER: ViewStyle = {
   marginVertical: 10
@@ -138,6 +137,26 @@ export const LOGIN_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 };
 
 /* Login Screen end */
+
+/* Register Tab start*/
+export const LOGIN_SCREEN_REGISTER_TAB_VIEW: ViewStyle = {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const LOGIN_SCREEN_REGISTER_TAB_UPPER_ROW: ViewStyle = {
+  width: "100%",
+  height: "60%",
+  paddingHorizontal: "10%"
+};
+
+export const LOGIN_SCREEN_REGISTER_TAB_TNC_TEXT: TextStyle = {
+  color: "#A0A0A0",
+  textAlign: "center",
+};
+
+/* Register Tab end*/
 
 /* HomeScreen starts */
 export const HOME_SCREEN_VIEW: ViewStyle = {
@@ -195,6 +214,10 @@ export const HOME_SCREEN_SECOND_MIDDLE_ROW: ViewStyle = {
 
 export const HOME_SCREEN_SECOND_MIDDLE_ROW_TITLE: TextStyle = {
   fontSize: 26,
+};
+
+export const HOME_SCREEN_IMAGE_SCROLL_VIEW: ViewStyle = {
+  // height: 100
 };
 
 export const HOME_SCREEN_IMAGE_ROW: ViewStyle = {

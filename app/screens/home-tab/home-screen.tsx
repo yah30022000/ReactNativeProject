@@ -16,6 +16,7 @@ import {
   HOME_SCREEN_IMAGE_ROW,
   HOME_SCREEN_IMAGE_ROW_LEFT,
   HOME_SCREEN_IMAGE_ROW_RIGHT,
+  HOME_SCREEN_IMAGE_SCROLL_VIEW,
   HOME_SCREEN_IMAGE_TEXT,
   HOME_SCREEN_IMAGE_TEXT_CONTAINER,
   HOME_SCREEN_MIDDLE_ROW,
@@ -194,7 +195,10 @@ export const HomeScreen: FC<
         </View>
       </View>
 
-      <ScrollView contentContainerStyle={{flexGrow: 1}} scrollEventThrottle={0}>
+      <ScrollView 
+      style={HOME_SCREEN_IMAGE_SCROLL_VIEW}
+      contentContainerStyle={{flexGrow: 1}} 
+      scrollEventThrottle={0}>
         {/* Image Row */}
         <View style={HOME_SCREEN_IMAGE_ROW}>
           {/* Bottom Left Image Row */}
