@@ -1,4 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { Auth as AmplifyAuth } from "aws-amplify";
+
 
 // Define a type for the slice state
 export interface UserState {
@@ -9,6 +12,24 @@ export interface UserState {
 const initialState: UserState = {
   isLoggedIn: false,
 };
+
+// Normal Sign Up via AWS Cognito
+export const registerThunk = createAsyncThunk<any, any>(
+  "user/register",
+  async (requestBody: any, thunkAPI) => {
+
+    console.log("registerThunk request body: ", requestBody);
+    try {
+      // const user = await AmplifyAuth.signUp(
+      //
+      // )
+
+      // return user
+    } catch (error) {
+      console.log('error signing in', error);
+    }
+  },
+);
 
 export const userSlice = createSlice({
   name: "user",

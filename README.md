@@ -306,6 +306,11 @@ Useful Links
 
 [**AWS CloudWatch**](https://ap-southeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-1#logsV2:log-groups)
 
+[**AWS Cognito User Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/users/?region=ap-southeast-1#/pool/ap-southeast-1_quWx4y7sM/details)
+
+[**AWS Cognito Identity Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/pool/?region=ap-southeast-1&id=ap-southeast-1:5b3bb07c-a22a-4438-8971-04c10238fe20)
+
+
 ---
 
 [**Getting Started - React Native**](https://docs.amplify.aws/start/getting-started/installation/q/integration/react-native/)
@@ -642,6 +647,100 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
 ![AWS_CloudWatch1!](assets/images/readme/aws-cloudwatch1.png "AWS CloudWatch 1")
 ![AWS_CloudWatch2!](assets/images/readme/aws-cloudwatch2.png "AWS CloudWatch 2")
 ![AWS_CloudWatch3!](assets/images/readme/aws-cloudwatch3.png "AWS CloudWatch 3")
+
+### Auth - AWS Amplify -> AWS Cognito
+
+1a. Create a new Auth Setting (Default Setting without OAuth)
+   
+   [**Amplify Library Auth Getting Started**](https://docs.amplify.aws/lib/auth/getting-started/q/platform/react-native/)
+
+   [**Amplify CLI Auth Overview**](https://docs.amplify.aws/cli/auth/overview/)
+ 
+1. Create a new Auth Setting (Manual Setting with OAuth)
+
+   ```bash
+   # add new auth setting
+   amplify auth add
+   
+   
+   Do you want to use the default authentication and security configuration? 
+   > Manual configuration
+   
+   Select the authentication/authorization services that you want to use:
+   > User Sign-Up, Sign-In, connected
+   with AWS IAM controls (Enables per-user Storage features for images or other content, Analytics, and mo
+   re)
+    
+   Provide a friendly name for your resource that will be used to label this category in the project:
+   > TripTroopAuth
+   
+   Enter a name for your identity pool. 
+   > TripTroopIdentityPool
+   
+   Allow unauthenticated logins? (Provides scoped down permissions that you can control via AWS IAM)
+   > No
+   
+   Do you want to enable 3rd party authentication providers in your identity pool?
+   > No
+   
+   Provide a name for your user pool:
+   > TripTroopUserPool
+   
+   How do you want users to be able to sign in?
+   > Email
+   
+   Do you want to add User Pool Groups?
+   > No
+   
+   Do you want to add an admin queries API?
+   > No
+   
+   Multifactor authentication (MFA) user login options: 
+   > OFF
+   
+   Email based user registration/forgot password:
+   > Enabled (Requires per-user email entry at registration)
+   -> Specify an email verification subject:
+      > Your Verification Code
+   -> Specify an email verification message:
+      > Your Verification Code is {####}
+   
+   Do you want to override the default password policy for this User Pool?
+   > No
+   
+   What attributes are required for signing up?
+   Press <space> to pick
+   > Email
+   > Name
+   
+   Specify the app's refresh token expiration period (in days):
+   > 30
+   
+   Do you want to specify the user attributes this app can read and write?
+   > No
+   
+   Do you want to enable any of the following capabilities?
+   > press <Enter> not to select any of the choice
+   
+   Do you want to use an OAuth flow? 
+   > No
+   
+   Do you want to configure Lambda Triggers for Cognito?
+   > No
+   
+   ```
+
+After Add Auth and push to AWS Cognito, can visit:
+
+[**AWS Cognito User Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/users/?region=ap-southeast-1#/pool/ap-southeast-1_quWx4y7sM/details)
+
+[**AWS Cognito Identity Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/pool/?region=ap-southeast-1&id=ap-southeast-1:5b3bb07c-a22a-4438-8971-04c10238fe20)
+
+---
+
+[**Amplify Library Auth Sign up, Sign in & Sign out**](https://docs.amplify.aws/lib/auth/emailpassword/q/platform/react-native/)
+
+
 
 ---
 

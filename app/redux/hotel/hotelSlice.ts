@@ -40,7 +40,7 @@ const initialState: HotelState = {
 //   },
 // );
 
-export const getAmadeusHotelList = createAsyncThunk<HotelListResponse, HotelListRequest>(
+export const getAmadeusHotelListThunk = createAsyncThunk<HotelListResponse, HotelListRequest>(
   "hotel/getAmadeusHotelList",
   async (requestBody: HotelListRequest, thunkAPI) => {
 
@@ -98,14 +98,14 @@ export const hotelSlice = createSlice({
       // builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
       //   state.accessToken = "";
       // });
-      builder.addCase(getAmadeusHotelList.pending, (state, action) => {
+      builder.addCase(getAmadeusHotelListThunk.pending, (state, action) => {
         state.hotelListSearching = "loading";
       });
-      builder.addCase(getAmadeusHotelList.fulfilled, (state, action) => {
+      builder.addCase(getAmadeusHotelListThunk.fulfilled, (state, action) => {
         state.hotelListResponse = action.payload;
         state.hotelListSearching = "completed";
       });
-      builder.addCase(getAmadeusHotelList.rejected, (state, action) => {
+      builder.addCase(getAmadeusHotelListThunk.rejected, (state, action) => {
         console.error("getAmadeusHotelList redux error, no data input");
         state.hotelListSearching = "failed";
       });
