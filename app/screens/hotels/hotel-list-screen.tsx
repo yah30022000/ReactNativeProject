@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Rating } from "react-native-ratings";
@@ -9,6 +9,7 @@ import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 
 import {
   HOTEL_LIST_BACK_BUTTON,
+  HOTEL_LIST_FLAT_LIST_WRAPPER,
   HOTEL_LIST_HOTEL_ADDRESS,
   HOTEL_LIST_HOTEL_ADDRESS_TEXT,
   HOTEL_LIST_HOTEL_NAME,
@@ -21,8 +22,10 @@ import {
   HOTEL_SEARCH_SCREEN_DIVIDER_LINE,
 } from "../../theme";
 import { selectRating } from "../../redux/hotel/hotelSlice";
-import { HotelListAndIndex, initialHotelList } from "../../helper/amadeus/hotel-list-util-data";
 import { useAppDispatch } from "../../redux/hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { HotelListResponse, HotelListResponseData } from "../../helper/amadeus";
 
 export interface HotelSearchListProps {
 }
@@ -32,15 +35,25 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
   // const {}: HotelSearchListProps = route.params;
 
   const { colors } = useTheme();
-  const [hotels, setHotels] = useState(initialHotelList);
+
   const dispatch = useAppDispatch();
+  let hotelListResponse = useSelector<RootState>(
+    (state) => state.hotel.hotelListResponse,
+  ) as HotelListResponse | undefined;
 
 
-  const renderHotelList = ({ item, index }: HotelListAndIndex) => (
+  const renderHotelList = ({ item, index }: {
+    item: HotelListResponseData;
+    index: number;
+  }) => (
     <TouchableHighlight
-      onPress={item.onPress}
+      onPress={()=>{
+        // ()=>navigation.navigate("hotelFilter" as any, {hotelId: item.hotelId})
+      }}
       underlayColor={colors.white}>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{
+        flexDirection: "row",
+        justifyContent: "flex-start"}}>
         <View style={HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN}>
           <View style={HOTEL_LIST_SCREEN_IMAGE}>
             <Image
@@ -55,27 +68,28 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
         </View>
         <View style={HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN}>
           <View style={HOTEL_LIST_HOTEL_NAME}>
-            <PaperText style={HOTEL_LIST_HOTEL_NAME_TEXT}>
-              Regent Singapore
+            <PaperText
+              style={HOTEL_LIST_HOTEL_NAME_TEXT}
+              numberOfLines={1}
+              ellipsizeMode='tail'
+            >
+              {item.name}
             </PaperText>
           </View>
           <View style={HOTEL_LIST_HOTEL_ADDRESS}>
             <PaperText style={HOTEL_LIST_HOTEL_ADDRESS_TEXT}>
-              Singapore
+              {item.iataCode}
             </PaperText>
           </View>
-          <View style={{ height: "10%", width: "70%", marginTop: 10 }}>
             <Rating
+              style={{alignItems: "flex-start" , marginTop: 10 }}
               showRating={false}
-              onFinishRating={(rating: number) =>
-                dispatch(selectRating(rating))
-              }
               type="custom"
               imageSize={20}
               ratingTextColor={colors.mint}
               readonly={true}
+              startingValue={item.rating}
             />
-          </View>
         </View>
       </View>
     </TouchableHighlight>
@@ -101,14 +115,10 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
         <PaperText style={HOTEL_LIST_SCREEN_TITLE_TEXT}>HOTELS</PaperText>
       </View>
       <View
-        style={{
-          height: "100%",
-          width: "100%",
-          backgroundColor: colors.white,
-        }}>
+        style={HOTEL_LIST_FLAT_LIST_WRAPPER}>
         <FlatList
-          data={hotels}
-          keyExtractor={buttonItem => buttonItem.key.toString()}
+          data={hotelListResponse?.data ? hotelListResponse.data : []}
+          keyExtractor={buttonItem => buttonItem.hotelId}
           renderItem={renderHotelList}
           contentContainerStyle={{ backgroundColor: "white" }}
           ItemSeparatorComponent={() => (

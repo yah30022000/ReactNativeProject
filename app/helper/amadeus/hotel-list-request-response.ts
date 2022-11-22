@@ -32,7 +32,7 @@ export interface HotelListResponseData {
     displayValue?: string
     isUnlimited?: string
   },
-  rating: number
+  rating?: number
   subtype?: string
   timeZoneName?: string
   googlePlaceId?: string
@@ -46,3 +46,20 @@ export interface HotelListResponse {
   data: Array<HotelListResponseData>
 }
 
+let arr: Array<HotelListResponseData> = [
+  {
+    "chainCode": "AC",
+    "iataCode": "LON",
+    "dupeId": 700095490,
+    "name": "LA GAFFE LONDON",
+    "hotelId": "ACLONGAF",
+    "geoCode": {
+      "latitude": 51.55936,
+      "longitude": -0.17844
+    },
+    "address": {
+      "countryCode": "GB"
+    }
+  },
+
+]

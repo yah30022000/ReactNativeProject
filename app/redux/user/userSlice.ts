@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CognitoUser } from "amazon-cognito-identity-js";
+import { ISignUpResult } from "amazon-cognito-identity-js";
 import { Auth as AmplifyAuth } from "aws-amplify";
+import { UserRegisterRequest } from "../../helper/user/user-register-request-response";
 
 
 // Define a type for the slice state
@@ -14,17 +15,26 @@ const initialState: UserState = {
 };
 
 // Normal Sign Up via AWS Cognito
-export const registerThunk = createAsyncThunk<any, any>(
+export const registerThunk = createAsyncThunk<any, UserRegisterRequest>(
   "user/register",
-  async (requestBody: any, thunkAPI) => {
+  async (requestBody: UserRegisterRequest, thunkAPI) => {
 
     console.log("registerThunk request body: ", requestBody);
     try {
-      // const user = await AmplifyAuth.signUp(
-      //
-      // )
-
-      // return user
+      const response: ISignUpResult = await AmplifyAuth.signUp({
+        username: requestBody.email,
+        password: requestBody.password,
+        attributes: {
+          email: requestBody.email,
+          name: requestBody.name,
+        },
+        autoSignIn: {
+          // TODO: turn to true
+          enabled: false,
+        },
+      });
+      // console.log("registerThunk response: ", response);
+      return response;
     } catch (error) {
       console.log('error signing in', error);
     }
@@ -42,11 +52,18 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false;
     },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // }
+  },
+  extraReducers: (builder) => {
 
+    builder.addCase(registerThunk.pending, (state, action) => {
+      console.log("registerThunk extraReducers pending");
+    });
+    builder.addCase(registerThunk.fulfilled, (state, action) => {
+      console.log("registerThunk extraReducers fulfilled: ", action.payload);
+    });
+    builder.addCase(registerThunk.rejected, (state, action) => {
+      console.error("registerThunk extraReducers rejected");
+    });
   },
 });
 

@@ -141,7 +141,8 @@ export const LOGIN_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 /* Register Tab start*/
 export const LOGIN_SCREEN_REGISTER_TAB_VIEW: ViewStyle = {
   flex: 1,
-  justifyContent: "center",
+  paddingTop: "15%",
+  justifyContent: "flex-start",
   alignItems: "center",
 };
 
@@ -384,7 +385,7 @@ export const HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT: TextStyle = {
 export const HOTEL_SEARCH_SCREEN_DIVIDER_LINE: ViewStyle = {
   backgroundColor: theme.colors.grey,
   marginVertical: 18,
-  marginHorizontal: 40,
+  marginHorizontal: 15,
   flexDirection: "column",
 };
 
@@ -550,6 +551,13 @@ export const HOTEL_LIST_SCREEN_TITLE_TEXT: TextStyle = {
   color: "black",
 };
 
+export const HOTEL_LIST_FLAT_LIST_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  backgroundColor: "#FFFFFF",
+  paddingHorizontal: "5%"
+}
+
 export const HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN: ViewStyle = {
   flexDirection: "row",
 };
@@ -557,13 +565,17 @@ export const HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN: ViewStyle = {
 export const HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN: ViewStyle = {
   flexDirection: "column",
   marginLeft: 20,
+  width:"100%",
+  justifyContent: "flex-start"
 };
 
 export const HOTEL_LIST_SCREEN_IMAGE: ViewStyle = {
-  paddingLeft: 20,
+  // paddingLeft: 20,
 };
 
-export const HOTEL_LIST_HOTEL_NAME: ViewStyle = {};
+export const HOTEL_LIST_HOTEL_NAME: ViewStyle = {
+  width: "60%"
+};
 export const HOTEL_LIST_HOTEL_NAME_TEXT: TextStyle = {
   fontSize: 16,
   fontWeight: "bold",
