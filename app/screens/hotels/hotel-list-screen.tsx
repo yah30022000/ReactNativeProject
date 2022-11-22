@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Rating } from "react-native-ratings";
-import { useDispatch } from "react-redux";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, TouchableHighlight, View } from "react-native";
@@ -23,6 +22,7 @@ import {
 } from "../../theme";
 import { selectRating } from "../../redux/hotel/hotelSlice";
 import { HotelListAndIndex, initialHotelList } from "../../helper/amadeus/hotel-list-util-data";
+import { useAppDispatch } from "../../redux/hooks";
 
 export interface HotelSearchListProps {
 }
@@ -33,7 +33,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
   const { colors } = useTheme();
   const [hotels, setHotels] = useState(initialHotelList);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
 
   const renderHotelList = ({ item, index }: HotelListAndIndex) => (

@@ -126,10 +126,11 @@ npx react-native run-android --deviceId="Samsung Galaxy S22"
 > AppNavigator/NavigationContainer <br>
 > ┣ SplashStack (not yet) <br>
 > &nbsp;&nbsp; ┣ SplashScreen <br>
-> ┣ AuthStack (not yet) <br>
+> ┣ AuthStack <br>
 > &nbsp;&nbsp; ┣ OnBoardingScreen <br>
+> &nbsp;&nbsp; ┣ PreLoginScreen <br>
 > &nbsp;&nbsp; ┣ Login/RegisterScreen <br>
-> &nbsp;&nbsp; ┣ Login/RegisterScreen (OAuth) <br>
+> &nbsp;&nbsp; <span style="color: orange;"> ┣ Login/RegisterScreen (OAuth) <- not sure, maybe no </span> <br>
 > ┣ AppStack <br>
 > &nbsp;&nbsp; ┣ HomeBottomTab <br>
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ┣ HomeScreen (default landing page) <br>
