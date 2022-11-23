@@ -1,32 +1,14 @@
-import React, {FC, useState} from "react";
-import {StackNavigatorParamList} from "../../navigators";
-import {login} from "../../redux/user/userSlice";
-import {StackScreenProps} from "@react-navigation/stack";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {Text as PaperText} from "react-native-paper";
-import {StatusBar, useWindowDimensions, View} from "react-native";
-import {TabBar, TabView} from "react-native-tab-view";
-import {LOGIN_SCREEN_REGISTER_TAB_VIEW} from "../../theme";
-import {
-  ArrayPath,
-  DeepPartial,
-  FieldArray,
-  FieldError,
-  FieldErrorsImpl,
-  FieldValues,
-  FormState,
-  Path,
-  PathValue,
-  SubmitErrorHandler,
-  SubmitHandler,
-  useForm,
-  UseFormRegisterReturn,
-  Validate,
-  ValidationRule,
-} from "react-hook-form";
-import {LoginTab} from "./login-tab";
-import {useAppDispatch} from "../../redux/hooks";
-import {RegisterTab} from "./register-tab";
+import React, { FC, useState } from "react";
+import { StackNavigatorParamList } from "../../navigators";
+import { login, registerThunk } from "../../redux/user/userSlice";
+import { StackScreenProps } from "@react-navigation/stack";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar, useWindowDimensions } from "react-native";
+import { TabBar, TabView } from "react-native-tab-view";
+import { useForm } from "react-hook-form";
+import { LoginTab } from "./login-tab";
+import { useAppDispatch } from "../../redux/hooks";
+import { RegisterTab } from "./register-tab";
 
 export interface LoginScreenProps {
   initialPage?: "login" | "register";
@@ -37,8 +19,9 @@ export interface LoginFormData {
   password: string;
 }
 export interface RegisterFormData {
+  // username: string;
   name: string;
-  phoneNumber: number;
+  // phoneNumber: number;
   email: string;
   password: string;
 }
@@ -67,20 +50,24 @@ export const LoginScreen: FC<
   const dispatch = useAppDispatch();
 
   /* React Hook Form Start */
-  const PASSWORD_MIN_LENGTH = 6;
+  const PASSWORD_MIN_LENGTH = 8;
+  // const USERNAME_MIN_LENGTH = 6;
+  // const USERNAME_MAX_LENGTH = 18;
 
   const REGEX = {
+    // username: /^[a-zA-Z0-9](_(?!(\.|_))|\.(?![_.])|[a-zA-Z0-9]){4,16}[a-zA-Z0-9]$/im,
     email:
       /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
     name: /^[a-zA-Z\s]*$/i,
-    phoneNumber: /^[^0-3][0-9]{7}/gm,
+    // phoneNumber: /^[^0-3][0-9]{7}/gm,
   };
 
   const ERROR_MESSAGES = {
     REQUIRED: "This Field Is Required",
     EMAIL_INVALID: "Not a Valid Email",
     NAME_INVALID: "Not a Valid Name",
-    PHONE_NUMBER_INVALID: "Not a Valid Phone Number",
+    // USERNAME_INVALID: "Not a Valid Username",
+    // PHONE_NUMBER_INVALID: "Not a Valid Phone Number",
   };
 
   const {
@@ -110,7 +97,7 @@ export const LoginScreen: FC<
     // TODO: redux async thunk, and then do Amplify Auth
     // why don't use navigation.navigate to homeTab, because it is in AppStack
     // login screen is in AuthStack, we change redux state and let react navigation to change stack for us
-    // dispatch(register())
+    dispatch(registerThunk(data))
   };
 
   /* React Hook Form End */
@@ -144,13 +131,15 @@ export const LoginScreen: FC<
         return (
           <RegisterTab
             PASSWORD_MIN_LENGTH={PASSWORD_MIN_LENGTH}
+            // USERNAME_MIN_LENGTH={USERNAME_MIN_LENGTH}
+            // USERNAME_MAX_LENGTH={USERNAME_MAX_LENGTH}
             REGEX={REGEX}
             ERROR_MESSAGES={ERROR_MESSAGES}
             registerControl={registerControl}
             registerFormState={registerFormState}
             registerHandleSubmit={registerHandleSubmit}
             registerSubmitCallback={registerSubmitCallback}
-          />
+           />
         );
       default:
         return null;

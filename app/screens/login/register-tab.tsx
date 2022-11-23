@@ -1,33 +1,36 @@
-import {Control, FormState, UseFormHandleSubmit} from "react-hook-form";
-import {TouchableHighlight, View} from "react-native";
+import { Control, Controller as FormController, FormState, UseFormHandleSubmit } from "react-hook-form";
+import { TouchableHighlight, View } from "react-native";
 import {
-  LOGIN_SCREEN_REGISTER_TAB_VIEW,
-  LOGIN_SCREEN_REGISTER_TAB_UPPER_ROW,
-  LOGIN_SCREEN_TEXT_INPUT_WRAPPER,
   LOGIN_SCREEN_BOTTOM_BUTTON,
   LOGIN_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER,
   LOGIN_SCREEN_BOTTOM_BUTTON_TEXT,
   LOGIN_SCREEN_BOTTOM_BUTTON_TOUCHABLE,
   LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER,
   LOGIN_SCREEN_REGISTER_TAB_TNC_TEXT,
+  LOGIN_SCREEN_REGISTER_TAB_UPPER_ROW,
+  LOGIN_SCREEN_REGISTER_TAB_VIEW,
+  LOGIN_SCREEN_TEXT_INPUT_WRAPPER,
 } from "../../theme";
-import {Controller as FormController} from "react-hook-form";
-import {
-  HelperText as PaperHelperText,
-  Text as PaperText,
-  TextInput as PaperTextInput,
-} from "react-native-paper";
+import { HelperText as PaperHelperText, Text as PaperText, TextInput as PaperTextInput } from "react-native-paper";
 import React from "react";
-import {RegisterFormData} from "./login-screen";
+import { RegisterFormData } from "./login-screen";
 
 export interface RegisterTabProps {
   PASSWORD_MIN_LENGTH: number;
-  REGEX: {email: RegExp; name: RegExp; phoneNumber: RegExp};
+  // USERNAME_MIN_LENGTH: number;
+  // USERNAME_MAX_LENGTH: number;
+  REGEX: {
+    email: RegExp;
+    name: RegExp;
+    // username: RegExp;
+    // phoneNumber: RegExp
+  };
   ERROR_MESSAGES: {
     REQUIRED: string;
     EMAIL_INVALID: string;
     NAME_INVALID: string;
-    PHONE_NUMBER_INVALID: string;
+    // USERNAME_INVALID: string;
+    // PHONE_NUMBER_INVALID: string;
   };
   registerControl: Control<RegisterFormData, any>;
   registerFormState: FormState<RegisterFormData>;
@@ -38,13 +41,58 @@ export interface RegisterTabProps {
 export const RegisterTab = (props: RegisterTabProps) => {
   return (
     <View style={LOGIN_SCREEN_REGISTER_TAB_VIEW}>
-      
+
       {/* Upper Row */}
       <View style={LOGIN_SCREEN_REGISTER_TAB_UPPER_ROW}>
 
-{/* Name */}
+
+        {/* Username */}
+        {/*<FormController*/}
+        {/*  control={props.registerControl}*/}
+        {/*  name="username"*/}
+        {/*  defaultValue=""*/}
+        {/*  rules={{*/}
+        {/*    required: { message: props.ERROR_MESSAGES.REQUIRED, value: true },*/}
+        {/*    pattern: {*/}
+        {/*      value: props.REGEX.username,*/}
+        {/*      message: props.ERROR_MESSAGES.USERNAME_INVALID,*/}
+        {/*    },*/}
+        {/*    minLength: {*/}
+        {/*      value: props.USERNAME_MIN_LENGTH,*/}
+        {/*      message: "Username must have at least 6 characters",*/}
+        {/*    },*/}
+        {/*    maxLength: {*/}
+        {/*      value: props.USERNAME_MAX_LENGTH,*/}
+        {/*      message: "Username must not be more than 18 characters",*/}
+        {/*    },*/}
+        {/*  }}*/}
+        {/*  render={({ field: { onChange, onBlur, value, ref } }) => (*/}
+        {/*    <View style={LOGIN_SCREEN_TEXT_INPUT_WRAPPER}>*/}
+        {/*      <PaperTextInput*/}
+        {/*        ref={ref}*/}
+        {/*        mode={"outlined"}*/}
+        {/*        label={"username"}*/}
+        {/*        placeholder={"Enter your Username"}*/}
+        {/*        selectionColor={"#4D94A0"}*/}
+        {/*        outlineColor={"#c6c6c6"}*/}
+        {/*        activeOutlineColor={"#4D94A0"}*/}
+        {/*        textContentType="username"*/}
+        {/*        value={value}*/}
+        {/*        onBlur={onBlur}*/}
+        {/*        autoCapitalize="none"*/}
+        {/*        onChangeText={value => onChange(value)}*/}
+        {/*        error={props.registerFormState.errors.username && true}*/}
+        {/*      />*/}
+        {/*      <PaperHelperText type="error">*/}
+        {/*        {props.registerFormState.errors.username?.message}*/}
+        {/*      </PaperHelperText>*/}
+        {/*    </View>*/}
+        {/*  )}*/}
+        {/*/>*/}
+
+      {/* Name */}
       <FormController
-          control={props.registerControl}
+        control={props.registerControl}
           name="name"
           defaultValue=""
           rules={{
@@ -121,7 +169,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
             required: {message: props.ERROR_MESSAGES.REQUIRED, value: true},
             minLength: {
               value: props.PASSWORD_MIN_LENGTH,
-              message: "Password must have at least 6 characters",
+              message: "Password must have at least 8 characters",
             },
           }}
           render={({field: {onChange, onBlur, value, ref}}) => (
@@ -169,7 +217,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
                 selectionColor={"#4D94A0"}
                 outlineColor={"#c6c6c6"}
                 activeOutlineColor={"#4D94A0"}
-                textContentType="name"
+                textContentType="telephoneNumber"
                 value="number"
                 onBlur={onBlur}
                 autoCapitalize="none"

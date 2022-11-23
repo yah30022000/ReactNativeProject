@@ -81,7 +81,7 @@ export const LoginTab = (props: LoginTabProps) => {
             required: {message: props.ERROR_MESSAGES.REQUIRED, value: true},
             minLength: {
               value: props.PASSWORD_MIN_LENGTH,
-              message: "Password must have at least 6 characters",
+              message: "Password must have at least 8 characters",
             },
           }}
           render={({field: {onChange, onBlur, value, ref}}) => (
@@ -108,7 +108,7 @@ export const LoginTab = (props: LoginTabProps) => {
           )}
         />
 
-        <TouchableHighlight 
+        <TouchableHighlight
         underlayColor={"transparent"}
         onPress={() => {}}>
           <PaperText style={LOGIN_SCREEN_LOGIN_TAB_FORGOT_PASSWORD_TEXT}>

@@ -67,7 +67,7 @@ import {useSelector} from "react-redux";
 import {
   changeHotelSearching,
   chooseCityCode,
-  getAmadeusHotelList,
+  getAmadeusHotelListThunk,
   HotelState,
   selectRating,
 } from "../../redux/hotel/hotelSlice";
@@ -135,7 +135,7 @@ export const HotelSearchScreen: FC<
       setModalStatus("failed");
       return;
     }
-    dispatch(getAmadeusHotelList(hotelListRequest));
+    dispatch(getAmadeusHotelListThunk(hotelListRequest));
   };
 
   const closeModalCallback = () => {
