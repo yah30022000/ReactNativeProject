@@ -194,7 +194,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
         <TouchableHighlight
           style={LOGIN_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
           onPress={props.registerHandleSubmit(props.registerSubmitCallback)}
-          underlayColor={"white"}>
+          underlayColor={"transparent"}>
           <View style={LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER}>
             <View style={LOGIN_SCREEN_BOTTOM_BUTTON}>
               <PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>

@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {StackScreenProps} from "@react-navigation/stack";
 import {StackNavigatorParamList} from "../../navigators";
-import {Text as PaperText} from "react-native-paper";
+import {Colors, Text as PaperText} from "react-native-paper";
 import {TouchableHighlight, View} from "react-native";
 
 export interface HotelRoomSelectScreenProps {}
@@ -18,24 +18,24 @@ export const HotelRoomSelectScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.navigate("payment" as any)}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
             width: 200,
             borderRadius: 25,
-            backgroundColor: "orange",
+            backgroundColor: "#4D94A0",
             margin: 50,
             justifyContent: "center",
             alignItems: "center",
           }}>
-          <PaperText style={{color: "white"}}>To Payment Page</PaperText>
+          <PaperText style={{color: "white"}}>GO TO PAYMENT</PaperText>
         </View>
       </TouchableHighlight>
 
       <TouchableHighlight
         onPress={() => navigation.goBack()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -52,7 +52,7 @@ export const HotelRoomSelectScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.popToTop()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,

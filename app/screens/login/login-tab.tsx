@@ -123,7 +123,7 @@ export const LoginTab = (props: LoginTabProps) => {
           style={LOGIN_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
           onPress={props.loginHandleSubmit(props.loginSubmitCallback)}
           // disabled={!props.loginFormState.isValid}
-          underlayColor={"white"}>
+          underlayColor={"transparent"}>
           <View style={LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER}>
             <View style={LOGIN_SCREEN_BOTTOM_BUTTON}>
               <PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>

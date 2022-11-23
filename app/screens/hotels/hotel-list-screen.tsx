@@ -38,8 +38,8 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
   const renderHotelList = ({ item, index }: HotelListAndIndex) => (
     <TouchableHighlight
-      onPress={item.onPress}
-      underlayColor={colors.white}>
+      onPress={() => navigation.navigate("hotelSearchFilter" as any)}
+      underlayColor={"transparent"}>
       <View style={{ flexDirection: "row" }}>
         <View style={HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN}>
           <View style={HOTEL_LIST_SCREEN_IMAGE}>
@@ -85,7 +85,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
     <SafeAreaView>
       <TouchableHighlight
         onPress={() => navigation.goBack()}
-        underlayColor={"white"}>
+        underlayColor={"transparent"}>
         <View style={HOTEL_LIST_BACK_BUTTON}>
           <ButtonWithColorBg
             size={25}
@@ -120,7 +120,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
       {/* <TouchableHighlight
         onPress={() => navigation.navigate("hotelDetail" as any)}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -137,7 +137,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
       <TouchableHighlight
         onPress={() => navigation.popToTop()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,

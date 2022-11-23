@@ -4,6 +4,7 @@ import AntDesignIcon from "react-native-vector-icons/AntDesign";
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import FeatherIcon from "react-native-vector-icons/Feather";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import FoundationIcon from "react-native-vector-icons/Foundation";
@@ -26,6 +27,7 @@ export interface ButtonProp {
     | "Entypo"
     | "EvilIcons"
     | "Feather"
+    | "Fontisto"
     | "FontAwesome"
     | "FontAwesome5"
     | "Foundation"
@@ -132,6 +134,26 @@ export default function ButtonWithColorBg(props: ButtonProp) {
           </View>
         </TouchableOpacity>
       );
+    case "Fontisto":
+      return (
+        <TouchableOpacity onPress={props.onPress}>
+          <View style={iconStyle}>
+            <FontAwesomeIcon
+              name={props.iconName}
+              size={props.size}
+              color={props.color}
+            />
+          </View>
+          <View style={textStyle}>
+            {props.label ? (
+              <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
+            ) : (
+              <></>
+            )}
+          </View>
+        </TouchableOpacity>
+      );
+
     case "FontAwesome":
       return (
         <TouchableOpacity onPress={props.onPress}>

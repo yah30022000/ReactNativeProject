@@ -3,6 +3,7 @@ import { HomeBottomTab, HomeBottomTabProps } from "./home-bottom-tab";
 import { HotelSearchScreen, HotelSearchScreenProps,
   PreLoginScreen, PreLoginScreenProps,
   HotelListScreen, HotelSearchListProps,
+  HotelSearchFilterScreen, HotelSearchFilterScreenProps,
   HotelDetailScreen, HotelDetailScreenProps,
   HotelRoomSelectScreen, HotelRoomSelectScreenProps,
   PaymentScreen, PaymentScreenProps,
@@ -12,6 +13,7 @@ import { HotelSearchScreen, HotelSearchScreenProps,
 } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+
 
 
 
@@ -33,6 +35,7 @@ export type StackNavigatorParamList = {
   homeTab: HomeBottomTabProps;
   hotelSearch: HotelSearchScreenProps;
   hotelList: HotelSearchListProps;
+  hotelSearchFilter: HotelSearchFilterScreenProps;
   hotelDetail: HotelDetailScreenProps;
   hotelRoomSelect: HotelRoomSelectScreenProps;
   payment: PaymentScreenProps;
@@ -74,6 +77,7 @@ export const AppStack = () => {
           />
           <Stack.Screen name="hotelSearch" component={HotelSearchScreen} />
           <Stack.Screen name="hotelList" component={HotelListScreen} />
+          <Stack.Screen name="hotelSearchFilter" component={HotelSearchFilterScreen}/>
           <Stack.Screen name="hotelDetail" component={HotelDetailScreen} />
           <Stack.Screen name="hotelRoomSelect" component={HotelRoomSelectScreen} />
           <Stack.Screen name="payment" component={PaymentScreen} />

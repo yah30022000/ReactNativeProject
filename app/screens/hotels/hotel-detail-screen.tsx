@@ -20,7 +20,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
         <TouchableHighlight
           onPress={()=>navigation.navigate("hotelRoomSelect" as any)}
-          underlayColor={"azure"}>
+          underlayColor={"transparent"}>
           <View style={{
             height: 50,
             width: 200,
@@ -38,7 +38,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
         <TouchableHighlight
           onPress={()=>navigation.goBack()}
-          underlayColor={"azure"}>
+          underlayColor={"transparent"}>
           <View style={{
             height: 50,
             width: 200,
@@ -56,7 +56,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
         <TouchableHighlight
           onPress={()=>navigation.popToTop()}
-          underlayColor={"azure"}>
+          underlayColor={"transparent"}>
           <View style={{
             height: 50,
             width: 200,

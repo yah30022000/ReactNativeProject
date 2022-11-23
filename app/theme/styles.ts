@@ -369,6 +369,19 @@ export const HOTEL_SEARCH_SCREEN_TITLE_ROW: ViewStyle = {
   marginVertical: 40,
   height: "15%",
 };
+
+export const HOTEL_SEARCH_CITYNAME: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const HOTEL_SEARCH_CITYNAME_TEXT: TextStyle = {
+  fontSize: 20,
+  color: "#767676",
+  paddingTop: 5,
+  paddingLeft: 5,
+
+};
 export const HOTEL_SEARCH_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
   lineHeight: 60,
@@ -379,6 +392,13 @@ export const HOTEL_SEARCH_SCREEN_TITLE_TEXT: TextStyle = {
 export const HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT: TextStyle = {
   fontSize: 14,
   color: "white",
+};
+
+export const HOTEL_SEARCH_BAR_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  marginVertical: 15,
+  marginHorizontal: 40,
+  flexDirection: "column",
 };
 
 export const HOTEL_SEARCH_SCREEN_DIVIDER_LINE: ViewStyle = {
@@ -578,3 +598,54 @@ export const HOTEL_LIST_HOTEL_ADDRESS_TEXT: TextStyle = {
 };
 /*HotelListScreen end */
 
+/*HotelFilterScreen start*/
+
+export const HOTEL_SEARCH_FILTER_CROSS_BUTTON: ViewStyle = {
+  justifyContent: "space-between",
+  flexDirection: "row",
+  // marginLeft: 20,
+  paddingTop: 20,
+};
+
+export const HOTEL_FILTER_PRICE_RANGE: ViewStyle = {
+
+};
+
+export const HOTEL_FILTER_PRICE_RANGE_TEXT: TextStyle={
+  fontSize: 14,
+  fontWeight: "bold",
+};
+export const HOTEL_SEARCH_FILTER_SCREEN_TITLE: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  marginBottom: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  color: "black",
+}
+
+export const HOTEL_SEARCH_FILTER_PRICE_RANGE: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginLeft: 20,
+  paddingTop: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT: TextStyle = {
+  fontSize: 14,
+  fontWeight: "bold",
+};
+
+export const HOTEL_SEARCH_FILTER_PRICE: ViewStyle = {
+  justifyContent: "flex-end",
+  flexDirection: "row",
+  paddingTop: 20,
+  marginRight: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_PRICE_TEXT: TextStyle = {
+  fontSize: 14,
+}
