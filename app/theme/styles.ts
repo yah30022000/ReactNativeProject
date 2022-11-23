@@ -149,7 +149,7 @@ export const LOGIN_SCREEN_REGISTER_TAB_VIEW: ViewStyle = {
 export const LOGIN_SCREEN_REGISTER_TAB_UPPER_ROW: ViewStyle = {
   width: "100%",
   height: "60%",
-  paddingHorizontal: "10%"
+  paddingHorizontal: "10%",
 };
 
 export const LOGIN_SCREEN_REGISTER_TAB_TNC_TEXT: TextStyle = {
@@ -157,7 +157,123 @@ export const LOGIN_SCREEN_REGISTER_TAB_TNC_TEXT: TextStyle = {
   textAlign: "center",
 };
 
+
 /* Register Tab end*/
+
+/* RegisterVerifyScreen start */
+export const REGISTER_VERIFY_SCREEN_TITLE_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "10%",
+  marginTop: 50
+};
+
+export const REGISTER_VERIFY_SCREEN_OTP_ROW: ViewStyle = {
+  height: "20%",
+  marginHorizontal: 20
+};
+
+export const REGISTER_VERIFY_SCREEN_OTP_FOCUS:ViewStyle = {
+  backgroundColor: theme.colors.mintLight,
+  borderColor: theme.colors.mint,
+  borderWidth: 1
+}
+
+export const REGISTER_VERIFY_SCREEN_OTP_INPUT_CONTAINER:ViewStyle = {
+  backgroundColor: theme.colors.greyLight,
+  height: 70,
+  width: "15%",
+  borderRadius: 25,
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+export const REGISTER_VERIFY_SCREEN_OTP_INPUT: TextStyle = {
+  fontSize: 40,
+  color: theme.colors.black
+}
+
+export const REGISTER_VERIFY_SCREEN_MISC_STYLE: ViewStyle = {
+  flexDirection: "row",
+  height: "100%",
+  width: "100%",
+  justifyContent: "space-around",
+  alignItems: "center",
+}
+
+export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_ROW_WRAPPER: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "10%",
+};
+
+export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "75%",
+  height: 60,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "80%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.coral,
+  // marginVertical: 70,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+};
+export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TEXT: TextStyle = {
+  color: "white",
+  fontSize: 20,
+};
+
+export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_ROW_WRAPPER: ViewStyle = {
+  position: "absolute",
+  bottom: 80,
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "center",
+};
+
+export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "75%",
+  height: 60,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mint,
+  // marginVertical: 70,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+};
+export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_TEXT: TextStyle = {
+  color: "white",
+  fontSize: 20,
+};
+
+
+/* RegisterVerifyScreen end */
 
 /* HomeScreen starts */
 export const HOME_SCREEN_VIEW: ViewStyle = {

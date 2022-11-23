@@ -50,7 +50,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
       onPress={()=>{
         // ()=>navigation.navigate("hotelFilter" as any, {hotelId: item.hotelId})
       }}
-      underlayColor={colors.white}>
+      underlayColor={"transparent"}>
       <View style={{
         flexDirection: "row",
         justifyContent: "flex-start"}}>
@@ -99,7 +99,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
     <SafeAreaView>
       <TouchableHighlight
         onPress={() => navigation.goBack()}
-        underlayColor={"white"}>
+        underlayColor={"transparent"}>
         <View style={HOTEL_LIST_BACK_BUTTON}>
           <ButtonWithColorBg
             size={25}

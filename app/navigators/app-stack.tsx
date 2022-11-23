@@ -1,18 +1,27 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeBottomTab, HomeBottomTabProps } from "./home-bottom-tab";
-import { HotelSearchScreen, HotelSearchScreenProps,
-  PreLoginScreen, PreLoginScreenProps,
-  HotelListScreen, HotelSearchListProps,
-  HotelDetailScreen, HotelDetailScreenProps,
-  HotelRoomSelectScreen, HotelRoomSelectScreenProps,
-  PaymentScreen, PaymentScreenProps,
-  PaymentCompleteScreen, PaymentCompleteScreenProps,
-  LoginScreen, LoginScreenProps,
+import {
+  HotelDetailScreen,
+  HotelDetailScreenProps,
+  HotelListScreen,
+  HotelRoomSelectScreen,
+  HotelRoomSelectScreenProps,
+  HotelSearchListProps,
+  HotelSearchScreen,
+  HotelSearchScreenProps,
+  LoginScreen,
+  LoginScreenProps,
   OnboardingScreen,
+  PaymentCompleteScreen,
+  PaymentCompleteScreenProps,
+  PaymentScreen,
+  PaymentScreenProps,
+  PreLoginScreen,
+  PreLoginScreenProps,
+  RegisterVerifyScreen, RegisterVerifyScreenProps
 } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-
 
 
 /**
@@ -28,6 +37,7 @@ export type StackNavigatorParamList = {
   onBoarding: undefined
   preLogin: PreLoginScreenProps
   login: LoginScreenProps
+  registerVerify: RegisterVerifyScreenProps
 
   // after login
   homeTab: HomeBottomTabProps;
@@ -58,12 +68,11 @@ export const AppStack = () => {
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="onBoarding" component={OnboardingScreen} />
           <Stack.Screen name="preLogin" component={PreLoginScreen} />
-          <Stack.Screen name="login" component={LoginScreen}
+          <Stack.Screen name="login" component={LoginScreen} options={{ title: "", headerShown: true }}
             // initialParams={{setIsLoggedIn: setIsLoggedIn}}
-            options={{
-              title: "",
-              headerShown: true
-            }}
+          />
+          <Stack.Screen name="registerVerify" component={RegisterVerifyScreen} options={{ title: "Register Verification", headerShown: true }}
+            // initialParams={{setIsLoggedIn: setIsLoggedIn}}
           />
         </Stack.Group>
       ) : (

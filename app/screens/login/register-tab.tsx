@@ -11,9 +11,16 @@ import {
   LOGIN_SCREEN_REGISTER_TAB_VIEW,
   LOGIN_SCREEN_TEXT_INPUT_WRAPPER,
 } from "../../theme";
-import { HelperText as PaperHelperText, Text as PaperText, TextInput as PaperTextInput } from "react-native-paper";
-import React from "react";
+import {
+  ActivityIndicator as PaperActivityIndicator,
+  HelperText as PaperHelperText,
+  Snackbar as PaperSnackbar,
+  Text as PaperText,
+  TextInput as PaperTextInput,
+} from "react-native-paper";
+import React, { useEffect, useState } from "react";
 import { RegisterFormData } from "./login-screen";
+import { UserState } from "../../redux/user/userSlice";
 
 export interface RegisterTabProps {
   PASSWORD_MIN_LENGTH: number;
@@ -36,9 +43,24 @@ export interface RegisterTabProps {
   registerFormState: FormState<RegisterFormData>;
   registerHandleSubmit: UseFormHandleSubmit<RegisterFormData>;
   registerSubmitCallback: (data: any) => void;
+  signingUp: UserState["signingUp"];
+  signUpError: UserState["signUpError"]
 }
 
 export const RegisterTab = (props: RegisterTabProps) => {
+
+  /* Bottom Snackbar start */
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
+  const onDismissSnackBar = () => setSnackbarVisible(false);
+
+  useEffect(()=>{
+    if(props.signingUp == "completed" || props.signingUp == "failed"){
+      onToggleSnackBar()
+    }
+  }, [props.signingUp])
+  /* Bottom Snackbar end */
+
   return (
     <View style={LOGIN_SCREEN_REGISTER_TAB_VIEW}>
 
@@ -241,17 +263,47 @@ export const RegisterTab = (props: RegisterTabProps) => {
       <View style={LOGIN_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER}>
         <TouchableHighlight
           style={LOGIN_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
-          onPress={props.registerHandleSubmit(props.registerSubmitCallback)}
-          underlayColor={"white"}>
+          onPress={
+            props.signingUp == "loading" ? () => {
+              } :
+              props.registerHandleSubmit(props.registerSubmitCallback)}
+          underlayColor={"transparent"}>
           <View style={LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER}>
             <View style={LOGIN_SCREEN_BOTTOM_BUTTON}>
-              <PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>
-                SIGN UP
-              </PaperText>
+              {
+                props.signingUp == "loading" ? (
+                  <PaperActivityIndicator animating={true} color={"#FFFFFF"} />
+                ) : (<PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>
+                  SIGN UP
+                </PaperText>)
+              }
+
             </View>
           </View>
         </TouchableHighlight>
       </View>
+
+      <PaperSnackbar
+        style={{
+          backgroundColor: props.signingUp == "failed" ? "#f13a59" :
+            props.signingUp == "completed" ? "#42c949" : "#4D94A0"
+        }}
+        visible={snackbarVisible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Close",
+          onPress: () => {
+
+            onDismissSnackBar();
+          },
+        }}>
+        {
+          props.signingUp == "failed" && props.signUpError ?
+            props.signUpError.message
+            : props.signingUp == "completed" ?
+              "Sign up successfully, please proceed to verify your account" : ""
+        }
+      </PaperSnackbar>
     </View>
   );
 };

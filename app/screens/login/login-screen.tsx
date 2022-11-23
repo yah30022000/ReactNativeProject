@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { StackNavigatorParamList } from "../../navigators";
-import { login, registerThunk } from "../../redux/user/userSlice";
+import { login, registerThunk, UserState } from "../../redux/user/userSlice";
 import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, useWindowDimensions } from "react-native";
@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { LoginTab } from "./login-tab";
 import { useAppDispatch } from "../../redux/hooks";
 import { RegisterTab } from "./register-tab";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export interface LoginScreenProps {
   initialPage?: "login" | "register";
@@ -43,6 +45,8 @@ export const LoginScreen: FC<
     {key: "login", title: "Login"},
     {key: "register", title: "Register"},
   ]);
+  const signingUp = useSelector<RootState>((state)=>state.user.signingUp) as UserState["signingUp"];
+  const signUpError = useSelector<RootState>((state)=>state.user.signUpError) as UserState["signUpError"];
 
   // global states
   // useAppDispatch() includes normal reducer and extra reducer (async thunk)
@@ -92,11 +96,7 @@ export const LoginScreen: FC<
   };
 
   const registerSubmitCallback = (data: RegisterFormData) => {
-    console.log("registerSubmitCallback: ", data);
-
-    // TODO: redux async thunk, and then do Amplify Auth
-    // why don't use navigation.navigate to homeTab, because it is in AppStack
-    // login screen is in AuthStack, we change redux state and let react navigation to change stack for us
+    // console.log("registerSubmitCallback: ", data);
     dispatch(registerThunk(data))
   };
 
@@ -139,12 +139,23 @@ export const LoginScreen: FC<
             registerFormState={registerFormState}
             registerHandleSubmit={registerHandleSubmit}
             registerSubmitCallback={registerSubmitCallback}
+            signingUp={signingUp}
+            signUpError={signUpError}
            />
         );
       default:
         return null;
     }
   };
+
+  useEffect(()=>{
+    if(signingUp == "completed"){
+      navigation.navigate("registerVerify" as any)
+    }
+    if(signUpError && signUpError.code == "UsernameExistsException"){
+      navigation.navigate("registerVerify" as any, {exception: "UsernameExistsException"})
+    }
+  },[signingUp, signUpError])
 
   return (
     <SafeAreaView style={{flex: 1}} edges={["right", "bottom", "left"]}>

@@ -503,7 +503,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                   }
                   : searchHotelApiCall
               }
-              underlayColor={"white"}>
+              underlayColor={"transparent"}>
               <View
                 style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
                 <View style={HOTEL_SEARCH_BOTTOM_BUTTON}>

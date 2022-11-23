@@ -7,6 +7,7 @@ declare global {
       mintLight: string;
       black: string;
       grey: string;
+      greyLight: string;
       purple: string;
       purpleLight: string;
       coral: string;
@@ -16,6 +17,7 @@ declare global {
       white: string;
       blue: string;
       red: string;
+      green: string;
     }
 
     interface Theme {
@@ -34,6 +36,7 @@ const theme: ReactNativePaper.Theme = {
     mintLight: "#e8fdff",
     black: "#202224",
     grey: "#A0A0A0",
+    greyLight: "#e5e5e5",
     purple: "#5C3B5D",
     purpleLight: "#fbe8ff",
     yellow: "#EEAF12",
@@ -42,7 +45,8 @@ const theme: ReactNativePaper.Theme = {
     coralLight: "#fff3e8",
     white: "#ffffff",
     blue: "#1878f2",
-    red: "#f13a59",
+    red: "#e23b22",
+    green: "#42c949"
   },
 };
 

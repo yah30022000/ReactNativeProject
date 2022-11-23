@@ -25,7 +25,7 @@ export const ProfileScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
 
       <TouchableHighlight
         onPress={() => dispatch(logout())}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View style={{
           height: 50,
           width: 200,

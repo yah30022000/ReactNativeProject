@@ -18,7 +18,7 @@ export const HotelRoomSelectScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.navigate("payment" as any)}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -35,7 +35,7 @@ export const HotelRoomSelectScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.goBack()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -52,7 +52,7 @@ export const HotelRoomSelectScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.popToTop()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
