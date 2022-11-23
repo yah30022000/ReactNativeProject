@@ -21,12 +21,14 @@ export interface UserState {
     username?: string
   };
   signingUp: "loading" | "completed" | "failed" | "none";
+  userConfirmed: boolean // in case not following normal sign up process
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
   isLoggedIn: false,
   signingUp: "none",
+  userConfirmed: false
 };
 
 // Normal Sign Up via AWS Cognito
@@ -45,7 +47,7 @@ export const registerThunk = createAsyncThunk<UserState["signUpResult"], UserReg
       },
       autoSignIn: {
         // TODO: turn to true
-        enabled: false,
+        enabled: true,
       },
     });
     if (!response) {
@@ -56,7 +58,7 @@ export const registerThunk = createAsyncThunk<UserState["signUpResult"], UserReg
       userConfirmed: response.userConfirmed,
       userSub: response.userSub,
       username: response.user.getUsername(),
-      authenticationFlowType: response.user.getAuthenticationFlowType(),
+      // authenticationFlowType: response.user.getAuthenticationFlowType(),
     };
 
     return payload;
@@ -106,6 +108,7 @@ export const userSlice = createSlice({
     builder.addCase(registerThunk.fulfilled, (state, action) => {
       state.signingUp = "completed";
       state.signUpResult = action.payload;
+      console.log("registerThunk completed: ", action.payload)
     });
     builder.addCase(registerThunk.rejected, (state, action) => {
       state.signingUp = "failed";
@@ -121,6 +124,10 @@ export const userSlice = createSlice({
     // resendVerifyCodeThunk
     builder.addCase(resendVerifyCodeThunk.fulfilled, (state, action) => {
       console.log("resendVerifyCodeThunk completed: ", action.payload);
+      if(state.signUpResult){
+        state.signUpResult = {...state.signUpResult, userConfirmed: true}
+      }
+      state.userConfirmed = true
     });
     builder.addCase(resendVerifyCodeThunk.rejected, (state, action) => {
       console.log("resendVerifyCodeThunk failed: ", action.error.message);

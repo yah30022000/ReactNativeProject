@@ -150,7 +150,7 @@ export const LoginScreen: FC<
 
   useEffect(()=>{
     if(signingUp == "completed"){
-      navigation.navigate("registerVerify" as any)
+      navigation.navigate("registerVerify" as any, {exception: undefined})
     }
     if(signUpError && signUpError.code == "UsernameExistsException"){
       navigation.navigate("registerVerify" as any, {exception: "UsernameExistsException"})

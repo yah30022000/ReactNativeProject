@@ -1,27 +1,20 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeBottomTab, HomeBottomTabProps } from "./home-bottom-tab";
-import {
-  HotelDetailScreen,
-  HotelDetailScreenProps,
-  HotelListScreen,
-  HotelRoomSelectScreen,
-  HotelRoomSelectScreenProps,
-  HotelSearchListProps,
-  HotelSearchScreen,
-  HotelSearchScreenProps,
-  LoginScreen,
-  LoginScreenProps,
+import { HotelSearchScreen, HotelSearchScreenProps,
+  PreLoginScreen, PreLoginScreenProps,
+  HotelListScreen, HotelSearchListProps,
+  HotelSearchFilterScreen, HotelSearchFilterScreenProps,
+  HotelDetailScreen, HotelDetailScreenProps,
+  HotelRoomSelectScreen, HotelRoomSelectScreenProps,
+  PaymentScreen, PaymentScreenProps,
+  PaymentCompleteScreen, PaymentCompleteScreenProps,
+  LoginScreen, LoginScreenProps,
   OnboardingScreen,
-  PaymentCompleteScreen,
-  PaymentCompleteScreenProps,
-  PaymentScreen,
-  PaymentScreenProps,
-  PreLoginScreen,
-  PreLoginScreenProps,
   RegisterVerifyScreen, RegisterVerifyScreenProps
 } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+
 
 
 /**
@@ -43,6 +36,7 @@ export type StackNavigatorParamList = {
   homeTab: HomeBottomTabProps;
   hotelSearch: HotelSearchScreenProps;
   hotelList: HotelSearchListProps;
+  hotelSearchFilter: HotelSearchFilterScreenProps;
   hotelDetail: HotelDetailScreenProps;
   hotelRoomSelect: HotelRoomSelectScreenProps;
   payment: PaymentScreenProps;
@@ -83,6 +77,7 @@ export const AppStack = () => {
           />
           <Stack.Screen name="hotelSearch" component={HotelSearchScreen} />
           <Stack.Screen name="hotelList" component={HotelListScreen} />
+          <Stack.Screen name="hotelSearchFilter" component={HotelSearchFilterScreen}/>
           <Stack.Screen name="hotelDetail" component={HotelDetailScreen} />
           <Stack.Screen name="hotelRoomSelect" component={HotelRoomSelectScreen} />
           <Stack.Screen name="payment" component={PaymentScreen} />

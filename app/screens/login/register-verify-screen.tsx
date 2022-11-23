@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 import { StackNavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
 import {
+  Modal as PaperModal,
   Modal as PaparModal,
   Portal as PaperPortal,
   Snackbar as PaperSnackbar,
@@ -10,10 +11,12 @@ import {
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import OtpInputs from "react-native-otp-inputs";
-import { KeyboardAvoidingView, Platform, TouchableHighlight, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, TouchableHighlight, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
+  HOTEL_SEARCH_BOTTOM_BUTTON,
+  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE, HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
   REGISTER_VERIFY_SCREEN_MISC_STYLE,
   REGISTER_VERIFY_SCREEN_OTP_FOCUS,
   REGISTER_VERIFY_SCREEN_OTP_INPUT,
@@ -32,11 +35,11 @@ import {
   REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_WRAPPER,
 } from "../../theme";
 import { useAppDispatch } from "../../redux/hooks";
-import { confirmRegisterThunk, resendVerifyCodeThunk } from "../../redux/user/userSlice";
+import { confirmRegisterThunk, login, resendVerifyCodeThunk } from "../../redux/user/userSlice";
 import { changeHotelSearching } from "../../redux/hotel/hotelSlice";
 
 export interface RegisterVerifyScreenProps {
-  exception?: string
+  exception: string | undefined
 }
 
 export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, "registerVerify">> = ({
@@ -69,6 +72,14 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
     (state) => state.user.signUpError?.username
   ) as string | undefined
 
+  let userConfirmedFromSignupResult = useSelector<RootState>(
+    (state) => state.user.signUpResult?.userConfirmed
+  ) as boolean | undefined
+
+  let userConfirmed = useSelector<RootState>(
+    (state) => state.user.userConfirmed
+  ) as boolean | undefined
+
   const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
   const onDismissSnackBar = () => setSnackbarVisible(false);
 
@@ -86,6 +97,10 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
       }
       dispatch(confirmRegisterThunk(requestBody))
     }
+  }
+
+  const closeModalCallback = () => {
+    dispatch(login());
   }
 
   useEffect(() => {
@@ -110,7 +125,9 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
 
       {/* Title Row */}
       <View style={REGISTER_VERIFY_SCREEN_TITLE_ROW}>
-        <PaperText>Code has been sent to {emailDestination}</PaperText>
+        <PaperText style={{fontSize: 16, textAlign: "center"}}>
+          Code has been sent to {emailDestination ? emailDestination : "Your email"}
+        </PaperText>
       </View>
 
       {/* One Time Password */}
@@ -195,18 +212,62 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
       </PaperSnackbar>
 
       <PaperPortal>
-        {/*<PaparModal visible={*/}
-        {/*  (modalStatus === "loading" || modalStatus === "completed" || modalStatus === "failed")*/}
-        {/*} onDismiss={() => {*/}
-        {/*  setModalStatus("none")*/}
-        {/*  dispatch(changeHotelSearching("none"))*/}
-        {/*  if(modalStatus === "completed"){*/}
-        {/*    navigation.navigate("hotelList" as any)*/}
-
-        {/*  }*/}
-        {/*}} contentContainerStyle={{ backgroundColor: "white", padding: 20, height: "60%", width: "80%", alignSelf: "center", borderRadius: 35 }}>*/}
-        {/*  <PaperText>{modalStatus}</PaperText>*/}
-        {/*</PaparModal>*/}
+        <PaperModal
+          visible={
+            !!userConfirmedFromSignupResult || !!userConfirmed
+          }
+          onDismiss={closeModalCallback}
+          contentContainerStyle={{
+            backgroundColor: "white",
+            padding: 20,
+            height: "60%",
+            width: "90%",
+            alignSelf: "center",
+            borderRadius: 35,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-around",
+            }}>
+            {/* Image */}
+            <View
+              style={{
+                height: "40%",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}>
+              <Image
+                source={require("@travelasset/images/success.jpeg")}
+                style={{
+                  height: 250,
+                  width: 250,
+                }}
+                resizeMode="cover"
+              />
+            </View>
+            <View>
+              <PaperText style={{fontSize: 32, textAlign: "center"}}>
+                Email Account Successfully Confirmed !
+              </PaperText>
+            </View>
+            <View>
+              <TouchableHighlight
+                style={HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE}
+                onPress={closeModalCallback}
+                underlayColor={"transparent"}>
+                <View style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
+                  <View style={HOTEL_SEARCH_BOTTOM_BUTTON}>
+                    <PaperText style={{color: colors.white}}>CLOSE</PaperText>
+                  </View>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </PaperModal>
       </PaperPortal>
 
 

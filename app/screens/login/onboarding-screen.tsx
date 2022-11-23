@@ -41,7 +41,7 @@ export const OnboardingScreen: FC<
               height: "100%",
               width: "100%",
               borderRadius: 25,
-              backgroundColor: "orange",
+              backgroundColor: "#4D94A0",
               margin: 50,
               justifyContent: "center",
               alignItems: "center",

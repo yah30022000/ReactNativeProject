@@ -30,7 +30,7 @@ export const ProfileScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
           height: 50,
           width: 200,
           borderRadius: 25,
-          backgroundColor: "orange",
+          backgroundColor: "#4D94A0",
           margin: 50,
           justifyContent: "center",
           alignItems: "center",

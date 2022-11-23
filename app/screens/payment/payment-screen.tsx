@@ -18,26 +18,26 @@ export const PaymentScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.navigate("paymentComplete" as any)}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
             width: 200,
             borderRadius: 25,
-            backgroundColor: "orange",
+            backgroundColor: "#4D94A0",
             margin: 50,
             justifyContent: "center",
             alignItems: "center",
           }}>
           <PaperText style={{color: "white"}}>
-            To Payment Complete Page
+            USE PAYMENT METHOD
           </PaperText>
         </View>
       </TouchableHighlight>
 
       <TouchableHighlight
         onPress={() => navigation.goBack()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -54,7 +54,7 @@ export const PaymentScreen: FC<
 
       <TouchableHighlight
         onPress={() => navigation.popToTop()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,

@@ -47,13 +47,9 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
     index: number;
   }) => (
     <TouchableHighlight
-      onPress={()=>{
-        // ()=>navigation.navigate("hotelFilter" as any, {hotelId: item.hotelId})
-      }}
+      onPress={() => navigation.navigate("hotelSearchFilter" as any)}
       underlayColor={"transparent"}>
-      <View style={{
-        flexDirection: "row",
-        justifyContent: "flex-start"}}>
+      <View style={{ flexDirection: "row" }}>
         <View style={HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN}>
           <View style={HOTEL_LIST_SCREEN_IMAGE}>
             <Image
@@ -97,23 +93,27 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
   return (
     <SafeAreaView>
-      <TouchableHighlight
-        onPress={() => navigation.goBack()}
-        underlayColor={"transparent"}>
-        <View style={HOTEL_LIST_BACK_BUTTON}>
-          <ButtonWithColorBg
-            size={25}
-            color={colors.white}
-            iconName={"chevron-back"}
-            iconProvider={"Ionicons"}
-            backgroundColor={colors.black}
-            onPress={() => navigation.goBack()}
-          />
+      <View style={{flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20}}>
+        <TouchableHighlight
+          style={{flexGrow: 0.4}}
+          onPress={() => navigation.goBack()}
+          underlayColor={"transparent"}>
+          <View style={HOTEL_LIST_BACK_BUTTON}>
+            <ButtonWithColorBg
+              size={25}
+              color={colors.white}
+              iconName={"chevron-back"}
+              iconProvider={"Ionicons"}
+              backgroundColor={colors.black}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        </TouchableHighlight>
+        <View style={HOTEL_LIST_SCREEN_TITLE}>
+          <PaperText style={HOTEL_LIST_SCREEN_TITLE_TEXT}>HOTELS</PaperText>
         </View>
-      </TouchableHighlight>
-      <View style={HOTEL_LIST_SCREEN_TITLE}>
-        <PaperText style={HOTEL_LIST_SCREEN_TITLE_TEXT}>HOTELS</PaperText>
       </View>
+
       <View
         style={HOTEL_LIST_FLAT_LIST_WRAPPER}>
         <FlatList
@@ -130,7 +130,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
       {/* <TouchableHighlight
         onPress={() => navigation.navigate("hotelDetail" as any)}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
@@ -147,7 +147,7 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
       <TouchableHighlight
         onPress={() => navigation.popToTop()}
-        underlayColor={"azure"}>
+        underlayColor={"transparent"}>
         <View
           style={{
             height: 50,
