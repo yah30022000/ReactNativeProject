@@ -16,6 +16,8 @@ import {GestureResponderEvent, TextStyle, View, ViewStyle} from "react-native";
 import {StackNavigatorParamList, TabNavigatorParamList} from "../navigators";
 
 export interface ButtonProp {
+  style?:ViewStyle
+  textStyle?:TextStyle
   size: number;
   color: string;
   backgroundColor?: string;
@@ -61,14 +63,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "AntDesign":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <AntDesignIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -80,14 +82,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "Entypo":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <EntypoIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -99,14 +101,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "EvilIcons":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <EvilIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -118,14 +120,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "Feather":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <FeatherIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -137,14 +139,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "Fontisto":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <FontAwesomeIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -157,14 +159,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "FontAwesome":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <FontAwesomeIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -176,14 +178,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "FontAwesome5":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <FontAwesome5Icon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -195,14 +197,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "Foundation":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <FoundationIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -214,14 +216,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "Ionicons":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <Ionicon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -233,14 +235,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "MaterialIcons":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <MaterialIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -252,14 +254,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     case "MaterialCommunityIcons":
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <MaterialCommunityIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
@@ -271,14 +273,14 @@ export default function ButtonWithColorBg(props: ButtonProp) {
     default:
       return (
         <TouchableOpacity onPress={props.onPress}>
-          <View style={iconStyle}>
+          <View style={{...iconStyle,...props.style}}>
             <MaterialCommunityIcon
               name={props.iconName}
               size={props.size}
               color={props.color}
             />
           </View>
-          <View style={textStyle}>
+          <View style={{...textStyle, ...props.textStyle}}>
             {props.label ? (
               <PaperText style={{flexShrink: 1}}>{props.label}</PaperText>
             ) : (
