@@ -1,6 +1,21 @@
-# ReactNativeProject - Travel App
+# TripToop - Travel App
 
-## Environment Setting
+<div style="justify-content: center; display: flex;">
+   <img src="assets/icon/TripTroop-circle-inner.png" height="400">
+</div>
+
+## Table of Contents
+
+- ### [Environment Setting](#environment-setting)
+   - #### [iOS Setting](#ios-setting)
+   - #### [Android Setting](#android-setting)
+- ### [Run the App](#run-the-app)
+- ### [React Navigation](#react-navigation)
+  - #### [Route Architecture](#route-architecture)
+  - #### [Create new screens](#create-new-screens)
+- ### [React Native Vector Icons issue](#react-native-vector-icons-issue)
+
+## Environment Setting <a name="environment-setting"/>
 
 [**React Native Official Guide**](https://reactnative.dev/docs/environment-setup)
 
@@ -10,7 +25,7 @@ npm install
 yarn install
 ```
 
-### iOS Setting
+### iOS Setting <a name="ios-setting"/>
 
 ```bash
 brew install node
@@ -48,7 +63,7 @@ rm -rf build
 cd ../<project-root>
 ```
 
-### Android Setting
+### Android Setting <a name="#android-setting"/>
 
 1. Commands
 ```bash
@@ -86,7 +101,7 @@ https://developer.android.com/studio/run/managing-avds
 
 ---
 
-## Run the App
+## Run the App <a name="run-the-app"/>
 
 ```bash
 # watcher mode for debug purpose, enable instant hot reload
@@ -115,14 +130,16 @@ npx react-native run-android --deviceId="Samsung Galaxy S22"
 
 ```
 
-## React Navigation
+---
 
-### Route Architecture
+## React Navigation <a name="react-navigation"/>
+
+### Route Architecture <a name="route-architecture"/>
 
 > [**Nesting Navigators**](https://reactnavigation.org/docs/nesting-navigators)
-> 
+>
 > Route Links of this project:
-> 
+>
 > AppNavigator/NavigationContainer <br>
 > ┣ SplashStack (not yet) <br>
 > &nbsp;&nbsp; ┣ SplashScreen <br>
@@ -144,7 +161,7 @@ npx react-native run-android --deviceId="Samsung Galaxy S22"
 > &nbsp;&nbsp; ┣ PaymentScreen <br>
 > &nbsp;&nbsp; ┣ PaymentCompleteScreen <br>
 
-### Create new screens
+### Create new screens <a name="create-new-screens"/>
 
 1. At ```app/screens```, add new page ```new-screen.tsx```  
 2. At ```app/navigators/app-stack.tsx```, add new property at param list and new screen in stack navigator
@@ -169,7 +186,7 @@ npx react-native run-android --deviceId="Samsung Galaxy S22"
 
 ---
 
-## React Native Vector Icons issue
+## React Native Vector Icons issue <a name="react-native-vector-icons-issue"/>
 
 iOS - https://github.com/oblador/react-native-vector-icons#ios
 
@@ -655,8 +672,8 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
    [**Amplify Library Auth Getting Started**](https://docs.amplify.aws/lib/auth/getting-started/q/platform/react-native/)
 
    [**Amplify CLI Auth Overview**](https://docs.amplify.aws/cli/auth/overview/)
- 
-1. Create a new Auth Setting (Manual Setting with OAuth)
+
+1. Create a new Auth Setting (Manual Setting without OAuth)
 
    ```bash
    # add new auth setting
@@ -713,7 +730,7 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
    > Email
    > Name
    
-   Specify the app's refresh token expiration period (in days):
+   Specify the apps refresh token expiration period (in days):
    > 30
    
    Do you want to specify the user attributes this app can read and write?
@@ -728,17 +745,151 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
    Do you want to configure Lambda Triggers for Cognito?
    > No
    
+   
+   # if nothing else add and update
+   amplify push
    ```
+
+2. Update Auth Setting to add OAuth providers
+
+   [**Amplify Library Auth Social sign-in (OAuth)**](https://docs.amplify.aws/lib/auth/social/q/platform/react-native/)
+
+   AWS Cognito OAuth Hosted Endpoint will be generated after ```amplify auth update``` and ```amplify push```
+   - https://triptroop-authdomain-dev.auth.ap-southeast-1.amazoncognito.com
+   - Can also be accessed at [**AWS Cognito User
+     pool**](https://ap-southeast-1.console.aws.amazon.com/cognito/v2/idp/user-pools/ap-southeast-1_quWx4y7sM/app-integration?region=ap-southeast-1)
+
+   ```bash
+   # update auth setting
+   amplify auth update
+   
+   
+   What do you want to do?
+   > Walkthrough all the auth configurations
+   
+   Select the authentication/authorization services that you want to use:
+   > User Sign-Up, Sign-In, connected
+   with AWS IAM controls (Enables per-user Storage features for images or other content, Analytics, and mo
+   re)
+   
+   Allow unauthenticated logins? (Provides scoped down permissions that you can control via AWS IAM)
+   > No
+   
+   Do you want to enable 3rd party authentication providers in your identity pool?
+   > Yes
+   
+   Select the third party identity providers you want to configure for your identity pool:
+   Press <space> to pick
+   > Google
+   
+   Enter your Google Web Client ID for your identity pool:
+   > 341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com
+   
+   Do you want to add User Pool Groups?
+   > No
+   
+   Do you want to add an admin queries API?
+   > No
+   
+   Multifactor authentication (MFA) user login options: 
+   > OFF
+   
+   Email based user registration/forgot password:
+   > Enabled (Requires per-user email entry at registration)
+   -> Specify an email verification subject:
+      > Your Verification Code
+   -> Specify an email verification message:
+      > Your Verification Code is {####}
+   
+   Do you want to override the default password policy for this User Pool?
+   > No
+   
+   Specify the apps refresh token expiration period (in days):
+   > No
+   
+   Do you want to specify the user attributes this app can read and write?
+   > No
+   
+   Do you want to enable any of the following capabilities?
+   > press <Enter> not to select any of the choice
+   
+   Do you want to use an OAuth flow? 
+   > Yes
+   
+   What domain name prefix do you want to use? 
+   > triptroop-authdomain
+   
+   Which redirect signin URIs do you want to edit? 
+   press <space> to pick 
+      > myapp://
+        -> Update myapp:// 
+            > triptroop://
+   
+   Do you want to add redirect signin URIs?
+   > No
+   
+   Which redirect signout URIs do you want to edit? 
+   press <space> to pick 
+      > myapp://
+        -> Update myapp:// 
+            > triptroop://
+   
+   Do you want to add redirect signout URIs?
+   > No
+   
+   Select the OAuth flows enabled for this project.
+   > Authorization code grant
+   
+   Select the OAuth scopes enabled for this project. 
+   > Phone, Email, OpenID, Profile, aws.cognito.signin.user.admin
+   
+   Select the identity providers you want to configure for your user pool: 
+   press <space> to pick
+   > Google
+   
+   Enter your Google Web Client ID for your OAuth flow:
+   > 341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com
+   
+   Enter your Google Web Client Secret for your OAuth flow:
+   > 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
+   
+   Do you want to configure Lambda Triggers for Cognito?
+   > No
+   
+    
+   # if nothing else add and update
+   amplify push
+   ```
+
+3. (Common step for all OAuth, only do once!)
+
+   At ```ios/TripTroop/Info.plist```, inside ```<dict></dict>```
+   ```bash
+    <key>CFBundleURLTypes</key>
+    <array>
+         <dict>
+             <key>CFBundleURLSchemes</key>
+             <array>
+                 <string>triptroop</string>
+             </array>
+         </dict>
+    </array>
+   ```
+
+   At ```ios/TripTroop/AppDelegate.mm```
 
 After Add Auth and push to AWS Cognito, can visit:
 
-[**AWS Cognito User Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/users/?region=ap-southeast-1#/pool/ap-southeast-1_quWx4y7sM/details)
+[**AWS Cognito User Pool
+console**](https://ap-southeast-1.console.aws.amazon.com/cognito/users/?region=ap-southeast-1#/pool/ap-southeast-1_quWx4y7sM/details)
 
-[**AWS Cognito Identity Pool console**](https://ap-southeast-1.console.aws.amazon.com/cognito/pool/?region=ap-southeast-1&id=ap-southeast-1:5b3bb07c-a22a-4438-8971-04c10238fe20)
+[**AWS Cognito Identity Pool
+console**](https://ap-southeast-1.console.aws.amazon.com/cognito/pool/?region=ap-southeast-1&id=ap-southeast-1:5b3bb07c-a22a-4438-8971-04c10238fe20)
 
 ---
 
-[**Amplify Library Auth Sign up, Sign in & Sign out**](https://docs.amplify.aws/lib/auth/emailpassword/q/platform/react-native/)
+[**Amplify Library Auth Sign up, Sign in & Sign
+out**](https://docs.amplify.aws/lib/auth/emailpassword/q/platform/react-native/)
 
 
 

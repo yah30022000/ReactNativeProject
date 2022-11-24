@@ -1,5 +1,5 @@
 {
-  "name": "ReactNativeProject",
+  "name": "TripTroop",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -37,6 +37,7 @@
     "react-native-calendars": "^1.1291.1",
     "react-native-dotenv": "^3.4.2",
     "react-native-gesture-handler": "^2.8.0",
+    "react-native-inappbrowser-reborn": "^3.7.0",
     "react-native-keychain": "^8.1.1",
     "react-native-otp-inputs": "^7.4.0",
     "react-native-pager-view": "^6.1.0",

@@ -308,7 +308,7 @@ PODS:
     - glog
   - react-native-netinfo (9.3.6):
     - React-Core
-  - react-native-pager-view (6.1.0):
+  - react-native-pager-view (6.1.1):
     - React-Core
   - react-native-safe-area-context (4.4.1):
     - RCT-Folly
@@ -390,6 +390,8 @@ PODS:
     - React-Core
   - RNGestureHandler (2.8.0):
     - React-Core
+  - RNInAppBrowser (3.7.0):
+    - React-Core
   - RNKeychain (8.1.1):
     - React-Core
   - RNReanimated (2.13.0):
@@ -422,7 +424,7 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.5.0):
+  - RNSVG (13.6.0):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
@@ -498,6 +500,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
   - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -607,6 +610,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-clipboard/clipboard"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNInAppBrowser:
+    :path: "../node_modules/react-native-inappbrowser-reborn"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
   RNReanimated:
@@ -658,7 +663,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 1d5a9e84e419a57cabc23249aec3d837d1b03a80
   React-logger: f8071ad48248781d5afdb8a07f778758529d3019
   react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
-  react-native-pager-view: 7abf89f9834d9a4021b2fb6a5ef2abff570b46fb
+  react-native-pager-view: 3c66c4e2f3ab423643d07b2c7041f8ac48395f72
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   React-perflogger: 5e41b01b35d97cc1b0ea177181eb33b5c77623b6
   React-RCTActionSheet: 48949f30b24200c82f3dd27847513be34e06a3ae
@@ -676,15 +681,16 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: 2834e1c4af68697089cdd455ee4a4cdd198fa7dd
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
+  RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
   RNKeychain: ff836453cba46938e0e9e4c22e43d43fa2c90333
   RNReanimated: ce445c233a6ff5600223484a88ad5704945d972a
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
-  RNSVG: 38ca962c970dbce1ca38991a5aebf26d163f9efb
+  RNSVG: 3a79c0c4992213e4f06c08e62730c5e7b9e4dc17
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 1f02ef4ce4469aefc36167138441b27d988282b1
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 296edd9480163c4a92ef44baa16fc23b65fbfdf0
+PODFILE CHECKSUM: c22a039f91014815187fa3b21e6fbb6d719b3c70
 
 COCOAPODS: 1.11.3

@@ -38,7 +38,9 @@
         "amadeusAPI": {}
       },
       "auth": {
-        "TripTroopAuth": {}
+        "TripTroopAuth": {
+          "googleClientId": "341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com"
+        }
       }
     }
   }

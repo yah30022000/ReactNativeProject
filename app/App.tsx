@@ -1,12 +1,13 @@
 import React from "react";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as PaperProvider } from "react-native-paper";
-import {Provider as ReduxProvider} from 'react-redux';
+import { Provider as ReduxProvider } from "react-redux";
 import { AppNavigator } from "./navigators";
 import theme from "./theme/theme";
 import { store } from "./redux/store";
 
 const App = () => {
+
 
   return (
     <PaperProvider

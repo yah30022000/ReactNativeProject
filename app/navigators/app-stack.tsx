@@ -1,20 +1,32 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeBottomTab, HomeBottomTabProps } from "./home-bottom-tab";
-import { HotelSearchScreen, HotelSearchScreenProps,
-  PreLoginScreen, PreLoginScreenProps,
-  HotelListScreen, HotelSearchListProps,
-  HotelSearchFilterScreen, HotelSearchFilterScreenProps,
-  HotelDetailScreen, HotelDetailScreenProps,
-  HotelRoomSelectScreen, HotelRoomSelectScreenProps,
-  PaymentScreen, PaymentScreenProps,
-  PaymentCompleteScreen, PaymentCompleteScreenProps,
-  LoginScreen, LoginScreenProps,
+import {
+  HotelDetailScreen,
+  HotelDetailScreenProps,
+  HotelListScreen,
+  HotelRoomSelectScreen,
+  HotelRoomSelectScreenProps,
+  HotelSearchFilterScreen,
+  HotelSearchFilterScreenProps,
+  HotelSearchListProps,
+  HotelSearchScreen,
+  HotelSearchScreenProps,
+  LoginScreen,
+  LoginScreenProps,
   OnboardingScreen,
-  RegisterVerifyScreen, RegisterVerifyScreenProps
+  PaymentCompleteScreen,
+  PaymentCompleteScreenProps,
+  PaymentScreen,
+  PaymentScreenProps,
+  PreLoginScreen,
+  PreLoginScreenProps,
+  RegisterVerifyScreen,
+  RegisterVerifyScreenProps,
 } from "../screens";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-
+import { useEffect } from "react";
+import { Auth as AmplifyAuth, Hub as AmplifyHub } from "aws-amplify";
 
 
 /**
@@ -50,6 +62,31 @@ export const AppStack = () => {
 
   const isLoggedIn = useSelector<RootState>((state) => state.user.isLoggedIn);
 
+
+  // AWS Cognito OAuth
+  useEffect(() => {
+    const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
+      console.log("AmplifyHub Auth event: ", event, " data: ", data);
+      // switch (event) {
+      //   case 'signIn':
+      //   case 'cognitoHostedUI':
+      //     getUser().then(userData => setUser(userData));
+      //     break;
+      //   case 'signOut':
+      //     setUser(null);
+      //     break;
+      //   case 'signIn_failure':
+      //   case 'cognitoHostedUI_failure':
+      //     console.log('Sign in failure', data);
+      //     break;
+      // }
+
+      AmplifyAuth.currentAuthenticatedUser()
+        .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))
+        .catch(() => console.log('Not signed in'));
+    });
+    return unsubscribe;
+  }, []);
 
   return (
     <Stack.Navigator

@@ -13,6 +13,8 @@ import {
   PRE_LOGIN_SCREEN_VIEW,
 } from "../../theme";
 import { LoginButton } from "../../components/LoginButton";
+import { Auth as AmplifyAuth } from "aws-amplify";
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
 
 export interface PreLoginScreenProps {
 }
@@ -49,6 +51,7 @@ export const PreLoginScreen: FC<StackScreenProps<StackNavigatorParamList, "preLo
           {/* Lower Row */}
           <View style={PRE_LOGIN_SCREEN_LOWER_ROW}>
             <LoginButton label={"Login with Google"} authProvider={"google"} onPress={() => {
+              AmplifyAuth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })
             }} />
             <LoginButton label={"Login with Facebook"} authProvider={"facebook"} onPress={() => {
             }} />

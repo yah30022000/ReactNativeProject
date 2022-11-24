@@ -60,7 +60,7 @@ export function LoginButton(props: LoginButtonProps) {
         <View style={{
           width:
             (props.authProvider != "login" && props.authProvider != "logout" && props.authProvider != "register") ?
-              "75%" : "90%"
+              "80%" : "90%"
         }}>
           <PaperText style={{
             fontSize: 20,
