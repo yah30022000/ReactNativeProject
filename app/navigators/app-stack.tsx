@@ -27,6 +27,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { Auth as AmplifyAuth, Hub as AmplifyHub } from "aws-amplify";
+import { useAppDispatch } from "../redux/hooks";
+import { getCurrentAuthenticatedUserThunk } from "../redux/user/userSlice";
 
 
 /**
@@ -61,12 +63,13 @@ const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 export const AppStack = () => {
 
   const isLoggedIn = useSelector<RootState>((state) => state.user.isLoggedIn);
-
+  const dispatch = useAppDispatch();
 
   // AWS Cognito OAuth
   useEffect(() => {
     const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
       console.log("AmplifyHub Auth event: ", event, " data: ", data);
+      dispatch(getCurrentAuthenticatedUserThunk());
       // switch (event) {
       //   case 'signIn':
       //   case 'cognitoHostedUI':
@@ -81,9 +84,9 @@ export const AppStack = () => {
       //     break;
       // }
 
-      AmplifyAuth.currentAuthenticatedUser()
-        .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))
-        .catch(() => console.log('Not signed in'));
+      // AmplifyAuth.currentAuthenticatedUser()
+      //   .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))
+      //   .catch(() => console.log('Not signed in'));
     });
     return unsubscribe;
   }, []);

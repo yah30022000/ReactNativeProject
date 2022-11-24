@@ -45,6 +45,7 @@ export interface RegisterTabProps {
   registerSubmitCallback: (data: any) => void;
   signingUp: UserState["signingUp"];
   signUpError: UserState["signUpError"]
+  allowRegisterVerify: boolean;
 }
 
 export const RegisterTab = (props: RegisterTabProps) => {
@@ -298,7 +299,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
           },
         }}>
         {
-          props.signingUp == "failed" && props.signUpError ?
+          (props.signingUp == "failed" || props.allowRegisterVerify) && props.signUpError ?
             props.signUpError.message
             : props.signingUp == "completed" ?
               "Sign up successfully, please proceed to verify your account" : ""

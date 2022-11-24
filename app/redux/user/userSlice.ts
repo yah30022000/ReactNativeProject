@@ -8,6 +8,14 @@ import { ConfirmRegisterRequest } from "../../helper/user/confirm-register-reque
 // Define a type for the slice state
 export interface UserState {
   isLoggedIn: boolean;
+  signInResult?: {
+    email: string,
+    emailVerified: boolean,
+    username: string
+    name: string
+    authProvider: string
+    // accessToken?: string
+  };
   signUpResult?: {
     codeDeliveryDetails: CodeDeliveryDetails,
     userConfirmed: boolean,
@@ -21,14 +29,16 @@ export interface UserState {
     username?: string
   };
   signingUp: "loading" | "completed" | "failed" | "none";
-  userConfirmed: boolean // in case not following normal sign up process
+  userConfirmed: boolean; // in case not following normal sign up process
+  allowRegisterVerify: boolean;
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
   isLoggedIn: false,
   signingUp: "none",
-  userConfirmed: false
+  userConfirmed: false,
+  allowRegisterVerify: false,
 };
 
 // Normal Sign Up via AWS Cognito
@@ -80,12 +90,31 @@ export const confirmRegisterThunk = createAsyncThunk<any, ConfirmRegisterRequest
   "user/confirmRegister",
   async (requestBody: ConfirmRegisterRequest, thunkAPI) => {
     console.log("confirmRegisterThunk request body: ", requestBody);
-    const response: any = await AmplifyAuth.confirmSignUp(requestBody.username, requestBody.code)
+    const response: any = await AmplifyAuth.confirmSignUp(requestBody.username, requestBody.code);
     if (!response) {
       return thunkAPI.rejectWithValue(response);
     }
     return response;
-  });
+  },
+);
+
+export const getCurrentAuthenticatedUserThunk = createAsyncThunk<any, undefined>(
+  "user/getCurrentAuthenticatedUser",
+  async (_: undefined, thunkAPI) => {
+    let userData = await AmplifyAuth.currentAuthenticatedUser();
+    if (!userData) {
+      return thunkAPI.rejectWithValue(userData);
+    }
+
+    return {
+      email: userData.attributes.email,
+      emailVerified: userData.attributes.email_verified,
+      authProvider: JSON.parse(userData.attributes.identities)[0]["providerName"],
+      username: userData.username,
+      name: userData.attributes.name,
+    };
+  },
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -97,6 +126,14 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.isLoggedIn = false;
+      state.allowRegisterVerify = false;
+      state.userConfirmed = false;
+      state.signUpResult = undefined;
+      state.signInResult = undefined;
+      state.signUpError = undefined;
+      state.signingUp = "none";
+
+
     },
   },
   extraReducers: (builder) => {
@@ -118,30 +155,53 @@ export const userSlice = createSlice({
         message: action.error.message,
         username: action.meta.arg.email,
       };
-      console.log("signUpResult failed username: ", action.meta.arg.email, "code: ", action.error.code, " message: ", action.error.message);
+      // console.log('registerThunk failed: ', action)
+      console.log("registerThunk failed username: ", action.meta.arg.email, "code: ", action.error.code, " message: ", action.error.message);
     });
 
     // resendVerifyCodeThunk
     builder.addCase(resendVerifyCodeThunk.fulfilled, (state, action) => {
       console.log("resendVerifyCodeThunk completed: ", action.payload);
-      if(state.signUpResult){
-        state.signUpResult = {...state.signUpResult, userConfirmed: true}
-      }
-      state.userConfirmed = true
     });
     builder.addCase(resendVerifyCodeThunk.rejected, (state, action) => {
+      // console.log("resendVerifyCodeThunk failed: ", action);
       console.log("resendVerifyCodeThunk failed: ", action.error.message);
+      if (action.error.message != "User is already confirmed.") {
+        state.allowRegisterVerify = true;
+      } else {
+        state.allowRegisterVerify = false;
+        state.signUpError = {
+          code: action.error.code,
+          name: action.error.name,
+          message: "User is already confirmed, please try 'Forgot Password'",
+        };
+      }
     });
 
     // confirmRegisterThunk
     builder.addCase(confirmRegisterThunk.fulfilled, (state, action) => {
       console.log("confirmRegisterThunk completed: ", action.payload);
+      if (state.signUpResult) {
+        state.signUpResult = { ...state.signUpResult, userConfirmed: true };
+      }
+      state.userConfirmed = true;
     });
     builder.addCase(confirmRegisterThunk.rejected, (state, action) => {
       console.log("confirmRegisterThunk failed: ", action.error.message);
     });
+
+    // getCurrentAuthenticatedUserThunk
+    builder.addCase(getCurrentAuthenticatedUserThunk.fulfilled, (state, action) => {
+      console.log("getCurrentAuthenticatedUserThunk completed: ", action.payload);
+      state.signInResult = action.payload;
+      state.isLoggedIn = true;
+    });
+    builder.addCase(getCurrentAuthenticatedUserThunk.rejected, (state, action) => {
+      console.log("getCurrentAuthenticatedUserThunk failed: ", action.error.message);
+    });
   },
 });
+
 
 export const { login, logout } = userSlice.actions;
 

@@ -1,7 +1,8 @@
 /**
  * CSS Styles
  * */
-import { ImageStyle, TextStyle, ViewStyle } from "react-native";
+import {ImageStyle, TextStyle, ViewStyle} from "react-native";
+import {NativeViewGestureHandlerPayload} from "react-native-gesture-handler";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -53,7 +54,7 @@ export const PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE: ViewStyle = {
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
-}
+};
 
 export const PRE_LOGIN_SCREEN_LOWER_ROW_LOGIN_REGISTER: ViewStyle = {
   width: "100%",
@@ -89,8 +90,8 @@ export const LOGIN_SCREEN_LOGIN_TAB_VIEW: ViewStyle = {
 export const LOGIN_SCREEN_LOGIN_TAB_UPPER_ROW: ViewStyle = {
   width: "100%",
   height: "60%",
-  paddingHorizontal: "10%"
-}
+  paddingHorizontal: "10%",
+};
 
 export const LOGIN_SCREEN_LOGIN_TAB_FORGOT_PASSWORD_TEXT: TextStyle = {
   color: "#A0A0A0",
@@ -98,8 +99,8 @@ export const LOGIN_SCREEN_LOGIN_TAB_FORGOT_PASSWORD_TEXT: TextStyle = {
 };
 
 export const LOGIN_SCREEN_TEXT_INPUT_WRAPPER: ViewStyle = {
-  marginVertical: 10
-}
+  marginVertical: 10,
+};
 
 export const LOGIN_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   position: "absolute",
@@ -157,7 +158,6 @@ export const LOGIN_SCREEN_REGISTER_TAB_TNC_TEXT: TextStyle = {
   textAlign: "center",
 };
 
-
 /* Register Tab end*/
 
 /* RegisterVerifyScreen start */
@@ -166,21 +166,21 @@ export const REGISTER_VERIFY_SCREEN_TITLE_ROW: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   height: "10%",
-  marginTop: 50
+  marginTop: 50,
 };
 
 export const REGISTER_VERIFY_SCREEN_OTP_ROW: ViewStyle = {
   height: "20%",
-  marginHorizontal: 20
+  marginHorizontal: 20,
 };
 
-export const REGISTER_VERIFY_SCREEN_OTP_FOCUS:ViewStyle = {
+export const REGISTER_VERIFY_SCREEN_OTP_FOCUS: ViewStyle = {
   backgroundColor: theme.colors.mintLight,
   borderColor: theme.colors.mint,
-  borderWidth: 1
-}
+  borderWidth: 1,
+};
 
-export const REGISTER_VERIFY_SCREEN_OTP_INPUT_CONTAINER:ViewStyle = {
+export const REGISTER_VERIFY_SCREEN_OTP_INPUT_CONTAINER: ViewStyle = {
   backgroundColor: theme.colors.greyLight,
   height: 70,
   width: "15%",
@@ -188,12 +188,12 @@ export const REGISTER_VERIFY_SCREEN_OTP_INPUT_CONTAINER:ViewStyle = {
   flexDirection: "row",
   justifyContent: "center",
   alignItems: "center",
-}
+};
 
 export const REGISTER_VERIFY_SCREEN_OTP_INPUT: TextStyle = {
   fontSize: 40,
-  color: theme.colors.black
-}
+  color: theme.colors.black,
+};
 
 export const REGISTER_VERIFY_SCREEN_MISC_STYLE: ViewStyle = {
   flexDirection: "row",
@@ -201,7 +201,7 @@ export const REGISTER_VERIFY_SCREEN_MISC_STYLE: ViewStyle = {
   width: "100%",
   justifyContent: "space-around",
   alignItems: "center",
-}
+};
 
 export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_ROW_WRAPPER: ViewStyle = {
   flexDirection: "row",
@@ -222,7 +222,6 @@ export const REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER: ViewStyle = {
   height: "100%",
   width: "80%",
   borderRadius: 25,
-  backgroundColor: theme.colors.coral,
   // marginVertical: 70,
   justifyContent: "center",
   alignItems: "center",
@@ -271,7 +270,6 @@ export const REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_TEXT: TextStyle = {
   color: "white",
   fontSize: 20,
 };
-
 
 /* RegisterVerifyScreen end */
 
@@ -497,7 +495,6 @@ export const HOTEL_SEARCH_CITYNAME_TEXT: TextStyle = {
   color: "#767676",
   paddingTop: 5,
   paddingLeft: 5,
-
 };
 export const HOTEL_SEARCH_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
@@ -629,9 +626,12 @@ export const HOTEL_SEARCH_FLAT_LIST_WRAPPER: ViewStyle = {
   height: "100%",
 };
 
-export const HOTEL_SEARCH_FLAT_LIST: ViewStyle = { paddingTop: 25, flex: 1 };
+export const HOTEL_SEARCH_FLAT_LIST: ViewStyle = {paddingTop: 25, flex: 1};
 
-export const HOTEL_SEARCH_RATING_ROW: ViewStyle = { width: "100%", height: "15%" };
+export const HOTEL_SEARCH_RATING_ROW: ViewStyle = {
+  width: "100%",
+  height: "15%",
+};
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   position: "absolute",
@@ -639,7 +639,7 @@ export const HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   width: "100%",
   flexDirection: "row",
   justifyContent: "center",
-}
+};
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
   width: 200,
@@ -647,17 +647,17 @@ export const HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
-}
+};
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
   height: "100%",
-    width: "100%",
+  width: "100%",
   borderRadius: 25,
   backgroundColor: theme.colors.mint,
   // marginVertical: 70,
   justifyContent: "center",
   alignItems: "center",
-}
+};
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON: ViewStyle = {
   alignItems: "center",
@@ -678,7 +678,7 @@ export const HOTEL_LIST_SCREEN_TITLE: ViewStyle = {
   justifyContent: "flex-start",
   alignItems: "center",
   // marginBottom: 20,
-  flexGrow: 0.6
+  flexGrow: 0.6,
 };
 
 export const HOTEL_LIST_SCREEN_TITLE_TEXT: TextStyle = {
@@ -691,8 +691,8 @@ export const HOTEL_LIST_FLAT_LIST_WRAPPER: ViewStyle = {
   height: "100%",
   width: "100%",
   backgroundColor: "#FFFFFF",
-  paddingHorizontal: "5%"
-}
+  paddingHorizontal: "5%",
+};
 
 export const HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN: ViewStyle = {
   flexDirection: "row",
@@ -701,8 +701,8 @@ export const HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN: ViewStyle = {
 export const HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN: ViewStyle = {
   flexDirection: "column",
   marginLeft: 20,
-  width:"100%",
-  justifyContent: "flex-start"
+  width: "100%",
+  justifyContent: "flex-start",
 };
 
 export const HOTEL_LIST_SCREEN_IMAGE: ViewStyle = {
@@ -710,7 +710,7 @@ export const HOTEL_LIST_SCREEN_IMAGE: ViewStyle = {
 };
 
 export const HOTEL_LIST_HOTEL_NAME: ViewStyle = {
-  width: "60%"
+  width: "60%",
 };
 export const HOTEL_LIST_HOTEL_NAME_TEXT: TextStyle = {
   fontSize: 16,
@@ -735,11 +735,8 @@ export const HOTEL_SEARCH_FILTER_CROSS_BUTTON: ViewStyle = {
   paddingTop: 20,
 };
 
-export const HOTEL_FILTER_PRICE_RANGE: ViewStyle = {
 
-};
-
-export const HOTEL_FILTER_PRICE_RANGE_TEXT: TextStyle={
+export const HOTEL_FILTER_PRICE_RANGE_TEXT: TextStyle = {
   fontSize: 14,
   fontWeight: "bold",
 };
@@ -753,7 +750,7 @@ export const HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
   fontSize: 20,
   color: "black",
-}
+};
 
 export const HOTEL_SEARCH_FILTER_PRICE_RANGE: ViewStyle = {
   justifyContent: "flex-start",
@@ -763,7 +760,7 @@ export const HOTEL_SEARCH_FILTER_PRICE_RANGE: ViewStyle = {
 };
 
 export const HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT: TextStyle = {
-  fontSize: 14,
+  fontSize: 15,
   fontWeight: "bold",
 };
 
@@ -775,5 +772,168 @@ export const HOTEL_SEARCH_FILTER_PRICE: ViewStyle = {
 };
 
 export const HOTEL_SEARCH_FILTER_PRICE_TEXT: TextStyle = {
-  fontSize: 14,
+  fontSize: 16,
+};
+
+export const HOTEL_FILTER_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: 200,
+  height: 50,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const HOTEL_FILTER_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mint,
+  marginVertical: 150,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const HOTEL_FILTER_BOTTOM_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const HOTEL_FILTER_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  marginVertical: 18,
+  marginHorizontal: 40,
+  flexDirection: "column",
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN__DATE: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginRight: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_DATE_TEXT: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+};
+
+export const HOTEL_SEARCH_FILTER_RIGHT_BUTTON: ViewStyle = {
+  // justifyContent: "flex-end",
+  // flexDirection: "row",
+  // paddingBottom: 10,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginRight: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE_TEXT: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+};
+
+export const HOTEL_SEARCH_FILTER_DATE_COLUMN: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+};
+
+export const HOTEL_SEARCH_FILTER_ROOM_TYPE_COLUMN: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+};
+
+export const HOTEL_SEARCH_FILTER_PAYMENT_COLUMN: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+};
+
+export const HOTEL_SEARCH_FILTER_PAYMENT_TYPE: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginRight: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_PAYMENT_TEXT: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+};
+
+export const HOTEL_SEARCH_FILTER_BED_TYPE_COLUMN: ViewStyle = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_BED_TYPE: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginRight: 20,
+};
+
+export const HOTEL_SEARCH_FILTER_SCREEN_BED_TYPE_TEXT: TextStyle = {
+  fontSize: 16,
+  fontWeight: "bold",
+};
+export const HOTEL_FILTER_BUTTON_ICON: ViewStyle = {
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+/* HotelFilterScreen end */
+
+/* PaymentScreen start */
+export const PAYMENT_SCREEN_BACK_BUTTON: ViewStyle = {
+  justifyContent: "space-between",
+  flexDirection: "row",
+  marginLeft: 20,
+  paddingTop: 20,
+};
+
+export const PAYMENT_SCREEN_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  color: "white",
+  fontSize: 18,
+};
+
+export const PAYMENT_SCREEN_TITLE: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const PAYMENT_METHOD_BUTTON: ViewStyle = {
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const PAYMENT_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: 200,
+  height: 50,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const PAYMENT_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mintLight,
+  marginVertical: 150,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const PAYMENT_BOTTOM_BUTTON: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
 }
+
+/* PaymentScreen end */

@@ -37,6 +37,7 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { confirmRegisterThunk, login, resendVerifyCodeThunk } from "../../redux/user/userSlice";
 import { changeHotelSearching } from "../../redux/hotel/hotelSlice";
+import theme from "../../theme/theme";
 
 export interface RegisterVerifyScreenProps {
   exception: string | undefined
@@ -103,12 +104,10 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
     dispatch(login());
   }
 
-  useEffect(() => {
-  if(!!props.exception){
-    if (usernameFromError) {
-      dispatch(resendVerifyCodeThunk(usernameFromError));
-    }
-  }},[]);
+  // useEffect(() => {
+  // if(!!props.exception){
+  //   resendVerifyCode()
+  // }},[]);
 
   useEffect(() => {
     // resend time, reduce every second
@@ -149,26 +148,25 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
 
       {/* Resend Code */}
       <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_ROW_WRAPPER}>
-        {!resendTimer || resendTimer <= 0 ? (
+
           <TouchableHighlight
             style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TOUCHABLE}
-            onPress={() => {
+            onPress={!resendTimer || resendTimer <= 0 ? () => {
               setResendTimer(10000);
               resendVerifyCode();
-            }}
+            }: ()=>{}}
             underlayColor={"transparent"}>
-            <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER}>
+            <View style={{...REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER,
+              backgroundColor: !resendTimer || resendTimer <= 0 ?
+                colors.coral: colors.grey
+            }}>
               <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON}>
                 <PaperText style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TEXT}>
-                  RESEND CODE
+                  RESEND CODE ({resendTimer / 1000}s)
                 </PaperText>
               </View>
             </View>
           </TouchableHighlight>
-        ) : (
-          <PaperText>Resend code in {resendTimer / 1000}s</PaperText>
-        )}
-
       </View>
 
       {/* Bottom Verify Code Button */}
@@ -201,9 +199,7 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
         onDismiss={onDismissSnackBar}
         action={{
           label: "Close",
-          onPress: () => {
-            onDismissSnackBar();
-          },
+          onPress: onDismissSnackBar,
         }}>
         {
           props.exception && props.exception == "UsernameExistsException" ?

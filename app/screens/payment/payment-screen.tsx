@@ -1,73 +1,72 @@
-import {FC} from "react";
+import React, {FC} from "react";
 import {StackScreenProps} from "@react-navigation/stack";
 import {StackNavigatorParamList} from "../../navigators";
-import {Text as PaperText} from "react-native-paper";
-import {TouchableHighlight, View} from "react-native";
+import {Text as PaperText, useTheme} from "react-native-paper";
+import {SafeAreaView, TouchableHighlight, View} from "react-native";
+import {
+  PAYMENT_SCREEN_BACK_BUTTON,
+  PAYMENT_SCREEN_TITLE,
+  PAYMENT_SCREEN_TITLE_TEXT,
+  PAYMENT_METHOD_BUTTON,
+  PAYMENT_BOTTOM_BUTTON_TOUCHABLE,
+  PAYMENT_BOTTOM_BUTTON_WRAPPER,
+  PAYMENT_BOTTOM_BUTTON,
+} from "../../theme/styles";
+import { useAppDispatch } from "../../redux/hooks";
+import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 
 export interface PaymentScreenProps {}
 
 export const PaymentScreen: FC<
   StackScreenProps<StackNavigatorParamList, "payment">
 > = ({route, navigation}) => {
+  const {colors} = useTheme();
+  const dispatch = useAppDispatch();
   /* props */
   // const {}: PaymentScreenProps = route.params;
 
   return (
-    <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-      <PaperText>PaymentScreen</PaperText>
-
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.mint, paddingHorizontal: 25}}>
+    <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}>
       <TouchableHighlight
+          onPress={() => navigation.goBack()}
+          underlayColor={"transparent"}>
+          <View style={PAYMENT_SCREEN_BACK_BUTTON}>
+            <ButtonWithColorBg
+              size={25}
+              color={colors.mint}
+              iconName={"left"}
+              iconProvider={"AntDesign"}
+              backgroundColor={colors.white}
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+        </TouchableHighlight>
+      </View>
+      <View style={PAYMENT_SCREEN_TITLE}>
+      <PaperText style={PAYMENT_SCREEN_TITLE_TEXT}>
+        PAYMENT METHODS
+        </PaperText>
+      </View>
+      <View style={PAYMENT_METHOD_BUTTON}>
+      <TouchableHighlight
+      style={PAYMENT_BOTTOM_BUTTON_TOUCHABLE}
         onPress={() => navigation.navigate("paymentComplete" as any)}
         underlayColor={"transparent"}>
-        <View
-          style={{
-            height: 50,
-            width: 200,
-            borderRadius: 25,
-            backgroundColor: "#4D94A0",
-            margin: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <PaperText style={{color: "white"}}>
-            USE PAYMENT METHOD
-          </PaperText>
-        </View>
+          <View style={PAYMENT_BOTTOM_BUTTON_WRAPPER}>
+            <View style={PAYMENT_BOTTOM_BUTTON}>
+            <PaperText style={{color: colors.mint}}>
+                  USE PAYMENT METHOD
+                </PaperText>
+            </View>
+          </View>
       </TouchableHighlight>
-
-      <TouchableHighlight
-        onPress={() => navigation.goBack()}
-        underlayColor={"transparent"}>
-        <View
-          style={{
-            height: 50,
-            width: 200,
-            borderRadius: 25,
-            backgroundColor: "grey",
-            margin: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <PaperText style={{color: "white"}}>Back Button</PaperText>
-        </View>
-      </TouchableHighlight>
-
-      <TouchableHighlight
-        onPress={() => navigation.popToTop()}
-        underlayColor={"transparent"}>
-        <View
-          style={{
-            height: 50,
-            width: 200,
-            borderRadius: 25,
-            backgroundColor: "pink",
-            margin: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <PaperText style={{color: "white"}}>To Home Page</PaperText>
-        </View>
-      </TouchableHighlight>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };

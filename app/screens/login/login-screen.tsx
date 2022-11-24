@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { StackNavigatorParamList } from "../../navigators";
-import { login, registerThunk, UserState } from "../../redux/user/userSlice";
+import { login, registerThunk, resendVerifyCodeThunk, UserState } from "../../redux/user/userSlice";
 import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, useWindowDimensions } from "react-native";
@@ -45,13 +45,16 @@ export const LoginScreen: FC<
     {key: "login", title: "Login"},
     {key: "register", title: "Register"},
   ]);
-  const signingUp = useSelector<RootState>((state)=>state.user.signingUp) as UserState["signingUp"];
-  const signUpError = useSelector<RootState>((state)=>state.user.signUpError) as UserState["signUpError"];
+  const [usernameForLocal, setUsernameForLocal] = useState<string>("");
+
 
   // global states
   // useAppDispatch() includes normal reducer and extra reducer (async thunk)
   // useDispatch() only include normal reducer
   const dispatch = useAppDispatch();
+  const signingUp = useSelector<RootState>((state)=>state.user.signingUp) as UserState["signingUp"];
+  const signUpError = useSelector<RootState>((state)=>state.user.signUpError) as UserState["signUpError"];
+  const allowRegisterVerify = useSelector<RootState>((state)=>state.user.allowRegisterVerify) as UserState["allowRegisterVerify"];
 
   /* React Hook Form Start */
   const PASSWORD_MIN_LENGTH = 8;
@@ -97,6 +100,7 @@ export const LoginScreen: FC<
 
   const registerSubmitCallback = (data: RegisterFormData) => {
     // console.log("registerSubmitCallback: ", data);
+    setUsernameForLocal(data.email)
     dispatch(registerThunk(data))
   };
 
@@ -141,6 +145,7 @@ export const LoginScreen: FC<
             registerSubmitCallback={registerSubmitCallback}
             signingUp={signingUp}
             signUpError={signUpError}
+            allowRegisterVerify={allowRegisterVerify}
            />
         );
       default:
@@ -153,7 +158,10 @@ export const LoginScreen: FC<
       navigation.navigate("registerVerify" as any, {exception: undefined})
     }
     if(signUpError && signUpError.code == "UsernameExistsException"){
-      navigation.navigate("registerVerify" as any, {exception: "UsernameExistsException"})
+      dispatch(resendVerifyCodeThunk(usernameForLocal))
+    }
+    if(allowRegisterVerify && signUpError){
+      navigation.navigate("registerVerify" as any, {exception: signUpError.code})
     }
   },[signingUp, signUpError])
 

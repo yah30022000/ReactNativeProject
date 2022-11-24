@@ -14,6 +14,18 @@
   - #### [Route Architecture](#route-architecture)
   - #### [Create new screens](#create-new-screens)
 - ### [React Native Vector Icons issue](#react-native-vector-icons-issue)
+  - #### [How to use React Native Vector Icons within React Native Paper](#how-to-react-native-vector-icons-issue)
+- ### [Redux](#redux)
+  - #### [Create new Reducer/Slice](#create-new-reducer/slice)
+- ### [AWS Amplify](#aws-amplify)
+  - #### [AWS API Gateway](#aws-api-gateway)
+  - #### [AWS Lambda Function](#aws-lambda)
+  - #### [AWS CloudFormation](#aws-cloudformation)
+  - #### [AWS CloudWatch](#aws-cloudwatch)
+  - #### [AWS Cognito](#aws-cognito)
+- ### [Amadeus - Hotel & Flight Booking API](#amadeus)
+  - #### [API Call Sample (without Node SDK)](#amadeus-api-call)
+  - #### [Get Access Token API (expires every 30 minutes)](#amadeus-access-token)
 
 ## Environment Setting <a name="environment-setting"/>
 
@@ -198,7 +210,7 @@ pod install
 
 Android - https://github.com/oblador/react-native-vector-icons#android
 
-### How to use React Native Vector Icons within React Native Paper
+### How to use React Native Vector Icons within React Native Paper <a name="how-to-react-native-vector-icons-issue"/>
 
 React Native Vector Icons List
 https://oblador.github.io/react-native-vector-icons/
@@ -222,15 +234,16 @@ import { IconButton as PaperIconButton } from "react-native-paper";
 
 ---
 
-## Redux
+## Redux <a name="redux"/>
 
-### Create new Reducer/Slice
+### Create new Reducer/Slice <a name="create-new-reducer/slice"/>
 
 [**Typescript Quick start**](https://redux-toolkit.js.org/tutorials/typescript)
 
 1. At ```app/redux```, add new folder and ```newSlice.ts```
 2. The content can refer to ```user/userSlice.ts```
 3. At ```app/redux/store.ts```, add new reducer/slice
+
    ```typescript
    import newFeatureReducer from './new-feature/newSlice'
    
@@ -241,7 +254,9 @@ import { IconButton as PaperIconButton } from "react-native-paper";
     }
    })
    ```
+   
 4. To use it, at any React Component under App Tree (wrapped by App.tsx)
+
    ```typescript
    import { useSelector } from "react-redux";
    import { RootState } from "../redux/store";
@@ -260,50 +275,51 @@ import { IconButton as PaperIconButton } from "react-native-paper";
    ```
 
 5. (API Call) add ```createAsyncThunk``` callback function inside slice file, DO NOT USE ```Axios``` inside thunk function, you must use ```fetch``` !!!
-```typescript
-export const getAmadeusAccessToken = createAsyncThunk<GetAccessTokenResponse, GetAccessTokenRequest>(
-        "hotel/getAmadeusAccessToken",
-        async (requestBody: GetAccessTokenRequest, thunkAPI) => {
-          
-           const response = await fetch(`${amadeusTestApiUrl}/v1/security/oauth2/token`, {
-              method: "POST",
-              headers: {
-                 "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: QueryString.stringify(requestBody)
-           })
-           if (response.status < 200 || response.status >= 300) {
-              return thunkAPI.rejectWithValue((await response.json()));
-           }
 
-           let data: GetAccessTokenResponse = await response.json()
-
-           return data;
-        },
-)
-```
+   ```typescript
+   export const getAmadeusAccessToken = createAsyncThunk<GetAccessTokenResponse, GetAccessTokenRequest>(
+           "hotel/getAmadeusAccessToken",
+           async (requestBody: GetAccessTokenRequest, thunkAPI) => {
+             
+              const response = await fetch(`${amadeusTestApiUrl}/v1/security/oauth2/token`, {
+                 method: "POST",
+                 headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                 },
+                 body: QueryString.stringify(requestBody)
+              })
+              if (response.status < 200 || response.status >= 300) {
+                 return thunkAPI.rejectWithValue((await response.json()));
+              }
+   
+              let data: GetAccessTokenResponse = await response.json()
+   
+              return data;
+           },
+   )
+   ```
 6. (API Call) and then add builder.Case function inside ```extraReducer``` of ```createSlice```
-```typescript
-export const hotelSlice = createSlice({
-   name: "hotel",
-   initialState,
-   reducers: {
-      ...
-   },
-   extraReducers: (builder) => {
-      builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
-         state.accessToken = action.payload.access_token;
-      });
-      builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
-         state.accessToken = "";
-      });
-   },
-});
-
-```
+   ```typescript
+   export const hotelSlice = createSlice({
+      name: "hotel",
+      initialState,
+      reducers: {
+         ...
+      },
+      extraReducers: (builder) => {
+         builder.addCase(getAmadeusAccessToken.fulfilled, (state, action) => {
+            state.accessToken = action.payload.access_token;
+         });
+         builder.addCase(getAmadeusAccessToken.rejected, (state, action) => {
+            state.accessToken = "";
+         });
+      },
+   });
+   
+   ```
 
 ---
-## AWS Amplify
+## AWS Amplify <a name="aws-amplify"/>
 
 Useful Links
 
@@ -350,6 +366,7 @@ Useful Links
    ```
 
    Remember to save down the access ID and access secret (better download CSV)
+
    ![Amplify User Creation!](assets/images/readme/amplify-user-creation.gif "Amplify User Creation")
 
    ```bash
@@ -466,7 +483,7 @@ Useful Links
    AppRegistry.registerComponent(appName, () => App);
    ```
 
-### API - AWS Amplify -> AWS API Gateway
+### API - AWS Amplify -> AWS API Gateway <a name="aws-api-gateway"/>
 
 1. Create a new API (~ MVC Controller)
 
@@ -567,7 +584,7 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
 
 ![AWS_API_Gateway!](assets/images/readme/aws-api-gateway1.png "AWS API Gateway")
 
-### API - AWS Amplify -> AWS Lambda Function
+### API - AWS Amplify -> AWS Lambda Function <a name="aws-lambda"/>
 
 1. To install NPM dependencies and build Lambda function (express.js)
 
@@ -651,7 +668,7 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
    );
    ```
 
-### Deployment Tracker - AWS Amplify -> AWS CloudFormation
+### Deployment Tracker - AWS Amplify -> AWS CloudFormation <a name="aws-cloudformation"/>
 
 [**AWS CloudFormation Reference Link**](https://ap-southeast-1.console.aws.amazon.com/cloudformation/home?region=ap-southeast-1#/stacks?filteringStatus=active&filteringText=&viewNested=true&hideStacks=false)
 
@@ -659,13 +676,13 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
 
 ![AWS_CloudFormation!](assets/images/readme/aws-cloudformation1.png "AWS CloudFormation")
 
-### Logger - AWS Amplify -> AWS CloudWatch
+### Logger - AWS Amplify -> AWS CloudWatch <a name="aws-cloudwatch"/>
 
 ![AWS_CloudWatch1!](assets/images/readme/aws-cloudwatch1.png "AWS CloudWatch 1")
 ![AWS_CloudWatch2!](assets/images/readme/aws-cloudwatch2.png "AWS CloudWatch 2")
 ![AWS_CloudWatch3!](assets/images/readme/aws-cloudwatch3.png "AWS CloudWatch 3")
 
-### Auth - AWS Amplify -> AWS Cognito
+### Auth - AWS Amplify -> AWS Cognito <a name="aws-cognito"/>
 
 1a. Create a new Auth Setting (Default Setting without OAuth)
    
@@ -895,14 +912,14 @@ out**](https://docs.amplify.aws/lib/auth/emailpassword/q/platform/react-native/)
 
 ---
 
-## Amadeus - Hotel & Flight Booking API
+## Amadeus - Hotel & Flight Booking API <a name="amadeus"/>
 
 [**Amadeus Self Service (Personal Account) API Setup Guide**](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
 
 1. Register Account - https://developers.amadeus.com/register, Create account, Confirm my account
 2. Go to [**My Self-Service Workspace**](https://developers.amadeus.com/my-apps), Create New App, Keep your ```API Key``` & ```API Secret``` somewhere safe
 
-### API Call Sample (without Node SDK)
+### API Call Sample (without Node SDK) <a name="amadeus-api-call"/>
 
 Postman API Spec: https://documenter.getpostman.com/view/2672636/RWEcPfuJ#8196c48f-30f9-4e3b-8590-e22f96da8326
 
@@ -910,7 +927,7 @@ API Reference: https://developers.amadeus.com/self-service/category/hotel/api-do
 
 API Cheatsheet: https://possible-quilt-2ff.notion.site/Cheat-sheet-e059caf4fcd342b78705f9f3d6f88f1d
 
-#### Get Access Token API (expires every 30 minutes)
+#### Get Access Token API (expires every 30 minutes) <a name="amadeus-access-token"/>
 
 https://developers.amadeus.com/self-service/apis-docs/guides/authorization-262
 
