@@ -13,7 +13,7 @@ export interface UserState {
     emailVerified: boolean,
     username: string
     name: string
-    authProvider: string
+    authProvider: string | null
     // accessToken?: string
   };
   signUpResult?: {
@@ -105,11 +105,15 @@ export const getCurrentAuthenticatedUserThunk = createAsyncThunk<any, undefined>
     if (!userData) {
       return thunkAPI.rejectWithValue(userData);
     }
+    let authProvider = null;
+    if(userData.attributes.identities){
+      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"]
+    }
 
     return {
       email: userData.attributes.email,
       emailVerified: userData.attributes.email_verified,
-      authProvider: JSON.parse(userData.attributes.identities)[0]["providerName"],
+      authProvider: authProvider,
       username: userData.username,
       name: userData.attributes.name,
     };

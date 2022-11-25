@@ -28,7 +28,7 @@ import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { Auth as AmplifyAuth, Hub as AmplifyHub } from "aws-amplify";
 import { useAppDispatch } from "../redux/hooks";
-import { getCurrentAuthenticatedUserThunk } from "../redux/user/userSlice";
+import { getCurrentAuthenticatedUserThunk, logout } from "../redux/user/userSlice";
 
 
 /**
@@ -65,24 +65,23 @@ export const AppStack = () => {
   const isLoggedIn = useSelector<RootState>((state) => state.user.isLoggedIn);
   const dispatch = useAppDispatch();
 
-  // AWS Cognito OAuth
+  // AWS Cognito OAuth - Hub is a radio to receive message instantly
   useEffect(() => {
     const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
       console.log("AmplifyHub Auth event: ", event, " data: ", data);
-      dispatch(getCurrentAuthenticatedUserThunk());
-      // switch (event) {
-      //   case 'signIn':
-      //   case 'cognitoHostedUI':
-      //     getUser().then(userData => setUser(userData));
-      //     break;
-      //   case 'signOut':
-      //     setUser(null);
-      //     break;
-      //   case 'signIn_failure':
-      //   case 'cognitoHostedUI_failure':
-      //     console.log('Sign in failure', data);
-      //     break;
-      // }
+      switch (event) {
+        case 'signIn':
+        case 'cognitoHostedUI':
+          dispatch(getCurrentAuthenticatedUserThunk());
+          break;
+        case 'signOut':
+          dispatch(logout())
+          break;
+        case 'signIn_failure':
+        case 'cognitoHostedUI_failure':
+          console.log('Sign in failure', data);
+          break;
+      }
 
       // AmplifyAuth.currentAuthenticatedUser()
       //   .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))

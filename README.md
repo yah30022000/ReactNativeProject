@@ -881,6 +881,7 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
 3. (Common step for all OAuth, only do once!)
 
    At ```ios/TripTroop/Info.plist```, inside ```<dict></dict>```
+
    ```bash
     <key>CFBundleURLTypes</key>
     <array>
@@ -893,7 +894,47 @@ and ```amplify/backend/api/<api-name>/cli-inputs.json```
     </array>
    ```
 
-   At ```ios/TripTroop/AppDelegate.mm```
+   At ```ios/TripTroop/AppDelegate.mm```, to enable Linking module that relate to InAppBrowser for OAuth
+
+   ```
+   #import <React/RCTLinkingManager.h>
+
+   - (BOOL)application:(UIApplication *)application
+     openURL:(NSURL *)url
+     options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+     {
+     return [RCTLinkingManager application:application openURL:url options:options];
+     }
+   ```
+    
+   At ```index.js```, refer to the current already completed version. It adds async function ```urlOpener``` to enable inAppBrowser for OAuth
+    
+   ```javascript
+   Amplify.configure({
+      ...awsmobile,
+      oauth: { 
+          ...awsmobile.oauth,
+          urlOpener,
+      },
+   });
+   ```
+
+4. At either ```app/App.tsx``` or ```app/navigators/app-stack.tsx```, place Amplify Hub listener (radio) inside ```useEffect()``` to receive any Cognito event. Please refer to the current version of the file
+    
+   ```typescript
+   useEffect(() => {
+      const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
+        console.log("AmplifyHub Auth event: ", event, " data: ", data);
+        switch (event) {
+          case 'signIn':
+          case 'cognitoHostedUI':
+            dispatch(getCurrentAuthenticatedUserThunk());
+            break;
+        }
+      });
+      return unsubscribe;
+   }, []);
+   ```
 
 After Add Auth and push to AWS Cognito, can visit:
 
