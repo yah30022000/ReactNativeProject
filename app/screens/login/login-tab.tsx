@@ -16,9 +16,12 @@ import {
   HelperText as PaperHelperText,
   Text as PaperText,
   TextInput as PaperTextInput,
+  Snackbar as PaperSnackbar,
+  ActivityIndicator as PaperActivityIndicator
 } from "react-native-paper";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {LoginFormData} from "./login-screen";
+import { UserState } from "../../redux/user/userSlice";
 
 export interface LoginTabProps {
   PASSWORD_MIN_LENGTH: number;
@@ -31,9 +34,24 @@ export interface LoginTabProps {
   loginFormState: FormState<LoginFormData>;
   loginHandleSubmit: UseFormHandleSubmit<LoginFormData>;
   loginSubmitCallback: (data: any) => void;
+  signingIn: UserState["signingIn"];
+  signInError: UserState["signInError"]
 }
 
 export const LoginTab = (props: LoginTabProps) => {
+
+   /* Bottom Snackbar start */
+   const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+   const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
+   const onDismissSnackBar = () => setSnackbarVisible(false);
+ 
+   useEffect(()=>{
+     if(props.signingIn === "completed" || props.signingIn === "failed"){
+       onToggleSnackBar()
+     }
+   }, [props.signingIn])
+   /* Bottom Snackbar end */
+   
   return (
     <View style={LOGIN_SCREEN_LOGIN_TAB_VIEW}>
       {/* Upper Row */}
@@ -126,13 +144,40 @@ export const LoginTab = (props: LoginTabProps) => {
           underlayColor={"transparent"}>
           <View style={LOGIN_SCREEN_BOTTOM_BUTTON_WRAPPER}>
             <View style={LOGIN_SCREEN_BOTTOM_BUTTON}>
-              <PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>
-                LOGIN
-              </PaperText>
+            {
+                props.signingIn == "loading" ? (
+                  <PaperActivityIndicator animating={true} color={"#FFFFFF"} />
+                ) : (<PaperText style={LOGIN_SCREEN_BOTTOM_BUTTON_TEXT}>
+                  LOGIN
+                </PaperText>)
+              }
             </View>
           </View>
         </TouchableHighlight>
       </View>
+
+
+      <PaperSnackbar
+        style={{
+          backgroundColor: props.signingIn == "failed" ? "#f13a59" :
+            props.signingIn == "completed" ? "#42c949" : "#4D94A0"
+        }}
+        visible={snackbarVisible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Close",
+          color: "white",
+          onPress: () => {
+            onDismissSnackBar();
+          },
+        }}>
+        {
+          props.signingIn == "failed" && props.signInError ?
+            props.signInError.message
+            : props.signingIn == "completed" ?
+              "Sign In successfully" : ""
+        }
+      </PaperSnackbar>
     </View>
   );
 };

@@ -4,7 +4,7 @@ import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text as PaperText } from "react-native-paper";
 import { TouchableHighlight, View } from "react-native";
-import { logout } from "../../redux/user/userSlice";
+import { logout, logoutThunk } from "../../redux/user/userSlice";
 import { useAppDispatch } from "../../redux/hooks";
 
 export interface ProfileScreenProps {
@@ -24,7 +24,7 @@ export const ProfileScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
       <PaperText>ProfileScreen</PaperText>
 
       <TouchableHighlight
-        onPress={() => dispatch(logout())}
+        onPress={() => dispatch(logoutThunk())}
         underlayColor={"transparent"}>
         <View style={{
           height: 50,

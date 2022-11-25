@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { StackNavigatorParamList } from "../../navigators";
-import { login, registerThunk, resendVerifyCodeThunk, UserState } from "../../redux/user/userSlice";
+import { login, loginThunk, registerThunk, resendVerifyCodeThunk, UserState } from "../../redux/user/userSlice";
 import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, useWindowDimensions } from "react-native";
@@ -54,6 +54,8 @@ export const LoginScreen: FC<
   const dispatch = useAppDispatch();
   const signingUp = useSelector<RootState>((state)=>state.user.signingUp) as UserState["signingUp"];
   const signUpError = useSelector<RootState>((state)=>state.user.signUpError) as UserState["signUpError"];
+  const signingIn = useSelector<RootState>((state)=>state.user.signingIn) as UserState["signingIn"];
+  const signInError = useSelector<RootState>((state)=>state.user.signInError) as UserState["signInError"];
   const allowRegisterVerify = useSelector<RootState>((state)=>state.user.allowRegisterVerify) as UserState["allowRegisterVerify"];
 
   /* React Hook Form Start */
@@ -95,7 +97,7 @@ export const LoginScreen: FC<
     // TODO: redux async thunk, and then do Amplify Auth
     // why don't use navigation.navigate to homeTab, because it is in AppStack
     // login screen is in AuthStack, we change redux state and let react navigation to change stack for us
-    dispatch(login());
+    dispatch(loginThunk(data))
   };
 
   const registerSubmitCallback = (data: RegisterFormData) => {
@@ -129,6 +131,8 @@ export const LoginScreen: FC<
             loginFormState={loginFormState}
             loginHandleSubmit={loginHandleSubmit}
             loginSubmitCallback={loginSubmitCallback}
+            signingIn={signingIn}
+            signInError={signInError}
           />
         );
       case "register":

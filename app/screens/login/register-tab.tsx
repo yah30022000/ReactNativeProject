@@ -293,6 +293,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
         onDismiss={onDismissSnackBar}
         action={{
           label: "Close",
+          color: "white",
           onPress: () => {
 
             onDismissSnackBar();

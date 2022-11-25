@@ -68,13 +68,14 @@ export const AppStack = () => {
   // AWS Cognito OAuth - Hub is a radio to receive message instantly
   useEffect(() => {
     const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
-      console.log("AmplifyHub Auth event: ", event, " data: ", data);
+      // console.log("AmplifyHub Auth event: ", event, " data: ", data);
       switch (event) {
         case 'signIn':
         case 'cognitoHostedUI':
           dispatch(getCurrentAuthenticatedUserThunk());
           break;
         case 'signOut':
+          console.log("AmplifyHub received request of logout from user!!");
           dispatch(logout())
           break;
         case 'signIn_failure':

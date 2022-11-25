@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CodeDeliveryDetails, ISignUpResult } from "amazon-cognito-identity-js";
+import { CodeDeliveryDetails, CognitoUser, ISignUpResult } from "amazon-cognito-identity-js";
 import { Auth as AmplifyAuth } from "aws-amplify";
 import { UserRegisterRequest } from "../../helper/user/user-register-request-response";
 import { ConfirmRegisterRequest } from "../../helper/user/confirm-register-request-response";
+import { UserLoginRequest } from "../../helper/user/user-login-request-response";
 
 
 // Define a type for the slice state
@@ -15,6 +16,12 @@ export interface UserState {
     name: string
     authProvider: string | null
     // accessToken?: string
+  };
+  signInError?: {
+    code?: string,
+    name?: string,
+    message?: string
+    username?: string
   };
   signUpResult?: {
     codeDeliveryDetails: CodeDeliveryDetails,
@@ -29,14 +36,16 @@ export interface UserState {
     username?: string
   };
   signingUp: "loading" | "completed" | "failed" | "none";
+  signingIn: "loading" | "completed" | "failed" | "none";
   userConfirmed: boolean; // in case not following normal sign up process
   allowRegisterVerify: boolean;
-}
+};
 
 // Define the initial state using that type
 const initialState: UserState = {
   isLoggedIn: false,
   signingUp: "none",
+  signingIn: "none",
   userConfirmed: false,
   allowRegisterVerify: false,
 };
@@ -98,7 +107,47 @@ export const confirmRegisterThunk = createAsyncThunk<any, ConfirmRegisterRequest
   },
 );
 
-export const getCurrentAuthenticatedUserThunk = createAsyncThunk<any, undefined>(
+export const loginThunk = createAsyncThunk<UserState["signInResult"], any>(
+  "user/login",
+  async (requestBody: any, thunkAPI) => {
+    console.log("loginThunk request body: ", requestBody);
+    const userData: CognitoUser | any = await AmplifyAuth.signIn({
+      username: requestBody.email,
+      password: requestBody.password,
+    });
+    if (!userData) {
+      return thunkAPI.rejectWithValue(userData);
+    }
+    let authProvider = null;
+    if(userData.attributes.identities){
+      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"]
+    }
+
+    return {
+      email: userData.attributes.email,
+      emailVerified: userData.attributes.email_verified,
+      authProvider: authProvider,
+      username: userData.username,
+      name: userData.attributes.name,
+    };
+  }
+)
+
+export const logoutThunk = createAsyncThunk<any, undefined> (
+  "user/logout",
+  async (_: undefined, thunkAPI) => {
+    const userData: CognitoUser | any = await AmplifyAuth.signOut();
+    // always undefined data
+    if (!userData) {
+      return thunkAPI.rejectWithValue(userData);
+    }
+    return userData
+}
+
+)
+
+
+export const getCurrentAuthenticatedUserThunk = createAsyncThunk<UserState["signInResult"], undefined>(
   "user/getCurrentAuthenticatedUser",
   async (_: undefined, thunkAPI) => {
     let userData = await AmplifyAuth.currentAuthenticatedUser();
@@ -136,8 +185,7 @@ export const userSlice = createSlice({
       state.signInResult = undefined;
       state.signUpError = undefined;
       state.signingUp = "none";
-
-
+      state.signingIn = "none";
     },
   },
   extraReducers: (builder) => {
@@ -193,6 +241,44 @@ export const userSlice = createSlice({
     builder.addCase(confirmRegisterThunk.rejected, (state, action) => {
       console.log("confirmRegisterThunk failed: ", action.error.message);
     });
+
+    // loginThunk
+    builder.addCase(loginThunk.pending, (state, action) => {
+      state.signingIn = "loading";
+    });
+    builder.addCase(loginThunk.fulfilled, (state, action) => {
+      state.signingIn = "completed";
+      // state.signUpResult = action.payload;
+      console.log("loginThunk completed: ", action.payload)
+    });
+    builder.addCase(loginThunk.rejected, (state, action) => {
+      state.signingIn = "failed";
+      state.signInError = {
+        code: action.error.code,
+        name: action.error.name,
+        message: action.error.message,
+        username: action.meta.arg.email,
+      };
+      console.log('loginThunk failed: ', action)
+      console.log("loginThunk failed username: ", action.meta.arg.email, "code: ", action.error.code, " message: ", action.error.message);
+      console.log("loginThunk failed:", action.error)
+    });
+
+    // logoutThunk
+    // builder.addCase(logoutThunk.fulfilled, (state, action) => {
+    //   state.isLoggedIn = false;
+    //   state.allowRegisterVerify = false;
+    //   state.userConfirmed = false;
+    //   state.signUpResult = undefined;
+    //   state.signInResult = undefined;
+    //   state.signUpError = undefined;
+    //   state.signingUp = "none";
+    //   state.signingIn = "none";
+    //   console.log("logoutThunk completed: ", action.payload)
+    // });
+    // builder.addCase(logoutThunk.rejected, (state, action) => {
+    //   console.log("logoutThunk failed:", action.error)
+    // });
 
     // getCurrentAuthenticatedUserThunk
     builder.addCase(getCurrentAuthenticatedUserThunk.fulfilled, (state, action) => {
