@@ -17,6 +17,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": []
+    },
+    "amadeusHotelListAndOffers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "api": {
@@ -43,6 +49,14 @@
         {
           "category": "function",
           "resourceName": "amadeusHotelBookings",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "amadeusHotelListAndOffers",
           "attributes": [
             "Name",
             "Arn"

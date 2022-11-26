@@ -2,117 +2,131 @@ import {
   Divider as PaperDivider,
   Modal as PaperModal,
   Portal as PaperPortal,
-  Searchbar as PaperSearchbar,
+  Searchbar as PaperSearchbar, Snackbar as PaperSnackbar,
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {SafeAreaView} from "react-native-safe-area-context";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import {
   FILTER_TEXT,
+  HOTEL_ADVANCED_ADD_BUTTON,
+  HOTEL_ADVANCED_MINUS_BUTTON,
   HOTEL_BACK_BUTTON,
   HOTEL_FILTER_BUTTON,
   HOTEL_LOCATION_BUTTON,
+  HOTEL_SCREEN_MODAL_CONTENT_CONTAINER,
+  HOTEL_SCREEN_MODAL_CONTENT_VIEW,
+  HOTEL_SEARCH_ADVANCED_TEXT,
   HOTEL_SEARCH_BAR,
+  HOTEL_SEARCH_BAR_DIVIDER_LINE,
+  HOTEL_SEARCH_BOOKING_ADVANCED_LEFT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADVANCED_RIGHT_COLUMN,
+  HOTEL_SEARCH_BOOKING_ADVANCED_ROW,
   HOTEL_SEARCH_BOOKING_DESTINATION_TEXT,
   HOTEL_SEARCH_BOOKING_HOTELS_TEXT,
+  HOTEL_SEARCH_BOOKING_ROOM_TEXT,
+  HOTEL_SEARCH_BOOKING_ROOM_TEXT_ROW,
   HOTEL_SEARCH_BOTTOM_BUTTON,
   HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER,
   HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE,
   HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
-  HOTEL_SEARCH_DESTINATION_BUTTON,
-  HOTEL_SEARCH_FLAT_LIST,
-  HOTEL_SEARCH_FLAT_LIST_WRAPPER,
-  HOTEL_SEARCH_SCREEN,
+  HOTEL_SEARCH_CALENDAR_WRAPPER,
   HOTEL_SEARCH_CITYNAME,
   HOTEL_SEARCH_CITYNAME_TEXT,
-  HOTEL_SEARCH_BAR_DIVIDER_LINE,
+  HOTEL_SEARCH_DESTINATION_BUTTON,
+  HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT,
+  HOTEL_SEARCH_FILTER_PRICE_TEXT,
+  HOTEL_SEARCH_FLAT_LIST,
+  HOTEL_SEARCH_FLAT_LIST_WRAPPER, HOTEL_SEARCH_MULTI_SELECT,
+  HOTEL_SEARCH_SCREEN,
   HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
   HOTEL_SEARCH_SCREEN_DIVIDER_LINE,
   HOTEL_SEARCH_SCREEN_FILTER_TEXT,
   HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
-  HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT,
   HOTEL_SEARCH_SCREEN_SUBTITLE_TEXT,
   HOTEL_SEARCH_SCREEN_TITLE_ROW,
   HOTEL_SEARCH_SCREEN_TITLE_TEXT,
   HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION,
   LOCATION_TEXT,
-} from "../../theme/styles";
+} from "../../theme";
 import {
   FlatList,
   Image,
   ImageBackground,
   StatusBar,
   TouchableHighlight,
+  useWindowDimensions,
   View,
 } from "react-native";
-import {StackNavigatorParamList} from "../../navigators";
-import {StackScreenProps} from "@react-navigation/stack";
-// import {MarkedDates} from "react-native-calendars/src/types";
+import { StackNavigatorParamList } from "../../navigators";
+import { StackScreenProps } from "@react-navigation/stack";
+import CalendarPicker, { DateChangedCallback } from "react-native-calendar-picker";
+import { amenities, ButtonItem, ButtonItemAndIndex, HotelCityCode, hotelCityCodes } from "../../helper/amadeus";
+import { useSelector } from "react-redux";
+import { changeHotelSearching, HotelState, setHotelListAndOffersRequest } from "../../redux/hotel/hotelSlice";
+import { RootState } from "../../redux/store";
+import { Rating } from "react-native-ratings";
+import { useAppDispatch } from "../../redux/hooks";
 import {
-  HotelCityCode,
-  hotelCityCodes,
-  HotelListRequest,
-} from "../../helper/amadeus";
-import {useSelector} from "react-redux";
-import {
-  changeHotelSearching,
-  chooseCityCode,
-  getAmadeusHotelListThunk,
-  HotelState,
-  selectRating,
-} from "../../redux/hotel/hotelSlice";
-import {RootState} from "../../redux/store";
-import {
-  ButtonItem,
-  ButtonItemAndIndex,
-} from "../../helper/amadeus/hotel-search-util-data";
-import {Rating} from "react-native-ratings";
-import {useAppDispatch} from "../../redux/hooks";
+  getAmadeusHotelListAndOffersThunk,
+  HotelListAndOffersRequest,
+} from "../../redux/hotel/thunk/getAmadeusHotelListAndOffersThunk";
+import { Moment } from "moment";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import EntypoIcon from "react-native-vector-icons/Entypo";
 
-export interface HotelSearchScreenProps {}
+export interface HotelSearchScreenProps {
+}
 
-export const HotelSearchScreen: FC<
-  StackScreenProps<StackNavigatorParamList, "hotelSearch">
-> = ({route, navigation}) => {
-  const {colors} = useTheme();
+export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelSearch">> = ({
+                                                                                                  route,
+                                                                                                  navigation,
+                                                                                                }) => {
+  const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const thunkDispatch = useAppDispatch();
+  let dimension = useWindowDimensions();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // local variables
-  const snapPoints = useMemo<Array<string>>(() => ["60%", "80%"], []);
+  const snapPoints = useMemo<Array<string>>(() => ["60%", "80%", "90%"], []);
   const [snapState, setSnapState] = useState<number>(0);
   const [destinationViewOn, setDestinationViewOn] = useState<boolean>(false);
-  // const [dateViewOn, setDateViewOn] = useState<boolean>(false);
-  // const [userViewOn, setUserViewOn] = useState<boolean>(false);
+  const [calendarViewOn, setCalendarViewOn] = useState<boolean>(false);
+  const [advancedViewOn, setAdvancedViewOn] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
-  // const [adults, setAdults] = useState<number>(1);
-  // const [ratingViewOn, setRatingViewOn] = useState<boolean>(false);
-  const [hotelCityCodesLocalState, setHotelCityCodesLocalState] = useState<
-    Array<HotelCityCode>
-  >([]);
+  const [hotelCityCodesLocalState, setHotelCityCodesLocalState] = useState<Array<HotelCityCode>>([]);
   const [modalStatus, setModalStatus] =
-    useState<HotelState["hotelListSearching"]>("none");
+    useState<HotelState["hotelListAndOffersSearching"]>("none");
+  const minDate = new Date(); // Today
+  const maxDate = new Date(2030, 12, 31);
+
+  // local variables -> hotelListAndOffersRequest
+  const [checkInDate, setCheckInDate] = useState<Moment>();
+  const [checkOutDate, setCheckOutDate] = useState<Moment>();
+  const [cityCode, setCityCode] = useState<string>("");
+  const [currency, setCurrency] = useState<string>("");
+  const [ratings, setRatings] = useState<Array<number>>([]);
+  const [adults, setAdults] = useState<number>(1);
+  const [rooms, setRooms] = useState<number>(1);
+  const [priceRangeValue, setPriceRangeValue] = useState<number[]>([500, 4000]);
+  const [amenitiesSelected, setAmenitiesSelected] = useState<typeof amenities>([]);
+
 
   // global variables
-  const hotelListRequest = useSelector<RootState>(
-    state => state.hotel.hotelListRequest,
-  ) as HotelListRequest | null;
+  const hotelListAndOffersRequest = useSelector<RootState>(
+    state => state.hotel.hotelListAndOffersRequest,
+  ) as HotelListAndOffersRequest | null;
 
-  const hotelListSearching = useSelector<RootState>(
-    state => state.hotel.hotelListSearching,
-  ) as HotelState["hotelListSearching"];
+  const hotelListAndOffersSearching = useSelector<RootState>(
+    state => state.hotel.hotelListAndOffersSearching,
+  ) as HotelState["hotelListAndOffersSearching"];
 
+  // callbacks
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
   }, []);
@@ -123,7 +137,7 @@ export const HotelSearchScreen: FC<
         return cityObject.cityName.includes(searchInput);
       });
       setHotelCityCodesLocalState(newhotelCityCodesLocalState);
-      console.log("newhotelCityCodesLocalState: ", newhotelCityCodesLocalState);
+      // console.log("newhotelCityCodesLocalState: ", newhotelCityCodesLocalState);
       setInputValue(searchInput);
     } else {
       setInputValue("");
@@ -131,23 +145,85 @@ export const HotelSearchScreen: FC<
   };
 
   const searchHotelApiCall = () => {
-    if (!hotelListRequest) {
-      setModalStatus("failed");
+    if (!cityCode || cityCode == "") {
+      onToggleSnackBar("Please choose a valid city");
       return;
     }
-    dispatch(getAmadeusHotelListThunk(hotelListRequest));
+
+    if(!checkInDate || !checkOutDate){
+      onToggleSnackBar("Please pick check in and check out period");
+      return;
+    }
+
+    dispatch(setHotelListAndOffersRequest({
+      cityCode: cityCode,
+      currency: currency,
+      adults: adults,
+      ratings: ratings === Array.from([]) ? undefined : ratings,
+      roomQuantity: rooms,
+      checkInDate: checkInDate?.format("yyyy-MM-DD"),
+      checkOutDate: checkOutDate?.format("yyyy-MM-DD"),
+      priceRange: `${priceRangeValue[0]}-${priceRangeValue[1]}`,
+    }));
   };
 
   const closeModalCallback = () => {
-      setModalStatus("none");
-      dispatch(changeHotelSearching("none"));
-      if (modalStatus === "completed") {
-        navigation.navigate("hotelList" as any)
-      }
+    setModalStatus("none");
+    dispatch(changeHotelSearching("none"));
+    if (modalStatus === "completed") {
+      navigation.navigate("hotelList" as any);
+    }
+  };
+
+  const onDateChange: DateChangedCallback = (date, type) => {
+    if (type === "END_DATE") {
+      setCheckOutDate(date);
+    } else {
+      setCheckInDate(date);
+    }
+  };
+
+  const minusAdults = () => {
+    if (adults <= 1) {
+      return;
+    } else {
+      setAdults(adults - 1);
+    }
+  };
+  const addAdults = () => {
+    if (adults >= 9) {
+      return;
+    } else {
+      setAdults(adults + 1);
+    }
+  };
+  const minusRooms = () => {
+    if (rooms <= 1) {
+      return;
+    } else {
+      setRooms(rooms - 1);
+    }
+  };
+  const addRooms = () => {
+    if (adults >= 9) {
+      return;
+    } else {
+      setRooms(rooms + 1);
+    }
+  };
+
+  /* Bottom Snackbar start */
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const onToggleSnackBar = (message: string) => {
+    setSnackbarVisible(!snackbarVisible);
+    setSnackbarMessage(message)
   }
+  const onDismissSnackBar = () => setSnackbarVisible(false);
+  /* Bottom Snackbar end */
 
   // render
-  const renderItem = ({item, index}: ButtonItemAndIndex) => (
+  const renderItem = ({ item, index }: ButtonItemAndIndex) => (
     <TouchableHighlight onPress={item.onPress} underlayColor={"transparent"}>
       <View style={item.buttonStyle}>
         <ButtonWithColorBg
@@ -175,21 +251,6 @@ export const HotelSearchScreen: FC<
     </TouchableHighlight>
   );
 
-  // const minusAdults = () => {
-  //   if (adults <= 1) {
-  //     return;
-  //   } else {
-  //     setAdults(adults - 1);
-  //   }
-  // };
-  // const addAdults = () => {
-  //   if (adults >= 9) {
-  //     return;
-  //   } else {
-  //     setAdults(adults + 1);
-  //   }
-  // };
-
   const buttonList: Array<ButtonItem> = [
     {
       key: 1,
@@ -203,9 +264,9 @@ export const HotelSearchScreen: FC<
       textSubtitleStyle: HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
       textTitle: "DESTINATION",
       textSubtitle:
-        hotelListRequest !== undefined
+        cityCode
           ? hotelCityCodes.find(city => {
-              return city.cityCode === hotelListRequest!.cityCode;
+            return city.cityCode === cityCode;
             })!.cityName
           : "Enter your destination",
       onPress: () => {
@@ -213,23 +274,49 @@ export const HotelSearchScreen: FC<
           setSnapState(1);
           bottomSheetRef.current?.snapTo(1);
           setDestinationViewOn(true);
-          // setRatingViewOn(false);
+          setCalendarViewOn(false);
+          setAdvancedViewOn(false);
         }
       },
     },
     {
       key: 2,
+      buttonStyle: HOTEL_LOCATION_BUTTON,
+      color: colors.mint,
+      backgroundColor: colors.mintLight,
+      iconName: "calendar-check-o",
+      iconProvider: "FontAwesome",
+      textStyle: LOCATION_TEXT,
+      textTitleStyle: HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
+      textSubtitleStyle: HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
+      textTitle: "BOOKING PERIOD",
+      textSubtitle: checkInDate && checkOutDate ?
+        `${checkInDate.format("yyyy-MM-DD")} to ${checkOutDate.format("yyyy-MM-DD")}`
+        : "Check-in and Check-out dates",
+      onPress: () => {
+        if (snapState == 0) {
+          setSnapState(1);
+          bottomSheetRef.current?.snapTo(1);
+          setDestinationViewOn(false);
+          setCalendarViewOn(true);
+          setAdvancedViewOn(false);
+        }
+      },
+    },
+    {
+      key: 3,
       buttonStyle: HOTEL_FILTER_BUTTON,
       color: colors.mint,
       backgroundColor: colors.mintLight,
       iconName: "star",
       iconProvider: "FontAwesome",
       textStyle: FILTER_TEXT,
-      textTitleStyle: HOTEL_SEARCH_SCREEN_FILTER_TEXT,
-      textSubtitleStyle: HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT,
+      textTitleStyle: HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
+      textSubtitleStyle: HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
       textTitle: "RATING SELECT",
       textSubtitle: "Star Rating of Hotels",
-      onPress: () => {},
+      onPress: () => {
+      },
       customComponent: (
         <>
           <PaperText style={HOTEL_SEARCH_SCREEN_FILTER_TEXT}>
@@ -237,12 +324,12 @@ export const HotelSearchScreen: FC<
           </PaperText>
           <Rating
             showRating={false}
-            onFinishRating={(rating: number) => dispatch(selectRating(rating))}
-            style={{paddingVertical: 10}}
+            onFinishRating={(rating: number) => setRatings(Array.from([rating]))}
+            style={{ paddingVertical: 10 }}
             type="custom"
             ratingTextColor={colors.black}
             startingValue={
-              hotelListRequest?.ratings ? hotelListRequest.ratings[0] : 3
+              hotelListAndOffersRequest?.ratings ? hotelListAndOffersRequest.ratings[0] : 3
             }
             fractions={0}
             jumpValue={1}
@@ -251,83 +338,43 @@ export const HotelSearchScreen: FC<
         </>
       ),
     },
-    // {
-    //   key: 3,
-    //   buttonStyle: HOTEL_USER_BUTTON,
-    //   color: colors.mint,
-    //   backgroundColor: colors.mintLight,
-    //   iconName: "user",
-    //   iconProvider: "FontAwesome",
-    //   textStyle: USER_TEXT,
-    //   textTitleStyle: HOTEL_SEARCH_SCREEN_USER_TEXT,
-    //   textSubtitleStyle: HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT,
-    //   textTitle: "ROOMS AND GUESTS",
-    //   textSubtitle: "1 room, 1 guest",
-    //   onPress: () => {
-    //     if (snapState == 0) {
-    //       setSnapState(1);
-    //       bottomSheetRef.current?.snapTo(1);
-    //       setDestinationViewOn(false);
-    //       setRatingViewOn(false);
-    //       setUserViewOn(true);
-    //     }
-    //   },
-    // },
+    {
+      key: 4,
+      buttonStyle: HOTEL_LOCATION_BUTTON,
+      color: colors.mint,
+      backgroundColor: colors.mintLight,
+      iconName: "add-task",
+      iconProvider: "MaterialIcons",
+      textStyle: LOCATION_TEXT,
+      textTitleStyle: HOTEL_SEARCH_SCREEN_LOCATION_TEXT,
+      textSubtitleStyle: HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
+      textTitle: "ADVANCED PREFERENCES",
+      textSubtitle: "Number of adults, rooms, and more..",
+      onPress: () => {
+        if (snapState == 0) {
+          setSnapState(2);
+          bottomSheetRef.current?.snapTo(2);
+          setDestinationViewOn(false);
+          setCalendarViewOn(false);
+          setAdvancedViewOn(true);
+        }
+      },
+    },
   ];
 
-  // calendar items
-
-  // const [markedDates, setMarkedDates] = useState<MarkedDates>({});
-
-  // const changeMarkedDatesCallBack = (day: DateData) => {
-  //   const updateMarkedDates = {...markedDates};
-  //   if (
-  //     !(day.dateString in updateMarkedDates) &&
-  //     Object.keys(updateMarkedDates).length < 3
-  //   ) {
-  //     updateMarkedDates[day.dateString] = {
-  //       color: colors.mint,
-  //       startingDay: true,
-  //     };
-
-  //     for (const [index, [key, value]] of Object.entries(
-  //       Object.entries(updateMarkedDates),
-  //     )) {
-  //       let parsedIndex = parseInt(index);
-
-  //       if (parsedIndex === 0) {
-  //         updateMarkedDates[key] = {color: colors.mint, startingDay: true};
-  //       } else if (
-  //         parsedIndex + 1 ===
-  //         Object.entries(updateMarkedDates).length
-  //       ) {
-  //         updateMarkedDates[key] = {color: colors.mint, endingDay: true};
-  //       } else if (
-  //         parsedIndex !== 0 &&
-  //         parseInt(index) !== Object.entries(updateMarkedDates).length
-  //       ) {
-  //         updateMarkedDates[key] = {
-  //           color: colors.mintLight,
-  //           startingDay: false,
-  //           endingDay: false,
-  //         };
-  //       }
-  //     }
-  //     setMarkedDates(updateMarkedDates);
-
-  //     // console.log("markedDates: ", markedDates);
-  //   }
-  // };
 
   useEffect(() => {
-    if (hotelListSearching === "loading") {
+    if (hotelListAndOffersSearching === "loading") {
       setModalStatus("loading");
-    } else if (hotelListSearching === "completed") {
+      if(hotelListAndOffersRequest){
+        dispatch(getAmadeusHotelListAndOffersThunk(hotelListAndOffersRequest))
+      }
+    } else if (hotelListAndOffersSearching === "completed") {
       setModalStatus("completed");
-    } else if (hotelListSearching === "failed") {
+    } else if (hotelListAndOffersSearching === "failed") {
       setModalStatus("failed");
     }
-  }, [hotelListSearching]);
+  }, [hotelListAndOffersSearching]);
 
   return (
     <ImageBackground
@@ -374,16 +421,6 @@ export const HotelSearchScreen: FC<
                 <PaperSearchbar
                   style={HOTEL_SEARCH_BAR}
                   onChangeText={findHotelCityCodes}
-                  // onBlur={(
-                  //   event: NativeSyntheticEvent<TextInputFocusEventData>,
-                  // ) => {
-                  //   event.target;
-                  // }}
-                  // onFocus={(
-                  //   event: NativeSyntheticEvent<TextInputFocusEventData>,
-                  // ) => {
-                  //   event.target;
-                  // }}
                   value={inputValue}
                 />
               </View>
@@ -396,11 +433,12 @@ export const HotelSearchScreen: FC<
                         underlayColor={"transparent"}
                         key={item.cityCode}
                         onPress={() => {
-                          dispatch(chooseCityCode(item.cityCode));
+                          setCityCode(item.cityCode);
+                          setCurrency(item.currency);
+
                           setSnapState(0);
                           bottomSheetRef.current?.snapTo(0);
                           setDestinationViewOn(false);
-                          // setRatingViewOn(false);
                         }}
                         onShowUnderlay={separators.highlight}
                         onHideUnderlay={separators.unhighlight}>
@@ -437,56 +475,58 @@ export const HotelSearchScreen: FC<
               </View>
             </View>
           ) : null}
-          {/* {dateViewOn ? (
-            // <View>
-            //   <PaperText style={HOTEL_SEARCH_BOOKING_DATE_TEXT}>
-            //     Select Dates
-            //   </PaperText>
-            //   <Calendar
-            //     style={{marginTop: 30}}
-            //     monthFormat={"yyyy MMM"}
-            //     minDate={"2022-01-01"}
-            //     maxDate={"2026-12-31"}
-            //     markingType={"period"}
-            //     markedDates={markedDates}
-            //     onDayPress={changeMarkedDatesCallBack}
-            //     onMonthChange={month => {
-            //       console.log("month changed", month);
-            //     }}
-            //   />
-            // </View>
-          ) : null} */}
-          {/* {userViewOn ? (
+          {calendarViewOn ? (
             <View>
-              <PaperText style={HOTEL_SEARCH_BOOKING_ROOM_TEXT}>
-                Rooms & Guests
+              <PaperText style={HOTEL_SEARCH_BOOKING_HOTELS_TEXT}>
+                Search Dates
               </PaperText>
-              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
-              <PaperText style={HOTEL_SEARCH_ROOM_TEXT}>Room 1</PaperText>
+              <View style={HOTEL_SEARCH_CALENDAR_WRAPPER}>
+                <CalendarPicker
+                  startFromMonday={false}
+                  allowRangeSelection={true}
+                  minDate={minDate}
+                  maxDate={maxDate}
+                  todayBackgroundColor={colors.purple}
+                  selectedDayColor={colors.mint}
+                  selectedDayTextColor={colors.white}
+                  onDateChange={onDateChange}
+                />
+                {/*<PaperText>Check in {checkInDate ? checkInDate.format("yyyy-MM-DD") : ""}</PaperText>*/}
+              </View>
+            </View>
+          ) : null}
+
+          {advancedViewOn ? (
+            <View style={{ paddingHorizontal: 15 }}>
+              <View style={HOTEL_SEARCH_BOOKING_ROOM_TEXT_ROW}>
+                <PaperText style={HOTEL_SEARCH_BOOKING_ROOM_TEXT}>
+                  Advanced Preferences
+                </PaperText>
+              </View>
+
               <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
 
-              <View style={HOTEL_SEARCH_BOOKING_ADULTS_ROW}>
-                <View style={HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN}>
-                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>Adults</PaperText>
+              {/* Adults Row */}
+              <View style={HOTEL_SEARCH_BOOKING_ADVANCED_ROW}>
+                <View style={HOTEL_SEARCH_BOOKING_ADVANCED_LEFT_COLUMN}>
+                  <PaperText style={HOTEL_SEARCH_ADVANCED_TEXT}>Adults</PaperText>
                 </View>
-                <View style={HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN}>
-                  <View style={HOTEL_ADULTS_MINUS_BUTTON}>
+                <View style={HOTEL_SEARCH_BOOKING_ADVANCED_RIGHT_COLUMN}>
+                  <View style={HOTEL_ADVANCED_MINUS_BUTTON}>
                     <ButtonWithColorBg
-                      size={25}
+                      size={30}
                       color={colors.mint}
                       iconName={"minuscircle"}
                       iconProvider={"AntDesign"}
                       onPress={minusAdults}
                     />
                   </View>
-
-                  <PaperText style={HOTEL_SEARCH_ADULTS_TEXT}>
+                  <PaperText style={HOTEL_SEARCH_ADVANCED_TEXT}>
                     {adults}
                   </PaperText>
-
-                  <View style={HOTEL_ADULTS_ADD_BUTTON}>
+                  <View style={HOTEL_ADVANCED_ADD_BUTTON}>
                     <ButtonWithColorBg
-                      size={25}
+                      size={30}
                       color={colors.mint}
                       iconName={"pluscircle"}
                       iconProvider={"AntDesign"}
@@ -495,37 +535,108 @@ export const HotelSearchScreen: FC<
                   </View>
                 </View>
               </View>
+
               <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+
+              {/* Rooms Row */}
+              <View style={HOTEL_SEARCH_BOOKING_ADVANCED_ROW}>
+                <View style={HOTEL_SEARCH_BOOKING_ADVANCED_LEFT_COLUMN}>
+                  <PaperText style={HOTEL_SEARCH_ADVANCED_TEXT}>Rooms</PaperText>
+                </View>
+                <View style={HOTEL_SEARCH_BOOKING_ADVANCED_RIGHT_COLUMN}>
+                  <View style={HOTEL_ADVANCED_MINUS_BUTTON}>
+                    <ButtonWithColorBg
+                      size={30}
+                      color={colors.mint}
+                      iconName={"minuscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={minusRooms}
+                    />
+                  </View>
+                  <PaperText style={HOTEL_SEARCH_ADVANCED_TEXT}>
+                    {rooms}
+                  </PaperText>
+                  <View style={HOTEL_ADVANCED_ADD_BUTTON}>
+                    <ButtonWithColorBg
+                      size={30}
+                      color={colors.mint}
+                      iconName={"pluscircle"}
+                      iconProvider={"AntDesign"}
+                      onPress={addRooms}
+                    />
+                  </View>
+                </View>
+              </View>
+
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+
+              {/* Price Range Row */}
+              <View style={{ marginVertical: 20, paddingHorizontal: 20 }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <PaperText style={HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT}>
+                    Price Range
+                  </PaperText>
+                  <PaperText style={HOTEL_SEARCH_FILTER_PRICE_TEXT}>
+                    HKD {priceRangeValue[0]} - HKD {priceRangeValue[1]}
+                  </PaperText>
+                </View>
+                <View style={{ marginVertical: 10 }}>
+                  <MultiSlider
+                    values={priceRangeValue}
+                    onValuesChange={(values: number[]) => setPriceRangeValue(values)}
+                    sliderLength={dimension.width * 0.85}
+                    min={300}
+                    max={5100}
+                    step={100}
+                    trackStyle={{ backgroundColor: colors.grey }}
+                    selectedStyle={{ backgroundColor: colors.mint }}
+                    markerStyle={{ borderColor: colors.mint, borderWidth: 3 }}
+                    pressedMarkerStyle={{ borderColor: colors.mint, borderWidth: 2 }}
+                  />
+                </View>
+              </View>
+
+              <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+
+              <View style={{ paddingHorizontal: 10 }}>
+                <SectionedMultiSelect
+                  items={amenities}
+                  IconRenderer={MaterialIcons as any}
+                  uniqueKey="id"
+                  displayKey={"title"}
+                  selectText="Amenities"
+                  showDropDowns={true}
+                  animateDropDowns={false}
+                  readOnlyHeadings={false}
+                  onSelectedItemsChange={(items) => {
+                    setAmenitiesSelected(items);
+                    console.log("setAmenitiesSelected: ", amenitiesSelected);
+                  }}
+                  selectedItems={amenitiesSelected}
+                  chipRemoveIconComponent={
+                    <View style={{ margin: 2 }}>
+                      <EntypoIcon color={colors.white} name={"cross"} size={18} />
+                    </View>
+                  }
+                  styles={HOTEL_SEARCH_MULTI_SELECT}
+                />
+              </View>
             </View>
-          ) : null} */}
-          {!destinationViewOn ? (
+          ) : null}
+
+          {!destinationViewOn && !calendarViewOn && !advancedViewOn ? (
             <View style={HOTEL_SEARCH_FLAT_LIST_WRAPPER}>
               <FlatList
                 data={buttonList}
                 keyExtractor={buttonItem => buttonItem.key.toString()}
                 renderItem={renderItem}
-                contentContainerStyle={{backgroundColor: "white"}}
+                contentContainerStyle={{ backgroundColor: "white" }}
                 ItemSeparatorComponent={() => (
                   <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
                 )}
                 style={HOTEL_SEARCH_FLAT_LIST}
               />
               <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
-
-              {/*<View style={HOTEL_SEARCH_RATING_ROW}>*/}
-              {/*  <Rating*/}
-              {/*    showRating={true}*/}
-              {/*    onFinishRating={(rating: number) =>*/}
-              {/*      dispatch(selectRating(rating))*/}
-              {/*    }*/}
-              {/*    style={{ paddingVertical: 10 }}*/}
-              {/*    type="custom"*/}
-              {/*    ratingTextColor={colors.black}*/}
-              {/*    startingValue={3}*/}
-              {/*    fractions={0}*/}
-              {/*    jumpValue={1}*/}
-              {/*  />*/}
-              {/*</View>*/}
             </View>
           ) : null}
         </BottomSheet>
@@ -534,27 +645,46 @@ export const HotelSearchScreen: FC<
           <TouchableHighlight
             style={HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE}
             onPress={
-              destinationViewOn
-                ? () => {
-                    setSnapState(0);
-                    bottomSheetRef.current?.snapTo(0);
-                    setDestinationViewOn(false);
-                  }
+              destinationViewOn || calendarViewOn || advancedViewOn ? () => {
+                  setSnapState(0);
+                  bottomSheetRef.current?.snapTo(0);
+                  setDestinationViewOn(false);
+                  setCalendarViewOn(false);
+                  setAdvancedViewOn(false);
+                }
                 : searchHotelApiCall
             }
             underlayColor={"transparent"}>
             <View style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
               <View style={HOTEL_SEARCH_BOTTOM_BUTTON}>
-                {destinationViewOn ? (
-                  <PaperText style={{color: "white"}}>DONE</PaperText>
+                {destinationViewOn || calendarViewOn || advancedViewOn ? (
+                  <PaperText style={{ color: "white" }}>DONE</PaperText>
                 ) : (
-                  <PaperText style={{color: "white"}}>SEARCH HOTELS</PaperText>
+                  <PaperText style={{ color: "white" }}>SEARCH HOTELS</PaperText>
                 )}
               </View>
             </View>
           </TouchableHighlight>
         </View>
 
+        {/* Error Snackbar for not fulfilling the form fields */}
+        <PaperSnackbar
+          style={{
+            backgroundColor: colors.red
+          }}
+          visible={snackbarVisible}
+          onDismiss={onDismissSnackBar}
+          action={{
+            label: "Close",
+            color: "white",
+            onPress: () => {
+              onDismissSnackBar();
+            },
+          }}>
+          {snackbarMessage}
+        </PaperSnackbar>
+
+        {/* Modal when loading */}
         <PaperPortal>
           <PaperModal
             visible={
@@ -563,21 +693,9 @@ export const HotelSearchScreen: FC<
               modalStatus === "failed"
             }
             onDismiss={closeModalCallback}
-            contentContainerStyle={{
-              backgroundColor: "white",
-              padding: 20,
-              height: "60%",
-              width: "90%",
-              alignSelf: "center",
-              borderRadius: 35,
-            }}>
+            contentContainerStyle={HOTEL_SCREEN_MODAL_CONTENT_CONTAINER}>
             <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-around",
-              }}>
+              style={HOTEL_SCREEN_MODAL_CONTENT_VIEW}>
               {/* Image */}
               <View
                 style={{
@@ -630,26 +748,3 @@ export const HotelSearchScreen: FC<
   );
 };
 
-{
-  /* <View>
-  <View style={HOTEL_CROSS_BUTTON}>
-    <ButtonWithColorBg
-      size={20}
-      color={colors.white}
-      iconName={"cross"}
-      iconProvider={"Entypo"}
-      backgroundColor={colors.black}
-      onPress={() => {
-        setSnapState(0);
-        bottomSheetRef.current?.snapTo(0);
-        setDestinationViewOn(false);
-        setRatingViewOn(false);
-      }}
-    />
-  </View>
-  <View style={HOTEL_SEARCH_HOTEL_RATING}>
-    <PaperText style={HOTEL_SEARCH_HOTEL_CLASS_TEXT}>Hotel Class</PaperText>
-  </View>
-  <View></View>
-</View>; */
-}

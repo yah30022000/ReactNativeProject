@@ -3811,6 +3811,15 @@
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
+"@types/react-native-calendar-picker@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-calendar-picker/-/react-native-calendar-picker-7.0.2.tgz#5bda6245bfa18416699ebde61c2bde77b37c039e"
+  integrity sha512-vM97SJXE0sgNEMKV6uH7KfkbuJRe1v/0EuyHjqRHe2WVhKDG/3qYklAtO1aQTs29wYzpA2hN+0ZvMIOOQsUi/w==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+    moment ">=2.0.0"
+
 "@types/react-native-vector-icons@^6.4.12":
   version "6.4.12"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.12.tgz#4b9c63bf85eb42fca7c5b0a55ec317900e4fb427"
@@ -7528,6 +7537,11 @@ memoize-one@^5.0.0, memoize-one@^5.2.1:
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
   integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
 
+memoize-one@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-6.0.0.tgz#b2591b871ed82948aee4727dc6abceeeac8c1045"
+  integrity sha512-rkpe71W0N0c0Xz6QD0eJETuWAJGnJ9afsl1srmwPrI+yBCkge5EycXXbYRyvL29zZVUWQCY7InPRCv3GDXuZNw==
+
 merge-options@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/merge-options/-/merge-options-3.0.4.tgz#84709c2aa2a4b24c1981f66c179fe5565cc6dbb7"
@@ -8161,7 +8175,7 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.6"
 
-moment@^2.24.0:
+moment@>=2.0.0, moment@^2.24.0, moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -8254,6 +8268,11 @@ node-fetch@^2.2.0, node-fetch@^2.6.0, node-fetch@^2.6.1:
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
+
+node-git-hooks@^1.0.1:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/node-git-hooks/-/node-git-hooks-1.0.7.tgz#8a788baec6e0bdaaac7096a5599400fcabe769e7"
+  integrity sha512-IgIbLXsONu4sfHVaaTxQvVbNfo36ZxqCbzmataI/4hbwqmX2Eth4Vdxw9NvAAeroVuxzzmHqjVlV9TeHb3U2yw==
 
 node-int64@^0.4.0:
   version "0.4.0"
@@ -8781,7 +8800,7 @@ prop-types@15.5.8:
   dependencies:
     fbjs "^0.8.9"
 
-prop-types@^15.5.10, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8892,6 +8911,15 @@ react-is@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
+
+react-native-calendar-picker@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-calendar-picker/-/react-native-calendar-picker-7.1.2.tgz#b3bf1ba1cc7b1177b2fac7937564ccf09643029f"
+  integrity sha512-n5ngdqbMIUeu2iHYxvKSX5u67wWqPYdhTx9sMjjQsjF6BrStxF65JCJSPaAORxD+wbFI5AK/xKDCFJfA0o1uFQ==
+  dependencies:
+    node-git-hooks "^1.0.1"
+    prop-types "^15.6.0"
+    recyclerlistview "^3.0.0"
 
 react-native-calendars@^1.1291.1:
   version "1.1291.1"
@@ -9034,6 +9062,14 @@ react-native-screens@^3.18.2:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-sectioned-multi-select@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-sectioned-multi-select/-/react-native-sectioned-multi-select-0.9.1.tgz#7576f7e3f8a3b3e22bb1baa00a2aee5b82046092"
+  integrity sha512-ewc/RzD2AknKimMJGto31WcYotnT1k6H0CBxT/t60uxz5mDgBVx/NSsnOKygJ/rZYD6kzRTB7qwul/PLX/4VHA==
+  dependencies:
+    lodash.isequal "^4.5.0"
+    memoize-one "^6.0.0"
 
 react-native-svg@^13.5.0:
   version "13.6.0"
@@ -9198,7 +9234,7 @@ recast@^0.20.4:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
-recyclerlistview@^3.0.5:
+recyclerlistview@^3.0.0, recyclerlistview@^3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-3.0.5.tgz#50bf5bcaa401d56bb6bb264354083f4d424408eb"
   integrity sha512-JVHz13u520faEsbVqFrJOMuJjc4mJlOXODe5QdqAJHdl5/IpyYeo83uiHrpzxyLb8QtJ0889JMlDik+Z1Ed0QQ==
