@@ -31,6 +31,7 @@
     - [API Call Sample (without Node SDK) ](#api-call-sample-without-node-sdk-)
       - [Get Access Token API (expires every 30 minutes) ](#get-access-token-api-expires-every-30-minutes-)
   - [Test Credit Card Account Numbers](#test-credit-card-account-numbers)
+  - [Create App Icon](#create-app-icon)
 
 ## Environment Setting <a name="environment-setting"/>
 
@@ -989,4 +990,14 @@ https://www.paypalobjects.com/en_GB/vhelp/paypalmanager_help/credit_card_numbers
 
 Please refer to ```app/helpers/amadeus/validateCardNumber.ts```
 
+---
+## Create App Icon
+1. Go to https://easyappicon.com/ to create a new icon
+2. download new app icon
+3. Go to VS code put the icon&Contents.json into ```ios/TripTroop/images.xcassets/AppIcon.appiconset```
+4. Go to Xcode ```AppIcon```to change the icon
+   ![Find Hotel by City!](assets/images/readme/xcode_appicon.png "Find Hotel by City")
+5. To click Xcode->Product->Clean Build folder
+6. Back to VS code
+7. Turn on ```yarn start``` & ```yarn ios```(restart the Simulator)
 ---
