@@ -1,5 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
+import { PaymentScreen } from "../screens";
+import { PaymentDemoScreen } from "../screens/payment/PaymentDemoScreen";
 import { AppStack } from "./app-stack";
 
 
@@ -13,6 +15,7 @@ export const AppNavigator = (props: NavigationProps) => {
       {...props}
     >
       <AppStack/>
+      {/* <PaymentDemoScreen/> */}
     </NavigationContainer>
   )
 }

@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { AppNavigator } from "./navigators";
 import theme from "./theme/theme";
 import { store } from "./redux/store";
+import FontistoIcon from "react-native-vector-icons/Fontisto";
 
 const App = () => {
 
@@ -12,9 +13,9 @@ const App = () => {
   return (
     <PaperProvider
       theme={theme}
-      // settings={{
-      //   icon: props => <MaterialIcon {...props} />,
-      // }}
+      settings={{
+        icon: props => <FontistoIcon {...props} />,
+      }}
     >
       <ReduxProvider store={store}>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>

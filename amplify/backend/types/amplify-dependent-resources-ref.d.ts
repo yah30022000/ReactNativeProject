@@ -37,7 +37,8 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string",
-            "GoogleWebClient": "string"
+            "GoogleWebClient": "string",
+            "FacebookWebClient": "string"
         }
     }
 }

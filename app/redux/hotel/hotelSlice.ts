@@ -7,11 +7,26 @@ export interface HotelState {
   hotelListRequest?: HotelListRequest;
   hotelListResponse?: HotelListResponse;
   hotelListSearching: "loading" | "completed" | "failed" | "none"
+  addPaymentResult?: {
+    cardholdername: string,
+    cardnumber: number,
+    exp_date: number,
+    cvv: number,
+  };
+  addPaymentError?: {
+    cardholdername?: string,
+    cardnumber?: number,
+    exp_date?: number,
+    cvv: number, 
+  }
+  addPayment: "loading" | "completed" | "failed" | "none";
 }
+
 
 // Define the initial state using that type
 const initialState: HotelState = {
-  hotelListSearching: "none"
+  hotelListSearching: "none",
+  addPayment: "none"
 };
 
 // let amadeusTestApiUrl = "https://test.api.amadeus.com";

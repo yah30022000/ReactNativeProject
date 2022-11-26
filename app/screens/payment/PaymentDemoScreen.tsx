@@ -46,6 +46,7 @@ import {validateCardNumber} from "../../helper/amadeus/validateCardNumber";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import FontistoIcon from "react-native-vector-icons/Fontisto";
 
+export interface PaymentDemoScreenProps {}
 export interface PaymentFormData {
   cardHolderName: string;
   cardNumber: string;
@@ -53,13 +54,13 @@ export interface PaymentFormData {
   cvv: string;
 }
 
-export interface PaymentScreenProps {}
-
-export const PaymentScreen: FC<
-  StackScreenProps<StackNavigatorParamList, "payment">
-> = ({route, navigation}) => {
+export function PaymentDemoScreen(props: PaymentDemoScreenProps) {
   const {colors} = useTheme();
   const dispatch = useAppDispatch();
+  // const [name, setName] = useState("");
+  // const [inputValue, setInputValue] = useState<string>("");
+  // const [expiration, setExpiration] = useState("");
+  // const [cvv, setCvv] = useState("");
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo<Array<string>>(() => ["80%"], []);
@@ -118,7 +119,7 @@ export const PaymentScreen: FC<
               iconName={"chevron-left"}
               iconProvider={"Entypo"}
               backgroundColor={colors.white}
-                onPress={() => navigation.goBack()}
+              //   onPress={() => navigation.goBack()}
             />
           </View>
         </TouchableHighlight>

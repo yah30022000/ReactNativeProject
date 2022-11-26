@@ -735,15 +735,9 @@ export const HOTEL_SEARCH_FILTER_CROSS_BUTTON: ViewStyle = {
   paddingTop: 20,
 };
 
-
 export const HOTEL_FILTER_PRICE_RANGE_TEXT: TextStyle = {
   fontSize: 14,
   fontWeight: "bold",
-};
-export const HOTEL_SEARCH_FILTER_SCREEN_TITLE: ViewStyle = {
-  justifyContent: "center",
-  alignItems: "center",
-  marginBottom: 20,
 };
 
 export const HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT: TextStyle = {
@@ -906,34 +900,118 @@ export const PAYMENT_SCREEN_TITLE_TEXT: TextStyle = {
 export const PAYMENT_SCREEN_TITLE: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
+  marginHorizontal: 60,
 };
 
-export const PAYMENT_METHOD_BUTTON: ViewStyle = {
-  justifyContent: "center",
+export const PAYMENT_SCREEN_BOTTOM_SHEET: ViewStyle = {
+  borderRadius: 25,
+  paddingHorizontal: 25,
+  overflow: "hidden",
+};
+
+export const PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
+  position: "absolute",
+  bottom: 80,
+  width: "100%",
   flexDirection: "row",
+  justifyContent: "center",
 };
 
-export const PAYMENT_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
-  width: 200,
-  height: 50,
+export const PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "80%",
+  height: 60,
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
 };
 
-export const PAYMENT_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+export const CARD_HOLDER_NAME: ViewStyle = {
+  paddingTop: 10,
+  paddingBottom: 10,
+};
+
+export const INPUT_CARD_NUMBER_ROW: ViewStyle = {
+  borderRadius: 10,
+  overflow: "hidden",
+  marginBottom: 20,
+};
+
+export const INPUT_CARD_NAME_ROW: ViewStyle = {
+  borderRadius: 10,
+  overflow: "hidden",
+  marginBottom: 20,
+};
+
+export const CARD_HOLDER_NAME_TEXT: TextStyle = {
+  fontSize: 16,
+};
+
+export const CARD_NUMBER: TextStyle = {
+  paddingTop: 10,
+  paddingBottom: 10,
+};
+
+export const CARD_NUMBER_TEXT: TextStyle = {
+  fontSize: 16,
+};
+export const EXP_DATE_CVV: ViewStyle = {
+  width: "100%",
+  flexDirection: "row",
+  justifyContent: "space-between",
+};
+
+export const CARD_EXP_DATE_ROW: ViewStyle = {
+  paddingBottom: 10,
+};
+
+export const CARD_EXP_DATE: ViewStyle = {
+  // flexGrow: 1,
+  width: "45%",
+  marginRight: 10,
+};
+
+export const CARD_EXP_DATE_TEXT: TextStyle = {
+  fontSize: 16,
+};
+
+export const EXP_DATE_INPUT_TEXT: ViewStyle = {
+  borderRadius: 10,
+  overflow: "hidden",
+};
+
+export const CARD_EXP_DATE_TEXT_COLUMN: ViewStyle = {
+  paddingBottom: 10,
+  paddingTop: 10,
+};
+
+export const CARD_CVV: ViewStyle = {
+  marginLeft: 10,
+  width: "45%",
+  // flexGrow: 1,
+};
+
+export const CARD_CVV_TEXT: TextStyle = {
+  fontSize: 16,
+};
+
+export const PAYMENT_SCREEN_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
   height: "100%",
   width: "100%",
   borderRadius: 25,
-  backgroundColor: theme.colors.mintLight,
-  marginVertical: 150,
+  backgroundColor: theme.colors.mint,
+  // marginVertical: 70,
   justifyContent: "center",
   alignItems: "center",
 };
 
-export const PAYMENT_BOTTOM_BUTTON: ViewStyle = {
+export const PAYMENT_SCREEN_BOTTOM_BUTTON: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
-}
+};
+
+export const PAYMENT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
+  color: "white",
+  fontSize: 18,
+};
 
 /* PaymentScreen end */

@@ -54,6 +54,7 @@ export const PreLoginScreen: FC<StackScreenProps<StackNavigatorParamList, "preLo
               AmplifyAuth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })
             }} />
             <LoginButton label={"Login with Facebook"} authProvider={"facebook"} onPress={() => {
+              AmplifyAuth.federatedSignIn({provider: CognitoHostedUIIdentityProvider.Facebook })
             }} />
             <LoginButton label={"Login with Apple"} authProvider={"apple"} onPress={() => {
             }} />

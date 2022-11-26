@@ -59,6 +59,7 @@
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [
+          "FACEBOOK",
           "GOOGLE"
         ],
         "usernameAttributes": [
