@@ -6,26 +6,31 @@
 
 ## Table of Contents
 
-- ### [Environment Setting](#environment-setting)
-   - #### [iOS Setting](#ios-setting)
-   - #### [Android Setting](#android-setting)
-- ### [Run the App](#run-the-app)
-- ### [React Navigation](#react-navigation)
-  - #### [Route Architecture](#route-architecture)
-  - #### [Create new screens](#create-new-screens)
-- ### [React Native Vector Icons issue](#react-native-vector-icons-issue)
-  - #### [How to use React Native Vector Icons within React Native Paper](#how-to-react-native-vector-icons-issue)
-- ### [Redux](#redux)
-  - #### [Create new Reducer/Slice](#create-new-reducer/slice)
-- ### [AWS Amplify](#aws-amplify)
-  - #### [AWS API Gateway](#aws-api-gateway)
-  - #### [AWS Lambda Function](#aws-lambda)
-  - #### [AWS CloudFormation](#aws-cloudformation)
-  - #### [AWS CloudWatch](#aws-cloudwatch)
-  - #### [AWS Cognito](#aws-cognito)
-- ### [Amadeus - Hotel & Flight Booking API](#amadeus)
-  - #### [API Call Sample (without Node SDK)](#amadeus-api-call)
-  - #### [Get Access Token API (expires every 30 minutes)](#amadeus-access-token)
+- [TripToop - Travel App](#triptoop---travel-app)
+  - [Table of Contents](#table-of-contents)
+  - [Environment Setting ](#environment-setting-)
+    - [iOS Setting ](#ios-setting-)
+    - [Android Setting ](#android-setting-)
+  - [Run the App ](#run-the-app-)
+  - [React Navigation ](#react-navigation-)
+    - [Route Architecture ](#route-architecture-)
+    - [Create new screens ](#create-new-screens-)
+  - [React Native Vector Icons issue ](#react-native-vector-icons-issue-)
+    - [How to use React Native Vector Icons within React Native Paper ](#how-to-use-react-native-vector-icons-within-react-native-paper-)
+  - [Redux ](#redux-)
+    - [Create new Reducer/Slice ](#create-new-reducerslice-)
+  - [AWS Amplify ](#aws-amplify-)
+    - [If encounter error like "amplify" command not found, try to add path at root](#if-encounter-error-like-amplify-command-not-found-try-to-add-path-at-root)
+      - [!!! Amplify init will add list of paths and files in .gitignore](#-amplify-init-will-add-list-of-paths-and-files-in-gitignore)
+    - [API - AWS Amplify -\> AWS API Gateway ](#api---aws-amplify---aws-api-gateway-)
+    - [API - AWS Amplify -\> AWS Lambda Function ](#api---aws-amplify---aws-lambda-function-)
+    - [Deployment Tracker - AWS Amplify -\> AWS CloudFormation ](#deployment-tracker---aws-amplify---aws-cloudformation-)
+    - [Logger - AWS Amplify -\> AWS CloudWatch ](#logger---aws-amplify---aws-cloudwatch-)
+    - [Auth - AWS Amplify -\> AWS Cognito ](#auth---aws-amplify---aws-cognito-)
+  - [Amadeus - Hotel \& Flight Booking API ](#amadeus---hotel--flight-booking-api-)
+    - [API Call Sample (without Node SDK) ](#api-call-sample-without-node-sdk-)
+      - [Get Access Token API (expires every 30 minutes) ](#get-access-token-api-expires-every-30-minutes-)
+  - [Test Credit Card Account Numbers](#test-credit-card-account-numbers)
 
 ## Environment Setting <a name="environment-setting"/>
 
@@ -978,6 +983,10 @@ The Rest of other APIs using Access Token
 
 ![Find Hotel by City!](assets/images/readme/amadeus_get_hotels_by_city.png "Find Hotel by City")
 
+---
+## Test Credit Card Account Numbers
+https://www.paypalobjects.com/en_GB/vhelp/paypalmanager_help/credit_card_numbers.htm
 
+Please refer to ```app/helpers/amadeus/validateCardNumber.ts```
 
 ---
