@@ -32,6 +32,12 @@
           "clientSecret": "rJqfpmT2WtKTKUBs",
           "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
           "s3Key": "amplify-builds/amadeusHotelBookings-67532f4d307667307141-build.zip"
+        },
+        "amadeusHotelListAndOffers": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelListAndOffers-5a746e4d2b4e68375a41-build.zip"
         }
       },
       "api": {
@@ -39,7 +45,8 @@
       },
       "auth": {
         "TripTroopAuth": {
-          "googleClientId": "341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com"
+          "googleClientId": "341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com",
+          "facebookAppId": "665104985011432"
         }
       }
     }

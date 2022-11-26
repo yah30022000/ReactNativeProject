@@ -21,6 +21,13 @@
       "permissions": {
         "setting": "open"
       }
+    },
+    "/amadeus/hotel-list-and-offers": {
+      "name": "/amadeus/hotel-list-and-offers",
+      "lambdaFunction": "amadeusHotelListAndOffers",
+      "permissions": {
+        "setting": "open"
+      }
     }
   }
 }

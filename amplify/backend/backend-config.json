@@ -17,6 +17,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda",
       "dependsOn": []
+    },
+    "amadeusHotelListAndOffers": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
     }
   },
   "api": {
@@ -47,6 +53,14 @@
             "Name",
             "Arn"
           ]
+        },
+        {
+          "category": "function",
+          "resourceName": "amadeusHotelListAndOffers",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
         }
       ]
     }
@@ -59,6 +73,7 @@
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [
+          "FACEBOOK",
           "GOOGLE"
         ],
         "usernameAttributes": [

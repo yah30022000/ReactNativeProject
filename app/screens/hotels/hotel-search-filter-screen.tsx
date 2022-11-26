@@ -46,9 +46,9 @@ import {
   HOTEL_SEARCH_FILTER_PRICE_TEXT,
 } from "../../theme";
 import {
-  changeHotelSearching,
+  // changeHotelSearching,
   HotelState,
-  selectRating,
+  // selectRating,
 } from "../../redux/hotel/hotelSlice";
 import {useAppDispatch} from "../../redux/hooks";
 
@@ -62,11 +62,11 @@ export const HotelSearchFilterScreen: FC<
   const [priceRangeValue, setPriceRangeValue] = useState<number[]>([500, 4000]);
   let dimension = useWindowDimensions();
   const [modalStatus, setModalStatus] =
-    useState<HotelState["hotelListSearching"]>("none");
+    useState<HotelState["hotelListAndOffersSearching"]>("none");
 
   const closeModalCallback = () => {
     setModalStatus("none");
-    dispatch(changeHotelSearching("none"));
+    // dispatch(changeHotelSearching("none"));
     if (modalStatus === "completed") {
       navigation.navigate("hotelList" as any);
     }
@@ -135,6 +135,7 @@ export const HotelSearchFilterScreen: FC<
           />
         </View>
       </View>
+
       <View>
         <PaperDivider style={HOTEL_FILTER_DIVIDER_LINE} />
       </View>
