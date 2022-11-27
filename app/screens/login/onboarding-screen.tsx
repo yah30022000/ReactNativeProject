@@ -5,6 +5,7 @@ import {
   View,
 } from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
+import SplashScreen from 'react-native-splash-screen'
 import {FC} from "react";
 import {StackScreenProps} from "@react-navigation/stack";
 import {StackNavigatorParamList} from "../../navigators";
