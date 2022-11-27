@@ -20,6 +20,108 @@ export const HOME_BOTTOM_TAB: ViewStyle = {
 
 /* Global Style ends */
 
+/* Get start Screen Start */
+export const ONBOARDING_SCREEN: ViewStyle = {
+  flex: 1,
+  zIndex: 100,
+};
+
+export const ONBOARDING_SCREEN_TITLE_ROW: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  marginVertical: 60,
+  position: "absolute",
+  left: 0,
+  right: 0
+}
+
+export const ONBOARDING_SCREEN_BRAND_LOGO: ImageStyle = {
+  height: 250,
+  width: 250,
+};
+
+export const ONBOARDING_SCREEN_TITLE: ViewStyle = {
+  paddingTop: 20,
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const ONBOARDING_SCREEN_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+
+};
+
+export const ONBOARDING_SCREEN_SUBTITLE: ViewStyle = {
+  paddingTop: 20,
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const ONBOARDING_SCREEN_SUBTITLE_TEXT: TextStyle = {
+  fontSize: 16,
+  color: "grey",
+  textAlign: "center",
+  };
+
+export const ONBOARDING_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
+  position: "absolute",
+  bottom: 80,
+  width: "100%",
+  flexDirection: "column",
+  alignItems: "center"
+  // justifyContent: "center",
+};
+
+export const ONBOARDING_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "75%",
+  height: 60,
+  display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+};
+
+export const ONBOARDING_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: theme.colors.mint,
+  // marginVertical: 70,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const ONBOARDING_BOTTOM_BUTTON_TEXT: TextStyle = {
+  color: "white",
+  fontSize: 20,
+};
+
+export const ONBOARDING_SKIP_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "75%",
+  height: 60,
+  marginTop: 20,
+  // display: "flex",
+  justifyContent: "center",
+  flexDirection: "row",
+}
+
+export const ONBOARDING_SKIP_BUTTON_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%",
+  borderRadius: 25,
+  backgroundColor: "transparent",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
+export const ONBOARDING_SKIP_BUTTON_TEXT: TextStyle = {
+  color: theme.colors.black,
+  fontSize: 16,
+};
+
+/* Onboarding Screen ends */
+
+
 /* PreLogin Screen starts */
 export const PRE_LOGIN_SCREEN_VIEW: ViewStyle = {
   flex: 1,
