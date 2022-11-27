@@ -2,7 +2,8 @@ import {
   Divider as PaperDivider,
   Modal as PaperModal,
   Portal as PaperPortal,
-  Searchbar as PaperSearchbar, Snackbar as PaperSnackbar,
+  Searchbar as PaperSearchbar,
+  Snackbar as PaperSnackbar,
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
@@ -40,7 +41,8 @@ import {
   HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT,
   HOTEL_SEARCH_FILTER_PRICE_TEXT,
   HOTEL_SEARCH_FLAT_LIST,
-  HOTEL_SEARCH_FLAT_LIST_WRAPPER, HOTEL_SEARCH_MULTI_SELECT,
+  HOTEL_SEARCH_FLAT_LIST_WRAPPER,
+  HOTEL_SEARCH_MULTI_SELECT,
   HOTEL_SEARCH_SCREEN,
   HOTEL_SEARCH_SCREEN_DESTINATION_TEXT,
   HOTEL_SEARCH_SCREEN_DIVIDER_LINE,
@@ -64,7 +66,14 @@ import {
 import { StackNavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack";
 import CalendarPicker, { DateChangedCallback } from "react-native-calendar-picker";
-import { amenities, ButtonItem, ButtonItemAndIndex, HotelCityCode, hotelCityCodes } from "../../helper/amadeus";
+import {
+  amenities,
+  amenitiesSelectItems,
+  ButtonItem,
+  ButtonItemAndIndex, HotelAmenities,
+  HotelCityCode,
+  hotelCityCodes,
+} from "../../helper/amadeus";
 import { useSelector } from "react-redux";
 import { changeHotelSearching, HotelState, setHotelListAndOffersRequest } from "../../redux/hotel/hotelSlice";
 import { RootState } from "../../redux/store";
@@ -111,10 +120,10 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const [cityCode, setCityCode] = useState<string>("");
   const [currency, setCurrency] = useState<string>("");
   const [ratings, setRatings] = useState<Array<number>>([]);
-  const [adults, setAdults] = useState<number>(1);
+  const [adults, setAdults] = useState<number>(2);
   const [rooms, setRooms] = useState<number>(1);
-  const [priceRangeValue, setPriceRangeValue] = useState<number[]>([500, 4000]);
-  const [amenitiesSelected, setAmenitiesSelected] = useState<typeof amenities>([]);
+  const [priceRangeValue, setPriceRangeValue] = useState<number[]>([200, 15000]);
+  const [amenitiesSelected, setAmenitiesSelected] = useState<typeof amenitiesSelectItems>([]);
 
 
   // global variables
@@ -128,7 +137,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
+    // console.log("handleSheetChanges", index);
   }, []);
 
   const findHotelCityCodes = (searchInput?: string) => {
@@ -150,20 +159,31 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
       return;
     }
 
-    if(!checkInDate || !checkOutDate){
+    if (!checkInDate || !checkOutDate) {
       onToggleSnackBar("Please pick check in and check out period");
       return;
     }
 
+    let amenitiesIntoRequest = amenitiesSelected.map((amenity) => {
+        return amenity.title;
+      }) as typeof amenities;
+
     dispatch(setHotelListAndOffersRequest({
       cityCode: cityCode,
-      currency: currency,
+
+      // if price range is defined, need to have currency code that match the city (e.g. HKD in HKG)
+      currency: priceRangeValue.length < 1 ? undefined : currency,
       adults: adults,
       ratings: ratings === Array.from([]) ? undefined : ratings,
       roomQuantity: rooms,
       checkInDate: checkInDate?.format("yyyy-MM-DD"),
       checkOutDate: checkOutDate?.format("yyyy-MM-DD"),
-      priceRange: `${priceRangeValue[0]}-${priceRangeValue[1]}`,
+
+      // if price range is not chosen, return undefined
+      priceRange: priceRangeValue.length < 1 ? undefined :
+        `${priceRangeValue[0]}-${priceRangeValue[1]}`,
+
+      amenities: JSON.stringify(amenitiesIntoRequest)
     }));
   };
 
@@ -389,7 +409,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
         />
         <View style={HOTEL_BACK_BUTTON}>
           <ButtonWithColorBg
-            size={21}
+            size={25}
             color={colors.mint}
             iconName={"chevron-back"}
             iconProvider={"Ionicons"}
@@ -411,7 +431,10 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
           index={0}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
-          style={{borderRadius: 25, overflow: "hidden"}}>
+          style={{borderRadius: 30, overflow: "hidden"}}
+          // disable top line button to control height snapping
+          handleComponent={null}
+        >
           {destinationViewOn ? (
             <View>
               <PaperText style={HOTEL_SEARCH_BOOKING_HOTELS_TEXT}>
@@ -574,7 +597,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
               <View style={{ marginVertical: 20, paddingHorizontal: 20 }}>
                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                   <PaperText style={HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT}>
-                    Price Range
+                    Price Range (Total Nights)
                   </PaperText>
                   <PaperText style={HOTEL_SEARCH_FILTER_PRICE_TEXT}>
                     HKD {priceRangeValue[0]} - HKD {priceRangeValue[1]}
@@ -585,8 +608,8 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                     values={priceRangeValue}
                     onValuesChange={(values: number[]) => setPriceRangeValue(values)}
                     sliderLength={dimension.width * 0.85}
-                    min={300}
-                    max={5100}
+                    min={100}
+                    max={15100}
                     step={100}
                     trackStyle={{ backgroundColor: colors.grey }}
                     selectedStyle={{ backgroundColor: colors.mint }}
@@ -600,7 +623,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
               <View style={{ paddingHorizontal: 10 }}>
                 <SectionedMultiSelect
-                  items={amenities}
+                  items={amenitiesSelectItems}
                   IconRenderer={MaterialIcons as any}
                   uniqueKey="id"
                   displayKey={"title"}

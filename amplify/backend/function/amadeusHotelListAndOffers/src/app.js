@@ -89,11 +89,19 @@ app.get("/amadeus/hotel-list-and-offers", async function(req, res) {
     console.log('hotelOffersRequest: ', hotelOffersRequest)
 
     let hotelOffersResponse = await amadeusInstance.shopping.hotelOffersSearch.get(hotelOffersRequest)
-    let hotelOffersResponseBody = JSON.parse(hotelOffersResponse.body);
-    console.log("hotelOffersResponseBody: ", hotelOffersResponseBody);
+    console.log("hotelOffersResponseBody: ", hotelOffersResponse.data);
 
+    let hotelOffersWithRating = hotelOffersResponse.data.map((response) => {
+      let rating = hotelListResponse.data.find((lResponse)=>lResponse.hotelId === response.hotel.hotelId)?.rating ?? undefined
+      response.hotel["rating"] = rating
 
-    res.json({ status: 200, data: hotelOffersResponse.data });
+      let amenities = hotelListResponse.data.find((lResponse)=>lResponse.hotelId === response.hotel.hotelId)?.amenities ?? undefined
+      response.hotel["amenities"] = amenities
+
+      return response;
+    })
+
+    res.json({ status: 200, data: hotelOffersWithRating });
   } catch (err) {
     res.status(500).send({error: err.message});
   }

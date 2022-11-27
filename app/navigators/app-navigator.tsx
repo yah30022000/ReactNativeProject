@@ -15,7 +15,6 @@ export const AppNavigator = (props: NavigationProps) => {
       {...props}
     >
       <AppStack/>
-      {/* <PaymentDemoScreen/> */}
     </NavigationContainer>
   )
 }
