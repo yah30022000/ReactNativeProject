@@ -35,6 +35,7 @@
     "react": "18.1.0",
     "react-hook-form": "^7.39.3",
     "react-native": "0.70.4",
+    "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-calendar-picker": "^7.1.2",
     "react-native-calendars": "^1.1291.1",
     "react-native-dotenv": "^3.4.2",

@@ -45,7 +45,9 @@ export interface HotelListRequest {
   radius?: number;
   radiusUnit?: string;
   chainCodes?: Array<string>;
-  amenities?: Array<HotelAmenities>;
+
+  // JSON.stringify Array<HotelAmenities>
+  amenities?: string;
   ratings?: Array<number>;
   hotelSource?: string;
 }

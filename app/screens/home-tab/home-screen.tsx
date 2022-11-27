@@ -1,13 +1,11 @@
-// import { FC } from "react";
-// import { StackScreenProps } from "@react-navigation/stack";
 import {
   Divider as PaperDivider,
   IconButton as PaperIconButton,
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
-import React, {FC} from "react";
-import {SafeAreaView} from "react-native-safe-area-context";
+import React, { FC } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   HOME_SCREEN_DIVIDER_LINE,
   HOME_SCREEN_IMAGE_FIRST_WRAPPER,
@@ -29,18 +27,15 @@ import {
   HOME_SCREEN_UPPER_ROW,
   HOME_SCREEN_VIEW,
 } from "../../theme";
-import {
-  ImageBackground,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ImageBackground, ScrollView, TouchableOpacity, View } from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import ButtonWithColorBg, {
-  ButtonProp,
-} from "../../components/ButtonWithColorBg";
-import {TabNavigatorParamList} from "../../navigators";
-import {MaterialBottomTabScreenProps} from "@react-navigation/material-bottom-tabs";
+import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
+import { TabNavigatorParamList } from "../../navigators";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { HotelOffersResponse } from "../../helper/amadeus";
+import { UserState } from "../../redux/user/userSlice";
 
 export interface HomeScreenProps {}
 
@@ -49,6 +44,11 @@ export const HomeScreen: FC<
 > = ({route, navigation}) => {
   /* props */
   // const {}: HomeScreenProps = route.params;
+
+  // global variables
+  let signInResult = useSelector<RootState>(
+    (state) => state.user.signInResult
+  ) as UserState["signInResult"] | undefined;
 
   const {colors} = useTheme();
 
@@ -132,7 +132,7 @@ export const HomeScreen: FC<
       <View style={HOME_SCREEN_UPPER_ROW}>
         <View>
           {/* Greeting title, e.g. Hi Julia, You are in Hong Kong ! */}
-          <PaperText style={HOME_SCREEN_TITLE}>Hi Monroe !</PaperText>
+          <PaperText style={HOME_SCREEN_TITLE}>Hi {signInResult?.name ?? "User"} !</PaperText>
           <PaperText style={HOME_SCREEN_SUBTITLE}>
             You are in
             <PaperText style={{color: colors.coral}}> Hong Kong</PaperText>
@@ -195,9 +195,9 @@ export const HomeScreen: FC<
         </View>
       </View>
 
-      <ScrollView 
+      <ScrollView
       style={HOME_SCREEN_IMAGE_SCROLL_VIEW}
-      contentContainerStyle={{flexGrow: 1}} 
+      contentContainerStyle={{flexGrow: 1}}
       scrollEventThrottle={0}>
         {/* Image Row */}
         <View style={HOME_SCREEN_IMAGE_ROW}>

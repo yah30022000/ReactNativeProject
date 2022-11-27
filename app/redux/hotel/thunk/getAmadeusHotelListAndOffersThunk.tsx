@@ -12,6 +12,9 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
   async (queryParams: HotelListAndOffersRequest, thunkAPI) => {
 
     console.log("getAmadeusHotelListAndOffersThunk query params: ", queryParams);
+    if(queryParams.amenities == '[]'){
+      delete queryParams.amenities
+    }
 
     let apiName = "amadeusAPI";
     const path = "/amadeus/hotel-list-and-offers";

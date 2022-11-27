@@ -135,7 +135,9 @@ export function PaymentDemoScreen(props: PaymentDemoScreenProps) {
         index={0}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
-        style={PAYMENT_SCREEN_BOTTOM_SHEET}>
+        style={PAYMENT_SCREEN_BOTTOM_SHEET}
+        handleComponent={null}
+      >
         {/* Card Holder Row */}
         <View>
           <View style={CARD_HOLDER_NAME}>

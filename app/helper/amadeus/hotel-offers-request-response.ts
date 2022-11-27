@@ -1,4 +1,5 @@
 import { HotelListResponseData } from "./hotel-list-request-response";
+import { HotelAmenities } from "./hotel-amenities";
 
 /**
  *  https://test.api.amadeus.com/v3/shopping/hotel-offers
@@ -190,7 +191,9 @@ export interface Hotel {
   latitude?: number
   longitude?: number
   brandCode?: string
-};
+  rating?: number
+  amenities?: Array<HotelAmenities>
+}
 
 export interface HotelOffer {
   type?: string
