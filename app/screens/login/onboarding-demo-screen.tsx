@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
   Divider as PaperDivider,
   Modal as PaperModal,
@@ -43,14 +43,10 @@ import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import {HOTEL_SEARCH_SCREEN_DESTINATION_TEXT} from "../../theme";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {BoardingItem, boardingList} from "../../helper/onboarding-screen-util";
-import { navigationRef, StackNavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack/lib/typescript/src/types";
+import { navigationRef } from "../../navigators";
+export interface OnboardingDemoScreenProps {}
 
-
-export interface OnboardingScreenProps {}
-
-export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onBoarding">> =
-  ({ route, navigation }) => {
+export function OnboardingDemoScreen(props: OnboardingDemoScreenProps) {
   const {colors} = useTheme();
   const snapPoints = useMemo<Array<string>>(() => ["50%"], []);
   const boardingSheetRef = useRef<BottomSheet>(null);
@@ -176,9 +172,9 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
         <TouchableHighlight
           style={ONBOARDING_BOTTOM_BUTTON_TOUCHABLE}
           onPress={() => {
-            visibleIndex + 1 == boardingList.length
-              ? navigation.navigate("preLogin" as any)
-              : flatListRef.current?.scrollToIndex({index: visibleIndex + 1})
+            visibleIndex + 1 != boardingList.length
+              ? flatListRef.current?.scrollToIndex({index: visibleIndex + 1})
+              : () => navigation.navigate("prelogin" as any)
           }}
           underlayColor={"transparent"}>
           <View style={ONBOARDING_BOTTOM_BUTTON_WRAPPER}>
@@ -191,7 +187,7 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
         {/* Skip Button */}
         <TouchableHighlight
           style={ONBOARDING_SKIP_BUTTON_TOUCHABLE}
-          onPress={() => navigation.navigate("preLogin" as any)}
+          onPress={() => navigation.navigate("prelogin" as any)}
           underlayColor={"transparent"}>
           <View style={ONBOARDING_SKIP_BUTTON_WRAPPER}>
             <PaperText style={ONBOARDING_SKIP_BUTTON_TEXT}>

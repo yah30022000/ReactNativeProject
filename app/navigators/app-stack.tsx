@@ -14,6 +14,7 @@ import {
   LoginScreen,
   LoginScreenProps,
   OnboardingScreen,
+  OnboardingScreenProps,
   PaymentCompleteScreen,
   PaymentCompleteScreenProps,
   PaymentScreen,
@@ -41,7 +42,7 @@ import { getCurrentAuthenticatedUserThunk, logout } from "../redux/user/userSlic
  */
 export type StackNavigatorParamList = {
   // before login
-  onBoarding: undefined
+  onBoarding: OnboardingScreenProps
   preLogin: PreLoginScreenProps
   login: LoginScreenProps
   registerVerify: RegisterVerifyScreenProps
