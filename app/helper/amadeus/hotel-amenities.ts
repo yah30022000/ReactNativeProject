@@ -18,7 +18,7 @@ export enum HotelAmenities {
   GOLF = "GOLF",
   KITCHEN = "KITCHEN",
   ANIMAL_WATCHING = "ANIMAL_WATCHING",
-  "BABY-SITTING" = "SITTING",
+  "BABY-SITTING" = "BABY-SITTING",
   BEACH = "BEACH",
   CASINO = "CASINO",
   JACUZZI = "JACUZZI",
@@ -36,3 +36,10 @@ export enum HotelAmenities {
   GUARDED_PARKG = "GUARDED_PARKG",
   SERV_SPEC_MENU = "SERV_SPEC_MENU"
 }
+
+export let amenities = Object.values(HotelAmenities)
+
+// [{"id": "SWIMMING_POOL", "name": "Swimming_pool"}] for multi select
+export let amenitiesSelectItems = Object.values(HotelAmenities).map((item)=>{
+  return {id: item.toString(), title: item.charAt(0) + item.slice(1).toLowerCase()}
+})

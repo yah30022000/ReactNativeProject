@@ -1,8 +1,7 @@
 /**
  * CSS Styles
  * */
-import {ImageStyle, TextStyle, ViewStyle} from "react-native";
-import {NativeViewGestureHandlerPayload} from "react-native-gesture-handler";
+import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from "react-native";
 import theme from "./theme";
 
 /* Global Style starts */
@@ -56,6 +55,8 @@ export const ONBOARDING_SCREEN_SUBTITLE: ViewStyle = {
   paddingTop: 20,
   alignItems: "center",
   justifyContent: "center",
+  marginHorizontal: 20,
+  height: 90,
 };
 
 export const ONBOARDING_SCREEN_SUBTITLE_TEXT: TextStyle = {
@@ -581,7 +582,7 @@ export const HOTEL_SEARCH_SCREEN_USER_TEXT: TextStyle = {
 export const HOTEL_SEARCH_SCREEN_TITLE_ROW: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
-  marginVertical: 40,
+  marginVertical: 20,
   height: "15%",
 };
 
@@ -617,7 +618,7 @@ export const HOTEL_SEARCH_BAR_DIVIDER_LINE: ViewStyle = {
 
 export const HOTEL_SEARCH_SCREEN_DIVIDER_LINE: ViewStyle = {
   backgroundColor: theme.colors.grey,
-  marginVertical: 18,
+  marginVertical: 16,
   marginHorizontal: 15,
   flexDirection: "column",
 };
@@ -664,10 +665,19 @@ export const HOTEL_SEARCH_YOUR_BOOKING_HOTELS_DESTINATION: ViewStyle = {
   paddingTop: 10,
 };
 
+export const HOTEL_SEARCH_CALENDAR_WRAPPER: ViewStyle = {
+  height: "100%",
+  width: "100%"
+}
+
 export const HOTEL_SEARCH_BOOKING_DESTINATION_TEXT: TextStyle = {
   paddingLeft: 20,
   paddingBottom: 10,
 };
+
+export const HOTEL_SEARCH_BOOKING_ROOM_TEXT_ROW: ViewStyle = {
+  marginBottom: 15
+}
 
 export const HOTEL_SEARCH_BOOKING_ROOM_TEXT: TextStyle = {
   fontWeight: "bold",
@@ -676,23 +686,22 @@ export const HOTEL_SEARCH_BOOKING_ROOM_TEXT: TextStyle = {
   paddingLeft: 20,
 };
 
-export const HOTEL_SEARCH_BOOKING_ADULTS_ROW: TextStyle = {
+export const HOTEL_SEARCH_BOOKING_ADVANCED_ROW: TextStyle = {
   fontSize: 16,
-  marginTop: 10,
-  marginBottom: 10,
+  marginVertical: 5,
   paddingLeft: 20,
-  height: "12%",
+  height: "8%",
   justifyContent: "space-between",
   flexDirection: "row",
 };
 
-export const HOTEL_SEARCH_BOOKING_ADULTS_LEFT_COLUMN: ViewStyle = {
+export const HOTEL_SEARCH_BOOKING_ADVANCED_LEFT_COLUMN: ViewStyle = {
   flexGrow: 1,
   flexDirection: "row",
   alignItems: "center",
 };
 
-export const HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN: ViewStyle = {
+export const HOTEL_SEARCH_BOOKING_ADVANCED_RIGHT_COLUMN: ViewStyle = {
   flexGrow: 1,
   flexDirection: "row",
   justifyContent: "space-around",
@@ -700,16 +709,16 @@ export const HOTEL_SEARCH_BOOKING_ADULTS_RIGHT_COLUMN: ViewStyle = {
   paddingHorizontal: 50,
 };
 
-export const HOTEL_ADULTS_MINUS_BUTTON: ViewStyle = {
+export const HOTEL_ADVANCED_MINUS_BUTTON: ViewStyle = {
   marginBottom: -10,
 };
 
-export const HOTEL_ADULTS_ADD_BUTTON: ViewStyle = {
+export const HOTEL_ADVANCED_ADD_BUTTON: ViewStyle = {
   marginBottom: -10,
 };
 
-export const HOTEL_SEARCH_ADULTS_TEXT: TextStyle = {
-  fontSize: 18,
+export const HOTEL_SEARCH_ADVANCED_TEXT: TextStyle = {
+  fontSize: 20,
 };
 
 export const HOTEL_SEARCH_HOTEL_RATING: ViewStyle = {
@@ -717,10 +726,46 @@ export const HOTEL_SEARCH_HOTEL_RATING: ViewStyle = {
   alignItems: "center",
 };
 
-export const HOTEL_SEARCH_HOTEL_CLASS_TEXT: TextStyle = {
-  fontWeight: "bold",
-  fontSize: 20,
-};
+export const HOTEL_SEARCH_MULTI_SELECT = StyleSheet.create({
+  button: {
+    backgroundColor: theme.colors.mint,
+    height: 60,
+  },
+  modalWrapper: {
+    paddingVertical: 40,
+  },
+  container: {
+    borderRadius: 30,
+  },
+  item: {
+    height: 60,
+  },
+  itemText: {
+    fontSize: 18,
+  },
+  searchBar: {
+    height: 60,
+    backgroundColor: theme.colors.greyLight,
+  },
+  selectToggleText: {
+    fontSize: 18,
+  },
+  selectedItemText: {
+    color: theme.colors.green,
+  },
+  separator: {
+    backgroundColor: theme.colors.grey,
+  },
+  chipContainer: {
+    backgroundColor: theme.colors.mint,
+  },
+  chipText: {
+    color: theme.colors.white,
+  },
+  listContainer: {
+    padding: 100,
+  },
+})
 
 export const HOTEL_SEARCH_FLAT_LIST_WRAPPER: ViewStyle = {
   height: "100%",
@@ -728,10 +773,6 @@ export const HOTEL_SEARCH_FLAT_LIST_WRAPPER: ViewStyle = {
 
 export const HOTEL_SEARCH_FLAT_LIST: ViewStyle = {paddingTop: 25, flex: 1};
 
-export const HOTEL_SEARCH_RATING_ROW: ViewStyle = {
-  width: "100%",
-  height: "15%",
-};
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   position: "absolute",
@@ -742,8 +783,8 @@ export const HOTEL_SEARCH_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
 };
 
 export const HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
-  width: 200,
-  height: 50,
+  width: "80%",
+  height: 60,
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
@@ -763,6 +804,22 @@ export const HOTEL_SEARCH_BOTTOM_BUTTON: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
 };
+
+export const HOTEL_SCREEN_MODAL_CONTENT_CONTAINER: ViewStyle = {
+  backgroundColor: "white",
+  padding: 20,
+  height: "60%",
+  width: "90%",
+  alignSelf: "center",
+  borderRadius: 35,
+}
+
+export const HOTEL_SCREEN_MODAL_CONTENT_VIEW: ViewStyle = {
+  flex: 1,
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-around",
+}
 
 /* HotelSearchScreen ends */
 
@@ -805,9 +862,15 @@ export const HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN: ViewStyle = {
   justifyContent: "flex-start",
 };
 
-export const HOTEL_LIST_SCREEN_IMAGE: ViewStyle = {
+export const HOTEL_LIST_SCREEN_IMAGE_WRAPPER: ViewStyle = {
   // paddingLeft: 20,
 };
+
+export const HOTEL_LIST_SCREEN_IMAGE: ImageStyle = {
+  width: 100,
+  height: 130,
+  borderRadius: 20,
+}
 
 export const HOTEL_LIST_HOTEL_NAME: ViewStyle = {
   width: "60%",
@@ -824,6 +887,24 @@ export const HOTEL_LIST_HOTEL_ADDRESS_TEXT: TextStyle = {
   color: "grey",
   marginTop: 10,
 };
+
+export const HOTEL_LIST_PRICE: ViewStyle = {
+  flexDirection: "column",
+  justifyContent: "space-between",
+  width: "70%"
+}
+
+export const HOTEL_LIST_PRICE_TEXT_HALF_WRAPPER: ViewStyle = {
+  flexGrow: 1
+}
+
+export const HOTEL_LIST_PRICE_TEXT: TextStyle = {
+  fontSize: 14,
+  color: "grey",
+  marginTop: 10,
+};
+
+
 /*HotelListScreen end */
 
 /*HotelFilterScreen start*/
@@ -854,7 +935,7 @@ export const HOTEL_SEARCH_FILTER_PRICE_RANGE: ViewStyle = {
 };
 
 export const HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT: TextStyle = {
-  fontSize: 15,
+  fontSize: 20,
   fontWeight: "bold",
 };
 
@@ -866,7 +947,7 @@ export const HOTEL_SEARCH_FILTER_PRICE: ViewStyle = {
 };
 
 export const HOTEL_SEARCH_FILTER_PRICE_TEXT: TextStyle = {
-  fontSize: 16,
+  fontSize: 18,
 };
 
 export const HOTEL_FILTER_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
@@ -983,6 +1064,97 @@ export const HOTEL_FILTER_BUTTON_ICON: ViewStyle = {
 
 /* HotelFilterScreen end */
 
+/* HotelDetailScreen start */
+
+export const HOTEL_DETAIL_SCREEN: ViewStyle = {
+  flex: 1,
+  paddingTop: 60,
+};
+
+export const HOTEL_DETAIL_SCREEN_BACK_BUTTON_ROW: ViewStyle = {
+  paddingHorizontal: 20,
+  justifyContent: "flex-start",
+  width: 80,
+};
+
+export const HOTEL_DETAIL_SCREEN_TITLE_WRAPPER: ViewStyle = {
+  marginVertical: 20,
+  marginHorizontal: 20,
+  height: "15%",
+  flexDirection: "column",
+  justifyContent: "flex-end"
+};
+
+export const HOTEL_DETAIL_SCREEN_TITLE_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "center",
+}
+
+export const HOTEL_DETAIL_SCREEN_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  // lineHeight: 60,
+  maxHeight: 80,
+  fontSize: 30,
+  color: "white",
+};
+
+export const HOTEL_DETAIL_SCREEN_SUBTITLE_TEXT: TextStyle = {
+  fontSize: 16,
+  marginRight: 10,
+  fontWeight: "bold",
+  color: "white",
+};
+
+export const HOTEL_DETAIL_SCREEN_BOTTOM_SHEET_FIRST_VIEW: ViewStyle = {
+  marginTop: 20,
+  marginHorizontal: 20
+}
+
+export const HOTEL_DETAIL_SCREEN_PRICE_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent:"space-between",
+  marginVertical: 10
+}
+
+export const HOTEL_DETAIL_SCREEN_PRICE_TEXT: TextStyle = {
+  fontSize: 18,
+};
+
+export const HOTEL_DETAIL_SCREEN_PRICE_AMOUNT_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold"
+};
+
+export const HOTEL_DETAIL_SCREEN_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  marginVertical: 15,
+  // marginHorizontal: 15,
+  flexDirection: "column",
+};
+
+export const HOTEL_DETAIL_SCREEN_HOTEL_INFO_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  marginTop: 10,
+  paddingBottom: 10,
+};
+
+export const HOTEL_DETAIL_SCREEN_HOTEL_INFO_LOGO_ROW: ViewStyle = {
+  flexDirection: "column",
+}
+
+export const HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST:ViewStyle = {
+  marginVertical: 15,
+}
+
+export const HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER: ViewStyle = {
+  justifyContent: "space-between",
+  flexDirection: "row"
+}
+
+/* HotelDetailScreen end*/
+
 /* PaymentScreen start */
 export const PAYMENT_SCREEN_BACK_BUTTON: ViewStyle = {
   justifyContent: "space-between",
@@ -1004,7 +1176,7 @@ export const PAYMENT_SCREEN_TITLE: ViewStyle = {
 };
 
 export const PAYMENT_SCREEN_BOTTOM_SHEET: ViewStyle = {
-  borderRadius: 25,
+  borderRadius: 30,
   paddingHorizontal: 25,
   overflow: "hidden",
 };

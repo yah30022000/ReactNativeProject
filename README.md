@@ -6,8 +6,6 @@
 
 ## Table of Contents
 
-- [TripToop - Travel App](#triptoop---travel-app)
-  - [Table of Contents](#table-of-contents)
   - [Environment Setting ](#environment-setting-)
     - [iOS Setting ](#ios-setting-)
     - [Android Setting ](#android-setting-)

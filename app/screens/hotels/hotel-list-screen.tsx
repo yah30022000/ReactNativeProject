@@ -14,18 +14,20 @@ import {
   HOTEL_LIST_HOTEL_ADDRESS_TEXT,
   HOTEL_LIST_HOTEL_NAME,
   HOTEL_LIST_HOTEL_NAME_TEXT,
+  HOTEL_LIST_PRICE,
+  HOTEL_LIST_PRICE_TEXT,
+  HOTEL_LIST_PRICE_TEXT_HALF_WRAPPER,
   HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN,
   HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN,
-  HOTEL_LIST_SCREEN_IMAGE,
+  HOTEL_LIST_SCREEN_IMAGE, HOTEL_LIST_SCREEN_IMAGE_WRAPPER,
   HOTEL_LIST_SCREEN_TITLE,
   HOTEL_LIST_SCREEN_TITLE_TEXT,
   HOTEL_SEARCH_SCREEN_DIVIDER_LINE,
 } from "../../theme";
-import { selectRating } from "../../redux/hotel/hotelSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { HotelListResponse, HotelListResponseData } from "../../helper/amadeus";
+import { hotelCityCodes, HotelOffersResponse, HotelOffersResponseData } from "../../helper/amadeus";
 
 export interface HotelSearchListProps {
 }
@@ -37,55 +39,97 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
   const { colors } = useTheme();
 
   const dispatch = useAppDispatch();
-  let hotelListResponse = useSelector<RootState>(
-    (state) => state.hotel.hotelListResponse,
-  ) as HotelListResponse | undefined;
+  let hotelListAndOffersResponse = useSelector<RootState>(
+    (state) => state.hotel.hotelListAndOffersResponse,
+  ) as HotelOffersResponse | undefined;
 
 
   const renderHotelList = ({ item, index }: {
-    item: HotelListResponseData;
+    item: HotelOffersResponseData;
     index: number;
   }) => (
     <TouchableHighlight
-      onPress={() => navigation.navigate("hotelSearchFilter" as any)}
+      onPress={() => {
+        if(item.hotel?.hotelId){
+          navigation.navigate("hotelDetail" as any, {hotelId: item.hotel?.hotelId})
+        }
+      }}
       underlayColor={"transparent"}>
       <View style={{ flexDirection: "row" }}>
         <View style={HOTEL_LIST_SCREEN_HOTELS_LEFT_COLUMN}>
-          <View style={HOTEL_LIST_SCREEN_IMAGE}>
+          <View style={HOTEL_LIST_SCREEN_IMAGE_WRAPPER}>
             <Image
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 20,
-              }}
+              style={HOTEL_LIST_SCREEN_IMAGE}
               source={require("@travelasset/images/crown-hotel.jpeg")}
             />
           </View>
         </View>
         <View style={HOTEL_LIST_SCREEN_HOTELS_RIGHT_COLUMN}>
+
+          {/* Hotel Name */}
           <View style={HOTEL_LIST_HOTEL_NAME}>
             <PaperText
               style={HOTEL_LIST_HOTEL_NAME_TEXT}
               numberOfLines={1}
-              ellipsizeMode='tail'
+              ellipsizeMode="tail"
             >
-              {item.name}
+              {item.hotel?.name}
             </PaperText>
           </View>
+
+          {/* Hotel City / Address */}
           <View style={HOTEL_LIST_HOTEL_ADDRESS}>
             <PaperText style={HOTEL_LIST_HOTEL_ADDRESS_TEXT}>
-              {item.iataCode}
+              {
+                hotelCityCodes.find(city => {
+                  return city.cityCode === item.hotel?.cityCode;
+                })!.cityName
+              }
             </PaperText>
           </View>
-            <Rating
-              style={{alignItems: "flex-start" , marginTop: 10 }}
-              showRating={false}
-              type="custom"
-              imageSize={20}
-              ratingTextColor={colors.mint}
-              readonly={true}
-              startingValue={item.rating}
-            />
+
+          {/* Stars */}
+          <Rating
+            style={{ alignItems: "flex-start", marginTop: 10 }}
+            showRating={false}
+            type="custom"
+            imageSize={20}
+            ratingTextColor={colors.mint}
+            readonly={true}
+            startingValue={item.hotel?.rating ?? 3}
+          />
+
+          {/* Price */}
+          <View style={HOTEL_LIST_PRICE}>
+
+            {/* Average Price */}
+            <View style={HOTEL_LIST_PRICE_TEXT_HALF_WRAPPER}>
+              <PaperText style={HOTEL_LIST_PRICE_TEXT}>
+                {
+                  item.offers![0]?.price.variations?.average?.total ?
+                    `${item.offers![0]?.price.currency}  ${item.offers![0]?.price.variations.average.total}`
+                    : item.offers![0]?.price.variations?.average?.base ?
+                      `${item.offers![0]?.price.currency}  ${item.offers![0]?.price.variations.average.base}`
+                      :
+                      "-"
+                }/night
+              </PaperText>
+            </View>
+
+            {/* Total Price */}
+            <View style={HOTEL_LIST_PRICE_TEXT_HALF_WRAPPER}>
+              <PaperText style={{...HOTEL_LIST_PRICE_TEXT, fontWeight: "bold"}}>
+                {
+                  item.offers![0]?.price.total ?
+                    `${item.offers![0]?.price.currency}  ${item.offers![0]?.price.total}`
+                    : item.offers![0]?.price.base ?
+                      `${item.offers![0]?.price.currency}  ${item.offers![0]?.price.base}`
+                      : "-"
+                }/total
+              </PaperText>
+            </View>
+          </View>
+
         </View>
       </View>
     </TouchableHighlight>
@@ -116,51 +160,25 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
       <View
         style={HOTEL_LIST_FLAT_LIST_WRAPPER}>
-        <FlatList
-          data={hotelListResponse?.data ? hotelListResponse.data : []}
-          keyExtractor={buttonItem => buttonItem.hotelId}
-          renderItem={renderHotelList}
-          contentContainerStyle={{ backgroundColor: "white" }}
-          ItemSeparatorComponent={() => (
-            <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
-          )}
-          style={{ paddingTop: 25, flex: 1 }}
-        />
+        {
+          hotelListAndOffersResponse?.data ? (
+            <FlatList
+              data={hotelListAndOffersResponse?.data ? hotelListAndOffersResponse.data : []}
+              keyExtractor={buttonItem => buttonItem.hotel!.hotelId as any}
+              renderItem={renderHotelList}
+              contentContainerStyle={{ backgroundColor: "white" }}
+              ItemSeparatorComponent={() => (
+                <PaperDivider style={HOTEL_SEARCH_SCREEN_DIVIDER_LINE} />
+              )}
+              style={{ paddingTop: 25, flex: 1 }}
+            />
+          ) : (
+              <></>
+          )
+
+        }
+
       </View>
-
-      {/* <TouchableHighlight
-        onPress={() => navigation.navigate("hotelDetail" as any)}
-        underlayColor={"transparent"}>
-        <View
-          style={{
-            height: 50,
-            width: 200,
-            borderRadius: 25,
-            backgroundColor: "orange",
-            margin: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <PaperText style={{color: "white"}}>To Hotel Detail Page</PaperText>
-        </View>
-      </TouchableHighlight>
-
-      <TouchableHighlight
-        onPress={() => navigation.popToTop()}
-        underlayColor={"transparent"}>
-        <View
-          style={{
-            height: 50,
-            width: 200,
-            borderRadius: 25,
-            backgroundColor: "pink",
-            margin: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-          <PaperText style={{color: "white"}}>To Home Page</PaperText>
-        </View>
-      </TouchableHighlight> */}
     </SafeAreaView>
   );
 };
