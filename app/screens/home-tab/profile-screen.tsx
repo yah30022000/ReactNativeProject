@@ -27,8 +27,6 @@ import {
   PROFILE_SCREEN_OPTION_ITEM_TEXT,
 } from "../../theme/styles";
 import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
-import FeatherIcon from "react-native-vector-icons/Feather";
-import { chooseCityCode } from "../../redux/hotel/hotelSlice";
 
 export interface ProfileScreenProps {}
 
