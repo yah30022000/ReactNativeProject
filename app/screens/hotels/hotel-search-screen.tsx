@@ -595,12 +595,16 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
               {/* Price Range Row */}
               <View style={{ marginVertical: 20, paddingHorizontal: 20 }}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
                   <PaperText style={HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT}>
                     Price Range (Total Nights)
                   </PaperText>
                   <PaperText style={HOTEL_SEARCH_FILTER_PRICE_TEXT}>
-                    HKD {priceRangeValue[0]} - HKD {priceRangeValue[1]}
+                    {currency ? currency : "HKD"}{" "}
+                    {priceRangeValue[0]}
+                    -
+                    {currency ? currency : "HKD"}{" "}
+                    {priceRangeValue[1]}
                   </PaperText>
                 </View>
                 <View style={{ marginVertical: 10 }}>

@@ -15,6 +15,7 @@ declare global {
       yellow: string;
       yellowLight: string;
       white: string;
+      powderWhite: string;
       blue: string;
       red: string;
       green: string;
@@ -44,6 +45,7 @@ const theme: ReactNativePaper.Theme = {
     coral: "#F9A978",
     coralLight: "#fff3e8",
     white: "#ffffff",
+    powderWhite: "#FBFBFC",
     blue: "#1878f2",
     red: "#e23b22",
     green: "#42c949"

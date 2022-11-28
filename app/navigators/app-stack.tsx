@@ -98,20 +98,20 @@ export const AppStack = () => {
         headerShown: false,
       }}
       initialRouteName="homeTab">
-      {!isLoggedIn ? (
-        // AuthStack, before login
-        <Stack.Group screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="onBoarding" component={OnboardingScreen} />
-          <Stack.Screen name="preLogin" component={PreLoginScreen} />
-          <Stack.Screen name="login" component={LoginScreen} options={{ title: "", headerShown: true }}
-            // initialParams={{setIsLoggedIn: setIsLoggedIn}}
-          />
-          <Stack.Screen name="registerVerify" component={RegisterVerifyScreen} options={{ title: "Register Verification", headerShown: true }}
-            // initialParams={{setIsLoggedIn: setIsLoggedIn}}
-          />
-        </Stack.Group>
-      ) : (
-        // AppStack, after login
+      {/*{!isLoggedIn ? (*/}
+      {/*  // AuthStack, before login*/}
+      {/*  <Stack.Group screenOptions={{ headerShown: false }}>*/}
+      {/*    <Stack.Screen name="onBoarding" component={OnboardingScreen} />*/}
+      {/*    <Stack.Screen name="preLogin" component={PreLoginScreen} />*/}
+      {/*    <Stack.Screen name="login" component={LoginScreen} options={{ title: "", headerShown: true }}*/}
+      {/*      // initialParams={{setIsLoggedIn: setIsLoggedIn}}*/}
+      {/*    />*/}
+      {/*    <Stack.Screen name="registerVerify" component={RegisterVerifyScreen} options={{ title: "Register Verification", headerShown: true }}*/}
+      {/*      // initialParams={{setIsLoggedIn: setIsLoggedIn}}*/}
+      {/*    />*/}
+      {/*  </Stack.Group>*/}
+      {/*) : (*/}
+      {/*  // AppStack, after login*/}
         <Stack.Group screenOptions={{ headerShown: false }}>
           <Stack.Screen name="homeTab" component={HomeBottomTab}
             // initialParams={{setIsLoggedIn: setIsLoggedIn}}
@@ -124,10 +124,10 @@ export const AppStack = () => {
           <Stack.Screen name="payment" component={PaymentScreen} />
           <Stack.Screen name="paymentComplete" component={PaymentCompleteScreen} />
         </Stack.Group>
-      )
+      {/*)*/}
 
 
-      }
+      {/*}*/}
 
     </Stack.Navigator>
   );

@@ -85,7 +85,7 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
   const _onViewableItemsChanged = useCallback(
     (info: {viewableItems: ViewToken[]; changed: ViewToken[]}) => {
       console.log("Visible items are", info.viewableItems);
-      if (info.viewableItems[0].index) {
+      if (info.viewableItems[0].index !== null) {
         setVisibleIndex(info.viewableItems[0].index);
       }
     },

@@ -53,11 +53,17 @@ export interface PaymentFormData {
   cvv: string;
 }
 
-export interface PaymentScreenProps {}
+export interface PaymentScreenProps {
+  offerId?: string
+}
 
 export const PaymentScreen: FC<
   StackScreenProps<StackNavigatorParamList, "payment">
 > = ({route, navigation}) => {
+
+  /* props */
+  const offerId = route.params?.offerId ?? "OFFER_ID";
+
   const {colors} = useTheme();
   const dispatch = useAppDispatch();
 

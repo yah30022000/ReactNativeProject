@@ -44,7 +44,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     const hotelId = route.params?.hotelId ?? "HOTEL_ID";
     const { colors } = useTheme();
 
-    const [hotelOffer, setHotelOffer] = useState<HotelOffersResponseData>();
+    const [hotelOfferResponseData, setHotelOfferResponseData] = useState<HotelOffersResponseData>();
 
     // global variables
     let hotelListAndOffersResponse = useSelector<RootState>(
@@ -64,10 +64,10 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
       console.log("hotelId: ", hotelId);
 
       if (hotelListAndOffersResponse) {
-        let hotelOfferInList = hotelListAndOffersResponse.data.find((hotelOfferItem) => {
-          return hotelOfferItem.hotel?.hotelId === hotelId;
+        let hotelOfferResponseData = hotelListAndOffersResponse.data.find((hotelOfferResponse) => {
+          return hotelOfferResponse.hotel?.hotelId === hotelId;
         });
-        setHotelOffer(hotelOfferInList);
+        setHotelOfferResponseData(hotelOfferResponseData);
       }
     }, [hotelListAndOffersResponse]);
 
@@ -146,7 +146,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                 numberOfLines={2}
                 style={HOTEL_DETAIL_SCREEN_TITLE_TEXT}
               >
-                {hotelOffer?.hotel?.name}
+                {hotelOfferResponseData?.hotel?.name}
               </PaperText>
             </View>
 
@@ -154,7 +154,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
               {/* Stars */}
               <FlatList
                 horizontal={true}
-                data={Array(hotelOffer?.hotel?.rating ?? 0)}
+                data={Array(hotelOfferResponseData?.hotel?.rating ?? 0)}
                 style={{ marginTop: 10 }}
                 renderItem={({ item, index }) => {
                   return (
@@ -183,27 +183,27 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                 </PaperText>
                 <PaperText style={HOTEL_DETAIL_SCREEN_PRICE_AMOUNT_TEXT}>
                   {
-                    hotelOffer?.offers![0]?.price.variations?.average?.total ?
-                      `${hotelOffer.offers![0]?.price.currency} ${hotelOffer.offers![0]?.price.variations.average.total}`
-                      : hotelOffer?.offers![0]?.price.variations?.average?.base ?
-                        `${hotelOffer.offers![0]?.price.currency}  ${hotelOffer.offers![0]?.price.variations.average.base}`
+                    hotelOfferResponseData?.offers![0]?.price.variations?.average?.total ?
+                      `${hotelOfferResponseData.offers![0]?.price.currency} ${hotelOfferResponseData.offers![0]?.price.variations.average.total}`
+                      : hotelOfferResponseData?.offers![0]?.price.variations?.average?.base ?
+                        `${hotelOfferResponseData.offers![0]?.price.currency}  ${hotelOfferResponseData.offers![0]?.price.variations.average.base}`
                         :
                         "-"
                   }
                 </PaperText>
               </View>
 
-              {/* Per Night */}
+              {/* Total */}
               <View style={HOTEL_DETAIL_SCREEN_PRICE_ROW}>
                 <PaperText style={HOTEL_DETAIL_SCREEN_PRICE_TEXT}>
                   Total
                 </PaperText>
                 <PaperText style={HOTEL_DETAIL_SCREEN_PRICE_AMOUNT_TEXT}>
                   {
-                    hotelOffer?.offers![0]?.price.total ?
-                      `${hotelOffer.offers![0]?.price.currency} ${hotelOffer.offers![0]?.price.total}`
-                      : hotelOffer?.offers![0]?.price.base ?
-                        `${hotelOffer.offers![0]?.price.currency}  ${hotelOffer.offers![0]?.price.base}`
+                    hotelOfferResponseData?.offers![0]?.price.total ?
+                      `${hotelOfferResponseData.offers![0]?.price.currency} ${hotelOfferResponseData.offers![0]?.price.total}`
+                      : hotelOfferResponseData?.offers![0]?.price.base ?
+                        `${hotelOfferResponseData.offers![0]?.price.currency}  ${hotelOfferResponseData.offers![0]?.price.base}`
                         :
                         "-"
                   }
@@ -241,9 +241,9 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                 ellipsizeMode="tail"
               >
                 {
-                  hotelOffer?.offers![0].room?.description?.text ?
-                    hotelOffer?.offers![0].room?.description?.text :
-                    ""
+                  hotelOfferResponseData?.offers![0].room?.description?.text ?
+                    hotelOfferResponseData?.offers![0].room?.description?.text :
+                    "Description"
                 }
               </PaperText>
 
@@ -255,7 +255,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
             <TouchableHighlight
               style={HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE}
               onPress={() => {
-                navigation.navigate("hotelRoomSelect" as any)
+                navigation.navigate("hotelRoomSelect" as any, {hotelId: hotelOfferResponseData?.hotel?.hotelId})
               }}
               underlayColor={"transparent"}>
               <View style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
