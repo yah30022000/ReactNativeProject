@@ -32,8 +32,8 @@ export const ONBOARDING_SCREEN_TITLE_ROW: ViewStyle = {
   marginVertical: 60,
   position: "absolute",
   left: 0,
-  right: 0
-}
+  right: 0,
+};
 
 export const ONBOARDING_SCREEN_BRAND_LOGO: ImageStyle = {
   height: 250,
@@ -49,7 +49,6 @@ export const ONBOARDING_SCREEN_TITLE: ViewStyle = {
 export const ONBOARDING_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
   fontSize: 20,
-
 };
 
 export const ONBOARDING_SCREEN_SUBTITLE: ViewStyle = {
@@ -64,14 +63,14 @@ export const ONBOARDING_SCREEN_SUBTITLE_TEXT: TextStyle = {
   fontSize: 16,
   color: "grey",
   textAlign: "center",
-  };
+};
 
 export const ONBOARDING_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   position: "absolute",
   bottom: 80,
   width: "100%",
   flexDirection: "column",
-  alignItems: "center"
+  alignItems: "center",
   // justifyContent: "center",
 };
 
@@ -105,7 +104,7 @@ export const ONBOARDING_SKIP_BUTTON_TOUCHABLE: ViewStyle = {
   // display: "flex",
   justifyContent: "center",
   flexDirection: "row",
-}
+};
 
 export const ONBOARDING_SKIP_BUTTON_WRAPPER: ViewStyle = {
   height: "100%",
@@ -122,7 +121,6 @@ export const ONBOARDING_SKIP_BUTTON_TEXT: TextStyle = {
 };
 
 /* Onboarding Screen ends */
-
 
 /* PreLogin Screen starts */
 export const PRE_LOGIN_SCREEN_VIEW: ViewStyle = {
@@ -1414,3 +1412,178 @@ export const PAYMENT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 };
 
 /* PaymentScreen end */
+
+/* profile Screen start */
+
+export const PROFILE_SCREEN:ViewStyle = {
+  flex: 1,
+  paddingHorizontal: 20
+}
+
+export const PROFILE_SCREEN_TITLE: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginVertical: 30,
+};
+
+export const PROFILE_SCREEN_TITLE_TEXT: TextStyle = {
+  fontSize: 20,
+  fontWeight: "bold",
+};
+
+export const PROFILE_SCREEN_USER_IMAGE_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
+  marginVertical: 10,
+}
+
+export const PROFILE_SCREEN_USER_IMAGE: ImageStyle = {
+  borderRadius: 100,
+  height: 150,
+  width: 150,
+}
+
+export const PROFILE_SCREEN_EDIT_BUTTON: ViewStyle = {
+  position: "absolute",
+  alignSelf: "flex-end",
+  bottom: 0
+};
+
+export const PROFILE_SCREEN_PROFILE_USER_NAME: ViewStyle ={
+  justifyContent: "center",
+  flexDirection: "row",
+  marginVertical: 10,
+};
+
+export const PROFILE_SCREEN_PROFILE_USER_NAME_TEXT: TextStyle = {
+  fontSize: 20,
+  fontWeight: "bold"
+};
+
+export const PROFILE_SCREEN_PROFILE_EMAIL: ViewStyle = {
+  justifyContent: "center",
+  flexDirection: "row",
+  paddingBottom: 10, 
+};
+
+export const PROFILE_SCREEN_PROFILE_EMAIL_TEXT: TextStyle = {
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_DIVIDER_LINE: TextStyle ={
+  backgroundColor: theme.colors.grey,
+  marginVertical: 18,
+  flexDirection: "column",
+};
+
+export const PROFILE_SCREEN_USER_ICON: ViewStyle = {
+  marginLeft: 20,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_EDIT_PROFILE: ViewStyle ={
+  height: 50,
+  width: 200,
+  marginLeft: 10,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_PAYMENT: ViewStyle = {
+  marginLeft: 10,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_PAYMENT_TEXT: TextStyle = {
+  color: "#555555",
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_EDIT_PROFILE_TEXT: TextStyle = {
+  color: "#555555",
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_OPTION_ITEM: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  alignItems: "center",
+  marginVertical: 5
+};
+
+export const PROFILE_SCREEN_OPTION_ITEM_TEXT: TextStyle = {
+  color: theme.colors.black,
+  marginLeft: 15
+};
+
+export const PROFILE_SCREEN_PAYMENT_ICON: ViewStyle = {
+  marginLeft: 20,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  alignItems: "center"
+};
+
+export const PROFILE_SCREEN_NOTIFICATION_ICON: ViewStyle = {
+  marginLeft: 20,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_NOTIFICATION: ViewStyle = {
+  height: 50,
+  width: 200,
+  marginLeft: 10,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_NOTIFICATION_TEXT: TextStyle = {
+  color: "#555555",
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_HELP_ICON: ViewStyle = {
+  marginLeft: 20,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_HELP: ViewStyle = {
+  height: 50,
+  width: 200,
+  marginLeft: 10,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_HELP_TEXT: TextStyle = {
+  color: "#555555",
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_LOG_OUT_BUTTON: ViewStyle = {
+  height: 50,
+  width: 200,
+  marginLeft: 20,
+  justifyContent: "flex-start",
+  flexDirection: "row",
+};
+
+export const PROFILE_SCREEN_LOG_OUT_BUTTON_TEXT: TextStyle = {
+  color: "#F75554",
+  fontSize: 16,
+};
+
+export const PROFILE_SCREEN_LOG_OUT_BUTTON_TEXT_ROW: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  marginLeft: 10,
+};
+/* profile Screen end */
+
+/*edit profile Screen start*/
+export const EDIT_PROFILE_TITLE: ViewStyle = {
+
+};
