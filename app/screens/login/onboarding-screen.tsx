@@ -21,7 +21,7 @@ import {
   ONBOARDING_SKIP_BUTTON_TEXT,
   ONBOARDING_SKIP_BUTTON_WRAPPER,
   ONBOARDING_SCREEN_BRAND_LOGO,
-} from "../../theme/styles";
+} from "../../theme";
 import {ScalingDot, LiquidLike} from "react-native-animated-pagination-dots";
 import {
   Animated,

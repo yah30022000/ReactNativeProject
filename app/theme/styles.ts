@@ -170,17 +170,6 @@ export const PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM: ViewStyle = {
 
 /* Login Screen start*/
 
-export const LOGIN_SCREEN_FORGOT_PASSWORD: ViewStyle = {
-  width: "100%",
-  alignItems: "flex-end",
-  marginBottom: 24,
-};
-
-export const LOGIN_SCREEN_FORGOT_PASSWORD_TEXT: TextStyle = {
-  flexDirection: "row",
-  marginTop: 4,
-  color: "grey",
-};
 
 export const LOGIN_SCREEN_LOGIN_TAB_VIEW: ViewStyle = {
   flex: 1,
@@ -511,11 +500,6 @@ export const HOTEL_BACK_BUTTON: ViewStyle = {
   width: 80,
 };
 
-export const HOTEL_CROSS_BUTTON: ViewStyle = {
-  paddingHorizontal: 20,
-  justifyContent: "flex-start",
-  width: 80,
-};
 
 export const HOTEL_LOCATION_BUTTON: ViewStyle = {
   paddingHorizontal: 30,
@@ -542,12 +526,7 @@ export const HOTEL_FILTER_BUTTON: ViewStyle = {
   justifyContent: "flex-start",
   flexDirection: "row",
 };
-export const HOTEL_USER_BUTTON: ViewStyle = {
-  paddingHorizontal: 30,
-  display: "flex",
-  justifyContent: "flex-start",
-  flexDirection: "row",
-};
+
 export const HOTEL_SEARCH_SCREEN_LOCATION_TEXT: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
@@ -559,22 +538,6 @@ export const HOTEL_SEARCH_SCREEN_DESTINATION_TEXT: TextStyle = {
 };
 
 export const HOTEL_SEARCH_SCREEN_FILTER_TEXT: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-};
-
-export const HOTEL_SEARCH_SCREEN_SELECT_RATING_TEXT: TextStyle = {
-  fontSize: 16,
-  color: "grey",
-  marginTop: 10,
-};
-
-export const HOTEL_SEARCH_SCREEN_USER_ROOMS_TEXT: TextStyle = {
-  fontSize: 16,
-  color: "grey",
-  marginTop: 10,
-};
-export const HOTEL_SEARCH_SCREEN_USER_TEXT: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
 };
@@ -634,14 +597,6 @@ export const HOTEL_SEARCH_BOOKING_HOTELS_TEXT: TextStyle = {
 export const HOTEL_SEARCH_BAR: ViewStyle = {
   borderRadius: 20,
 };
-
-// export const HOTEL_SEARCH_BOOKING_DATE_TEXT: TextStyle = {
-//   fontWeight: "bold",
-//   fontSize: 20,
-//   marginTop: 20,
-//   paddingBottom: 20,
-//   paddingLeft: 20,
-// };
 
 export const HOTEL_SEARCH_ROOM_TEXT: TextStyle = {
   fontSize: 16,
@@ -719,11 +674,6 @@ export const HOTEL_ADVANCED_ADD_BUTTON: ViewStyle = {
 
 export const HOTEL_SEARCH_ADVANCED_TEXT: TextStyle = {
   fontSize: 20,
-};
-
-export const HOTEL_SEARCH_HOTEL_RATING: ViewStyle = {
-  justifyContent: "center",
-  alignItems: "center",
 };
 
 export const HOTEL_SEARCH_MULTI_SELECT = StyleSheet.create({
@@ -916,11 +866,6 @@ export const HOTEL_SEARCH_FILTER_CROSS_BUTTON: ViewStyle = {
   paddingTop: 20,
 };
 
-export const HOTEL_FILTER_PRICE_RANGE_TEXT: TextStyle = {
-  fontSize: 14,
-  fontWeight: "bold",
-};
-
 export const HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
   fontSize: 20,
@@ -1100,13 +1045,6 @@ export const HOTEL_DETAIL_SCREEN_TITLE_TEXT: TextStyle = {
   color: "white",
 };
 
-export const HOTEL_DETAIL_SCREEN_SUBTITLE_TEXT: TextStyle = {
-  fontSize: 16,
-  marginRight: 10,
-  fontWeight: "bold",
-  color: "white",
-};
-
 export const HOTEL_DETAIL_SCREEN_BOTTOM_SHEET_FIRST_VIEW: ViewStyle = {
   marginTop: 20,
   marginHorizontal: 20
@@ -1274,13 +1212,25 @@ export const HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
 
 export const HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
   color: theme.colors.mint,
-  fontWeight:"bold",
-  fontSize: 16
+  fontWeight: "bold",
+  fontSize: 16,
 };
 
 /* HotelRoomSelectScreen end */
 
 /* PaymentScreen start */
+export const PAYMENT_SCREEN: ViewStyle = {
+  flex: 1,
+  backgroundColor: theme.colors.mint,
+  paddingHorizontal: 25,
+};
+
+export const PAYMENT_SCREEN_HEADER_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "center",
+};
+
 export const PAYMENT_SCREEN_BACK_BUTTON: ViewStyle = {
   justifyContent: "space-between",
   flexDirection: "row",
@@ -1303,93 +1253,106 @@ export const PAYMENT_SCREEN_TITLE: ViewStyle = {
 export const PAYMENT_SCREEN_BOTTOM_SHEET: ViewStyle = {
   borderRadius: 30,
   paddingHorizontal: 25,
+  paddingTop: 20,
   overflow: "hidden",
+  flexDirection: "row",
+  justifyContent: "center"
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_TITLE: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  marginTop: 20,
+  paddingBottom: 20,
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER: ViewStyle = {
+  backgroundColor: theme.colors.powderWhite,
+  // height: 260,
+  width: "100%",
+  borderRadius: 20,
+  borderWidth: 0.2,
+  borderColor: theme.colors.grey,
+  marginTop: 10,
+  marginBottom: 30,
+  justifyContent: "space-between",
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW: ViewStyle = {
+  padding: 20,
+  flexDirection: "row",
+  justifyContent: "space-between",
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW_LEFT_COLUMN: ViewStyle = {
+  flexDirection: "column",
+  justifyContent: "flex-start",
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT_VIEW: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center"
+}
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
+  marginLeft: 10
+};
+
+export const PAYMENT_SCREEN_PAYMENT_METHOD_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  flexDirection: "column",
 };
 
 export const PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER: ViewStyle = {
   position: "absolute",
-  bottom: 80,
+  bottom: "15%",
   width: "100%",
   flexDirection: "row",
-  justifyContent: "center",
+  justifyContent: "space-between",
 };
 
 export const PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
-  width: "80%",
+  width: "45%",
   height: 60,
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
 };
 
-export const CARD_HOLDER_NAME: ViewStyle = {
+export const PAYMENT_SCREEN_INPUT_TITLE: ViewStyle = {
   paddingTop: 10,
   paddingBottom: 10,
 };
 
-export const INPUT_CARD_NUMBER_ROW: ViewStyle = {
-  borderRadius: 10,
-  overflow: "hidden",
-  marginBottom: 20,
-};
-
-export const INPUT_CARD_NAME_ROW: ViewStyle = {
-  borderRadius: 10,
-  overflow: "hidden",
-  marginBottom: 20,
-};
-
-export const CARD_HOLDER_NAME_TEXT: TextStyle = {
+export const PAYMENT_SCREEN_INPUT_TITLE_TEXT: TextStyle = {
   fontSize: 16,
 };
 
-export const CARD_NUMBER: TextStyle = {
-  paddingTop: 10,
-  paddingBottom: 10,
+export const PAYMENT_SCREEN_INPUT_VIEW: ViewStyle = {
+  borderRadius: 10,
+  overflow: "hidden",
+  marginBottom: 10,
 };
 
-export const CARD_NUMBER_TEXT: TextStyle = {
-  fontSize: 16,
+export const PAYMENT_SCREEN_INPUT: TextStyle = {
+  backgroundColor: theme.colors.greyLight,
 };
-export const EXP_DATE_CVV: ViewStyle = {
+
+export const PAYMENT_SCREEN_EXP_DATE_CVV_ROW: ViewStyle = {
   width: "100%",
   flexDirection: "row",
   justifyContent: "space-between",
 };
 
-export const CARD_EXP_DATE_ROW: ViewStyle = {
-  paddingBottom: 10,
-};
-
-export const CARD_EXP_DATE: ViewStyle = {
+export const PAYMENT_SCREEN_HALF_COLUMN: ViewStyle = {
   // flexGrow: 1,
   width: "45%",
   marginRight: 10,
 };
 
-export const CARD_EXP_DATE_TEXT: TextStyle = {
-  fontSize: 16,
-};
 
-export const EXP_DATE_INPUT_TEXT: ViewStyle = {
-  borderRadius: 10,
-  overflow: "hidden",
-};
-
-export const CARD_EXP_DATE_TEXT_COLUMN: ViewStyle = {
-  paddingBottom: 10,
-  paddingTop: 10,
-};
-
-export const CARD_CVV: ViewStyle = {
-  marginLeft: 10,
-  width: "45%",
-  // flexGrow: 1,
-};
-
-export const CARD_CVV_TEXT: TextStyle = {
-  fontSize: 16,
-};
 
 export const PAYMENT_SCREEN_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
   height: "100%",
@@ -1401,10 +1364,6 @@ export const PAYMENT_SCREEN_BOTTOM_BUTTON_WRAPPER: ViewStyle = {
   alignItems: "center",
 };
 
-export const PAYMENT_SCREEN_BOTTOM_BUTTON: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
-};
 
 export const PAYMENT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
   color: "white",
@@ -1463,7 +1422,7 @@ export const PROFILE_SCREEN_PROFILE_USER_NAME_TEXT: TextStyle = {
 export const PROFILE_SCREEN_PROFILE_EMAIL: ViewStyle = {
   justifyContent: "center",
   flexDirection: "row",
-  paddingBottom: 10, 
+  paddingBottom: 10,
 };
 
 export const PROFILE_SCREEN_PROFILE_EMAIL_TEXT: TextStyle = {
@@ -1476,11 +1435,6 @@ export const PROFILE_SCREEN_DIVIDER_LINE: TextStyle ={
   flexDirection: "column",
 };
 
-export const PROFILE_SCREEN_USER_ICON: ViewStyle = {
-  marginLeft: 20,
-  justifyContent: "flex-start",
-  flexDirection: "row",
-};
 
 export const PROFILE_SCREEN_EDIT_PROFILE: ViewStyle ={
   height: 50,
@@ -1544,32 +1498,6 @@ export const PROFILE_SCREEN_NOTIFICATION_TEXT: TextStyle = {
   fontSize: 16,
 };
 
-export const PROFILE_SCREEN_HELP_ICON: ViewStyle = {
-  marginLeft: 20,
-  justifyContent: "flex-start",
-  flexDirection: "row",
-};
-
-export const PROFILE_SCREEN_HELP: ViewStyle = {
-  height: 50,
-  width: 200,
-  marginLeft: 10,
-  justifyContent: "flex-start",
-  flexDirection: "row",
-};
-
-export const PROFILE_SCREEN_HELP_TEXT: TextStyle = {
-  color: "#555555",
-  fontSize: 16,
-};
-
-export const PROFILE_SCREEN_LOG_OUT_BUTTON: ViewStyle = {
-  height: 50,
-  width: 200,
-  marginLeft: 20,
-  justifyContent: "flex-start",
-  flexDirection: "row",
-};
 
 export const PROFILE_SCREEN_LOG_OUT_BUTTON_TEXT: TextStyle = {
   color: "#F75554",
@@ -1584,6 +1512,3 @@ export const PROFILE_SCREEN_LOG_OUT_BUTTON_TEXT_ROW: ViewStyle = {
 /* profile Screen end */
 
 /*edit profile Screen start*/
-export const EDIT_PROFILE_TITLE: ViewStyle = {
-
-};

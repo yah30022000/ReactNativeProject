@@ -25,7 +25,7 @@ import { UserState } from "../../redux/user/userSlice";
 
 export interface LoginTabProps {
   PASSWORD_MIN_LENGTH: number;
-  REGEX: {email: RegExp};
+  REGEXP: {email: RegExp};
   ERROR_MESSAGES: {
     REQUIRED: string;
     EMAIL_INVALID: string;
@@ -44,14 +44,14 @@ export const LoginTab = (props: LoginTabProps) => {
    const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
    const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
    const onDismissSnackBar = () => setSnackbarVisible(false);
- 
+
    useEffect(()=>{
      if(props.signingIn === "completed" || props.signingIn === "failed"){
        onToggleSnackBar()
      }
    }, [props.signingIn])
    /* Bottom Snackbar end */
-   
+
   return (
     <View style={LOGIN_SCREEN_LOGIN_TAB_VIEW}>
       {/* Upper Row */}
@@ -63,7 +63,7 @@ export const LoginTab = (props: LoginTabProps) => {
           rules={{
             required: {message: props.ERROR_MESSAGES.REQUIRED, value: true},
             pattern: {
-              value: props.REGEX.email,
+              value: props.REGEXP.email,
               message: props.ERROR_MESSAGES.EMAIL_INVALID,
             },
           }}

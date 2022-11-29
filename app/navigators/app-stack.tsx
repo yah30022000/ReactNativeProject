@@ -118,7 +118,7 @@ export const AppStack = () => {
           />
           <Stack.Screen name="hotelSearch" component={HotelSearchScreen} />
           <Stack.Screen name="hotelList" component={HotelListScreen} />
-          <Stack.Screen name="hotelSearchFilter" component={HotelSearchFilterScreen}/>
+          {/*<Stack.Screen name="hotelSearchFilter" component={HotelSearchFilterScreen}/>*/}
           <Stack.Screen name="hotelDetail" component={HotelDetailScreen} />
           <Stack.Screen name="hotelRoomSelect" component={HotelRoomSelectScreen} />
           <Stack.Screen name="payment" component={PaymentScreen} />

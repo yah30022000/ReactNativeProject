@@ -26,7 +26,7 @@ export interface RegisterTabProps {
   PASSWORD_MIN_LENGTH: number;
   // USERNAME_MIN_LENGTH: number;
   // USERNAME_MAX_LENGTH: number;
-  REGEX: {
+  REGEXP: {
     email: RegExp;
     name: RegExp;
     // username: RegExp;
@@ -121,7 +121,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
           rules={{
             required: {message: props.ERROR_MESSAGES.REQUIRED, value: true},
             pattern: {
-              value: props.REGEX.name,
+              value: props.REGEXP.name,
               message: props.ERROR_MESSAGES.NAME_INVALID,
             },
           }}
@@ -156,7 +156,7 @@ export const RegisterTab = (props: RegisterTabProps) => {
           rules={{
             required: {message: props.ERROR_MESSAGES.REQUIRED, value: true},
             pattern: {
-              value: props.REGEX.email,
+              value: props.REGEXP.email,
               message: props.ERROR_MESSAGES.EMAIL_INVALID,
             },
           }}
