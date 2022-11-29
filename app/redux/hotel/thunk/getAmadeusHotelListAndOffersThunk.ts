@@ -16,6 +16,10 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
       delete queryParams.amenities
     }
 
+    if(queryParams.ratings && queryParams.ratings.length < 1){
+      delete queryParams.ratings
+    }
+
     let apiName = "amadeusAPI";
     const path = "/amadeus/hotel-list-and-offers";
     const option = {

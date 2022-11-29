@@ -1,38 +1,59 @@
-import React, { FC, useCallback, useMemo, useRef, useState } from "react";
-import { Text as PaperText, useTheme } from "react-native-paper";
+import React, {FC, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
-  ONBOARDING_BOTTOM_BUTTON_ROW_WRAPPER,
-  ONBOARDING_BOTTOM_BUTTON_TEXT,
-  ONBOARDING_BOTTOM_BUTTON_TOUCHABLE,
-  ONBOARDING_BOTTOM_BUTTON_WRAPPER,
+  Divider as PaperDivider,
+  Modal as PaperModal,
+  Portal as PaperPortal,
+  Text as PaperText,
+  useTheme,
+} from "react-native-paper";
+import {
   ONBOARDING_SCREEN,
-  ONBOARDING_SCREEN_BRAND_LOGO,
+  ONBOARDING_SCREEN_TITLE_ROW,
+  ONBOARDING_SCREEN_TITLE,
+  ONBOARDING_SCREEN_TITLE_TEXT,
   ONBOARDING_SCREEN_SUBTITLE,
   ONBOARDING_SCREEN_SUBTITLE_TEXT,
-  ONBOARDING_SCREEN_TITLE,
-  ONBOARDING_SCREEN_TITLE_ROW,
-  ONBOARDING_SCREEN_TITLE_TEXT,
-  ONBOARDING_SKIP_BUTTON_TEXT,
+  ONBOARDING_BOTTOM_BUTTON_TOUCHABLE,
+  ONBOARDING_BOTTOM_BUTTON_WRAPPER,
+  ONBOARDING_BOTTOM_BUTTON_ROW_WRAPPER,
+  ONBOARDING_BOTTOM_BUTTON_TEXT,
   ONBOARDING_SKIP_BUTTON_TOUCHABLE,
+  ONBOARDING_SKIP_BUTTON_TEXT,
   ONBOARDING_SKIP_BUTTON_WRAPPER,
+  ONBOARDING_SCREEN_BRAND_LOGO,
 } from "../../theme";
-import { LiquidLike } from "react-native-animated-pagination-dots";
-import { Animated, Dimensions, FlatList, Image, TouchableHighlight, View, ViewToken } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {ScalingDot, LiquidLike} from "react-native-animated-pagination-dots";
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  StatusBar,
+  TouchableHighlight,
+  View,
+  ViewToken,
+} from "react-native";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {
+  ButtonItem,
+  ButtonItemAndIndex,
+} from "../../helper/amadeus/hotel-search-util-data";
+import ButtonWithColorBg from "../../components/ButtonWithColorBg";
+import {HOTEL_SEARCH_SCREEN_DESTINATION_TEXT} from "../../theme";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { BoardingItem, boardingList } from "../../helper/onboarding-screen-util";
-import { StackNavigatorParamList } from "../../navigators";
+import {BoardingItem, boardingList} from "../../helper/onboarding-screen-util";
+import { navigationRef, StackNavigatorParamList } from "../../navigators";
 import { StackScreenProps } from "@react-navigation/stack/lib/typescript/src/types";
 
 
-export interface OnboardingScreenProps {
-}
+export interface OnboardingScreenProps {}
 
 export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onBoarding">> =
   ({ route, navigation }) => {
-    const { colors } = useTheme();
-    const snapPoints = useMemo<Array<string>>(() => ["50%"], []);
-    const boardingSheetRef = useRef<BottomSheet>(null);
+  const {colors} = useTheme();
+  const snapPoints = useMemo<Array<string>>(() => ["50%"], []);
+  const boardingSheetRef = useRef<BottomSheet>(null);
   const [visibleIndex, setVisibleIndex] = useState<number>(0);
 
   // animated background and dot indicator
@@ -63,7 +84,7 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
 
   const _onViewableItemsChanged = useCallback(
     (info: {viewableItems: ViewToken[]; changed: ViewToken[]}) => {
-      console.log("Visible items are", info.viewableItems);
+      // console.log("Visible items are", info.viewableItems);
       if (info.viewableItems[0].index !== null) {
         setVisibleIndex(info.viewableItems[0].index);
       }

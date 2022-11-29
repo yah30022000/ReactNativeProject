@@ -183,7 +183,10 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
       priceRange: priceRangeValue.length < 1 ? undefined :
         `${priceRangeValue[0]}-${priceRangeValue[1]}`,
 
-      amenities: JSON.stringify(amenitiesIntoRequest)
+      amenities: JSON.stringify(amenitiesIntoRequest),
+
+      // credit card payment
+      paymentPolicy: "GUARANTEE"
     }));
   };
 

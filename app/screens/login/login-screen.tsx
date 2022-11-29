@@ -63,7 +63,7 @@ export const LoginScreen: FC<
   // const USERNAME_MIN_LENGTH = 6;
   // const USERNAME_MAX_LENGTH = 18;
 
-  const REGEX = {
+  const REGEXP = {
     // username: /^[a-zA-Z0-9](_(?!(\.|_))|\.(?![_.])|[a-zA-Z0-9]){4,16}[a-zA-Z0-9]$/im,
     email:
       /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
@@ -125,7 +125,7 @@ export const LoginScreen: FC<
         return (
           <LoginTab
             PASSWORD_MIN_LENGTH={PASSWORD_MIN_LENGTH}
-            REGEX={REGEX}
+            REGEXP={REGEXP}
             ERROR_MESSAGES={ERROR_MESSAGES}
             loginControl={loginControl}
             loginFormState={loginFormState}
@@ -141,7 +141,7 @@ export const LoginScreen: FC<
             PASSWORD_MIN_LENGTH={PASSWORD_MIN_LENGTH}
             // USERNAME_MIN_LENGTH={USERNAME_MIN_LENGTH}
             // USERNAME_MAX_LENGTH={USERNAME_MAX_LENGTH}
-            REGEX={REGEX}
+            REGEXP={REGEXP}
             ERROR_MESSAGES={ERROR_MESSAGES}
             registerControl={registerControl}
             registerFormState={registerFormState}
