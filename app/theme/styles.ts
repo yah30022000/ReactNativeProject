@@ -1583,7 +1583,47 @@ export const PROFILE_SCREEN_LOG_OUT_BUTTON_TEXT_ROW: ViewStyle = {
 };
 /* profile Screen end */
 
-/*edit profile Screen start*/
-export const EDIT_PROFILE_TITLE: ViewStyle = {
-
+/* booking history screen start*/
+export const BOOKING_HISTORY_SCREEN: ViewStyle = {
+  flex: 1,
+  paddingHorizontal: 20
 };
+
+export const BOOKING_HISTORY_BACK_BUTTON: ViewStyle = {
+  justifyContent: "space-between",
+  flexDirection: "row",
+  marginVertical: 30,
+};
+
+export const BOOKING_HISTORY_TITLE: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "center",
+  alignItems: "center",
+  // marginBottom: 20,
+  flexGrow: 0.6,
+};
+
+export const BOOKING_HISTORY_TITLE_TEXT: TextStyle ={
+  fontWeight: "bold",
+  fontSize: 20,
+  color: "black",
+};
+
+export const BOOKING_HISTORY_OPTION_ITEM: ViewStyle = {
+  justifyContent: "flex-start",
+  flexDirection: "row",
+  alignItems: "center",
+  marginVertical: 5
+};
+
+export const BOOKING_HISTORY_OPTION_ITEM_TEXT: TextStyle = {
+  color: theme.colors.black,
+  marginLeft: 15
+};
+
+export const BOOKING_HISTORY_SCREEN_DIVIDER_LINE: ViewStyle = {
+  backgroundColor: theme.colors.grey,
+  marginVertical: 18,
+  flexDirection: "column",
+};
+/* booking history screen end*/
