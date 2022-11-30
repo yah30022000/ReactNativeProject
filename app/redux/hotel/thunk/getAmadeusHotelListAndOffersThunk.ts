@@ -36,7 +36,7 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
       return thunkAPI.rejectWithValue(response);
     }
 
-    console.log("getAmadeusHotelListAndOffersThunk data: ", response.data);
+    console.log("getAmadeusHotelListAndOffersThunk data length: ", response.data.length);
 
     return response;
   },

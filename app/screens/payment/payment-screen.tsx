@@ -10,7 +10,6 @@ import {
   useTheme,
 } from "react-native-paper";
 import {
-  FlatList,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -20,15 +19,10 @@ import {
   View,
 } from "react-native";
 import {
-  HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER, HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TEXT,
-  HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TOUCHABLE,
-  HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_WRAPPER,
   HOTEL_ROOM_SELECT_SCREEN_DIVIDER_LINE,
-  HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_BUTTON_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_CONTAINER,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_FIRST_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_FIRST_ROW_LEFT_COLUMN,
-  HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SECOND_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SUBTEXT,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_TEXT,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW,
@@ -63,13 +57,16 @@ import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import { validateCardNumber } from "../../helper/validateCardNumber";
-import { hotelCreditCardTypes } from "../../helper/amadeus/hotel-credit-card-types";
+import { HotelCreditCardType, hotelCreditCardTypes } from "../../helper/amadeus/hotel-credit-card-types";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { UserState } from "../../redux/user/userSlice";
 import { capitalizeString } from "../../helper/capitalizeString";
+import { HotelOffer, HotelOffersResponse } from "../../helper/amadeus";
+import moment from "moment";
+import FontistoIcon from "react-native-vector-icons/Fontisto";
 
 export interface PaymentFormData {
   cardHolderName: string;
@@ -105,21 +102,30 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
     console.log("handleSheetChanges", index);
   }, []);
   const [paymentFormData, setPaymentFormData] = useState<PaymentFormData>();
-  const [creditCardShortCodeState, setCreditCardShortCodeState] = useState<string>("");
-  const [creditCardLogoState, setCreditCardLogoState] = useState<string>("credit-card");
+
+  let initialCreditCardType = { cardCode: "credit-card", cardName: "Credit Card", shortCode: "", regExp: /^$/}
+  const [creditCardTypeState, setCreditCardTypeState] = useState<HotelCreditCardType>(initialCreditCardType);
   const [contactFormData, setContactFormData] = useState<ContactFormData>();
+  const [hotelOffer, setHotelOffer] = useState<HotelOffer>();
+  const [nights, setNights] = useState<number>(1);
+  const [basePrice, setBasePrice] = useState<number>(0);
+  const [serviceOrTax, setServiceOrTax] = useState<number>(0);
 
   // global variables
   let signInResult = useSelector<RootState>(
-    (state) => state.user.signInResult
+    (state) => state.user.signInResult,
   ) as UserState["signInResult"] | undefined;
+
+  let hotelListAndOffersResponse = useSelector<RootState>(
+    (state) => state.hotel.hotelListAndOffersResponse,
+  ) as HotelOffersResponse | undefined;
 
   /* React Hook Form Start */
   const CARD_NUMBER_MIN_LENGTH = 8;
   const CARD_NUMBER_MAX_LENGTH = 19;
   const REGEXP = {
     cardNumber:
-      /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
+      /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))|\b(?:\d[ -]*?){13,16}\b$/,
     cardHolderName: /^[a-zA-Z\s]*$/i,
     expDate: /^\d{4}\-(0[1-9]|1[012])$/,
     cvv: /^[0-9]{3,4}$/,
@@ -163,9 +169,51 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   // scroll view end
 
-  // useEffect(() => {
-  //   console.log("carouselIndex: ", carouselIndex);
-  // }, [carouselIndex]);
+  useEffect(() => {
+    console.log("offerId: ", offerId);
+
+    if (hotelListAndOffersResponse) {
+      hotelListAndOffersResponse.data.forEach((hotelOfferResponse) => {
+        let offer = hotelOfferResponse.offers?.find((offer) => {
+          return offer.id === offerId;
+        });
+        if (offer) {
+          console.log('offer price: ', offer.price)
+          setHotelOffer(offer);
+
+          // calculate check in and check out date difference to get number of nights
+          let checkInDate = offer.checkInDate ? moment(offer.checkInDate, "YYYY-MM-DD") : moment();
+          let checkOutDate = offer.checkOutDate ? moment(offer.checkOutDate, "YYYY-MM-DD") : moment();
+          let duration = moment.duration(checkOutDate.diff(checkInDate));
+          let night = duration.asDays();
+          setNights(night);
+
+          // calculate base night price
+          let newBasePrice = offer.price.base ?
+            parseInt(offer.price.base)
+            : offer.price.variations?.average?.base ?
+              parseInt(offer.price.variations?.average?.base) * night
+              : offer.price.total && offer.price.taxes![0]?.percentage ?
+                (parseInt(offer.price.total) - (parseInt(offer.price.total)
+                    * parseInt(offer.price.taxes![0].percentage) / 100)
+                ) / night
+                : 0;
+
+          setBasePrice(newBasePrice);
+
+          // calculate tax percentage
+          let tax = offer.price.taxes![0]?.percentage && offer.price.base ?
+            parseInt(offer.price.taxes![0]?.percentage)/100 * parseInt(offer.price.base)
+            : offer.price.total && offer.price.base ?
+              parseInt(offer.price.total) - parseInt(offer.price.base)
+              : 0;
+
+          setServiceOrTax(tax);
+
+        }
+      });
+    }
+  }, [hotelListAndOffersResponse]);
 
   return (
     <SafeAreaView
@@ -445,26 +493,25 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                             <PaperTextInput
                               ref={ref}
                               right={
-                                <PaperTextInput.Icon name={creditCardLogoState} size={18} />
+                                <PaperTextInput.Icon name={creditCardTypeState.cardCode} size={18} />
                               }
                               value={value}
                               onChangeText={(value) => {
                                 // change icon of input field if valid
                                 let validatedCardType = validateCardNumber(value, hotelCreditCardTypes);
                                 if (validatedCardType !== undefined) {
-                                  setCreditCardLogoState(validatedCardType.cardCode);
-                                  setCreditCardShortCodeState(validatedCardType.shortCode);
+                                  setCreditCardTypeState(validatedCardType);
                                 } else {
-                                  setCreditCardLogoState("credit-card");
+                                  setCreditCardTypeState(initialCreditCardType);
                                 }
-                                onChange(value);
+                                // onChange(value);
 
                                 // change "42424242" to "4242 4242"
-                                // let spacedNumberString = value.split(' ').join('');
-                                // if (spacedNumberString.length > 0) {
-                                //   spacedNumberString = spacedNumberString.match(new RegExp('.{1,4}', 'g'))?.join(' ') ?? value;
-                                // }
-                                // onChange(spacedNumberString);
+                                let spacedNumberString = value.split(" ").join("");
+                                if (spacedNumberString.length > 0) {
+                                  spacedNumberString = spacedNumberString.match(new RegExp(".{1,4}", "g"))?.join(" ") ?? value;
+                                }
+                                onChange(spacedNumberString);
                               }}
                               underlineColor={"transparent"}
                               placeholder={"Enter Card Number"}
@@ -515,7 +562,13 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                                 right={<PaperTextInput.Icon icon="calendar" size={18} />}
                                 value={value}
                                 onChangeText={value => {
-                                  onChange(value);
+                                  // change "202211" to "2022-11"
+                                  let hyphenNumberString = value.split("-").join("");
+                                  if (hyphenNumberString.length > 0) {
+                                    hyphenNumberString = hyphenNumberString.match(new RegExp(".{1,4}", "g"))?.join("-") ?? value;
+                                  }
+                                  onChange(hyphenNumberString);
+                                  // onChange(value);
                                 }}
                                 underlineColor={"transparent"}
                                 placeholder={"yyyy-MM"}
@@ -895,8 +948,7 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                               numberOfLines={1}
                               ellipsizeMode="tail"
                             >
-                              {/*{capitalizeString(item.room.typeEstimated?.category ?? "Room")}*/}
-                              Room
+                              {capitalizeString(hotelOffer?.room.typeEstimated?.category ?? "Room")}
                             </PaperText>
                           </View>
 
@@ -907,8 +959,7 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                               numberOfLines={2}
                               ellipsizeMode="tail"
                             >
-                              {/*Adults: {item.guests?.adults ?? 0}*/}
-                              Adults:
+                              Adults: {hotelOffer?.guests?.adults ?? 0}
                             </PaperText>
                           </View>
                           {/* Room Attribute 2 */}
@@ -918,8 +969,7 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                               numberOfLines={3}
                               ellipsizeMode="tail"
                             >
-                              {/*{capitalizeString(item.room.description?.text ?? "")}*/}
-                              Description
+                              {capitalizeString(hotelOffer?.room.description?.text ?? "")}
                             </PaperText>
                           </View>
                         </View>
@@ -935,41 +985,138 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
 
                       <PaperDivider style={HOTEL_ROOM_SELECT_SCREEN_DIVIDER_LINE} />
 
-                      {/* Price Row */}
+                      {/* Check in Row */}
                       <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
-                        {/* Average Price */}
+                        {/* Check in text */}
                         <View style={{ flexGrow: 1 }}>
                           <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
-                            {/*{*/}
-                            {/*  item?.price.variations?.average?.total ?*/}
-                            {/*    `${item?.price.currency} ${item?.price.variations.average.total}`*/}
-                            {/*    : item?.price.variations?.average?.base ?*/}
-                            {/*      `${item?.price.currency}  ${item?.price.variations.average.base}`*/}
-                            {/*      :*/}
-                            {/*      "-"*/}
-                            {/*}*/}
-                            /night
+                            Check - in:
                           </PaperText>
                         </View>
 
-                        {/* Total Price */}
+                        {/* Check in date */}
                         <View style={{ flexGrow: 1 }}>
                           <PaperText style={{
                             ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
                             fontWeight: "bold",
+                            textAlign: "right",
                           }}>
-                            {/*{*/}
-                            {/*  item?.price.total ?*/}
-                            {/*    `${item?.price.currency} ${item?.price.total}`*/}
-                            {/*    : item?.price.base ?*/}
-                            {/*      `${item?.price.currency}  ${item?.price.base}`*/}
-                            {/*      :*/}
-                            {/*      "-"*/}
-                            {/*}*/}
-                            /total
+                            {hotelOffer?.checkInDate}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                      {/* Check out Row */}
+                      <View style={{ ...HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW, paddingTop: 0 }}>
+                        {/* Check out text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            Check - out:
                           </PaperText>
                         </View>
 
+                        {/* Check in date */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.checkOutDate}
+                          </PaperText>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_CONTAINER}>
+
+                      {/* Nights and Room Fee Row */}
+                      <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
+                        {/* Nights text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            {nights} Night(s)
+                          </PaperText>
+                        </View>
+
+                        {/* Nights base */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.price.currency} {basePrice}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                      {/* Service and Tax Row */}
+                      <View style={{ ...HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW, paddingTop: 0 }}>
+                        {/* Service and Tax text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            Service(Taxes & fees):
+                          </PaperText>
+                        </View>
+
+                        {/* Service and Tax */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.price.currency} {serviceOrTax}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                      <PaperDivider style={PAYMENT_SCREEN_PAYMENT_METHOD_DIVIDER_LINE} />
+
+                      {/* Total Row */}
+                      <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
+                        {/* Total text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT, fontSize: 16}}>
+                            Total
+                          </PaperText>
+                        </View>
+
+                        {/* Total price */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                            fontSize: 16
+                          }}>
+                            {hotelOffer?.price.currency} {hotelOffer?.price.total}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                    </View>
+
+                    <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER}>
+                      {/* Added Payment Method Container */}
+                      <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW}>
+                        <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW_LEFT_COLUMN}>
+                            <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT_VIEW}>
+                              <FontistoIcon name={creditCardTypeState.cardCode} size={18} />
+                              <PaperText
+                                style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT}
+                                numberOfLines={3}
+                                ellipsizeMode="tail"
+                              >
+                                {creditCardTypeState.cardName}
+                              </PaperText>
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                          <PaperText style={{ color: colors.mint, fontWeight: "bold" }}>CREDIT CARD</PaperText>
+                        </View>
                       </View>
 
                     </View>
