@@ -29,6 +29,7 @@ export const hotelCityCodes: Array<HotelCityCode> = [
   { cityCode: "MOW", cityName: "Moscow", country: "Russia", countryCode: "RU", currency: "RUB"},
   { cityCode: "MUC", cityName: "Munich", country: "Germany", countryCode: "DE", currency: "EUR"},
   { cityCode: "NYC", cityName: "New York", country: "United States", countryCode: "US", currency: "USD"},
+  { cityCode: "JFK", cityName: "New York (John F. Kennedy)", country: "United States", countryCode: "US", currency: "USD"},
   { cityCode: "OSA", cityName: "Osaka", country: "Japan", countryCode: "JP", currency: "JPY"},
   { cityCode: "PAR", cityName: "Paris", country: "France", countryCode: "FR", currency: "EUR"},
   { cityCode: "ROM", cityName: "Rome", country: "Italy", countryCode: "IT", currency: "EUR"},

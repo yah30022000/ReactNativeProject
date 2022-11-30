@@ -4,7 +4,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import {
   Divider as PaperDivider,
-  HelperText as PaperHelperText,
+  HelperText as PaperHelperText, Modal as PaperModal, Portal as PaperPortal, Snackbar as PaperSnackbar,
   Text as PaperText,
   TextInput as PaperTextInput,
   useTheme,
@@ -28,6 +28,9 @@ import {
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW,
   HOTEL_ROOM_SELECT_SCREEN_IMAGE,
   HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+  HOTEL_SCREEN_MODAL_CONTENT_CONTAINER,
+  HOTEL_SCREEN_MODAL_CONTENT_VIEW, HOTEL_SEARCH_BOTTOM_BUTTON,
+  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE, HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
   PAYMENT_SCREEN,
   PAYMENT_SCREEN_BACK_BUTTON,
   PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER,
@@ -52,19 +55,30 @@ import {
   PAYMENT_SCREEN_TITLE,
   PAYMENT_SCREEN_TITLE_TEXT,
 } from "../../theme";
-import { useAppDispatch } from "../../redux/hooks";
+import {
+  amadeusHotelBookingThunk,
+  changeHotelBookingStatus, getAmadeusHotelListAndOffersThunk, HotelListAndOffersRequest,
+  HotelState,
+  RootState, setHotelBookingsRequest,
+  setHotelListAndOffersRequest,
+  useAppDispatch,
+  UserState,
+} from "../../redux";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import { validateCardNumber } from "../../helper/validateCardNumber";
-import { HotelCreditCardType, hotelCreditCardTypes } from "../../helper/amadeus/hotel-credit-card-types";
+import {
+  amenities,
+  capitalizeString, HotelBookingsRequest,
+  HotelCreditCardType,
+  hotelCreditCardTypes,
+  HotelOffer,
+  HotelOffersResponse,
+  validateCardNumber,
+} from "../../helper";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { UserState } from "../../redux/user/userSlice";
-import { capitalizeString } from "../../helper/capitalizeString";
-import { HotelOffer, HotelOffersResponse } from "../../helper/amadeus";
 import moment from "moment";
 import FontistoIcon from "react-native-vector-icons/Fontisto";
 
@@ -110,6 +124,8 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
   const [nights, setNights] = useState<number>(1);
   const [basePrice, setBasePrice] = useState<number>(0);
   const [serviceOrTax, setServiceOrTax] = useState<number>(0);
+  const [modalStatus, setModalStatus] =
+    useState<HotelState["hotelBookingStatus"]>("none");
 
   // global variables
   let signInResult = useSelector<RootState>(
@@ -119,6 +135,14 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
   let hotelListAndOffersResponse = useSelector<RootState>(
     (state) => state.hotel.hotelListAndOffersResponse,
   ) as HotelOffersResponse | undefined;
+
+  const hotelBookingRequest = useSelector<RootState>(
+    state => state.hotel.hotelBookingRequest,
+  ) as HotelBookingsRequest | null;
+
+  const hotelBookingStatus = useSelector<RootState>(
+    state => state.hotel.hotelBookingStatus,
+  ) as HotelState["hotelBookingStatus"];
 
   /* React Hook Form Start */
   const CARD_NUMBER_MIN_LENGTH = 8;
@@ -162,12 +186,81 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
 
   /* React Hook Form end */
 
-
   // scroll view start
   const { height, width } = useWindowDimensions();
   const carouselRef = useRef<ICarouselInstance>(null);
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   // scroll view end
+
+  // hotel booking and payment API Call
+  const hotelBookingApiCall = () => {
+
+    if(!contactFormData || !paymentFormData){
+      onToggleSnackBar("Please review payment form and contact form again");
+      return
+    }
+
+    dispatch(setHotelBookingsRequest({
+      data: {
+        offerId: offerId,
+        guests: [
+          {
+            name: {
+              // title: "MR",
+              firstName: contactFormData.firstName,
+              lastName: contactFormData.lastName,
+            },
+            contact: {
+              phone: "+852".concat(contactFormData.phoneNumber),
+              email: contactFormData.email
+            }
+          }
+        ],
+        payments: [
+          {
+            method: "creditCard",
+            card: {
+              vendorCode: creditCardTypeState.shortCode,
+              cardNumber: paymentFormData.cardNumber.split(" ").join(""),
+              expiryDate: paymentFormData.expDate
+            }
+          }
+        ]
+      }
+    }));
+  };
+
+  const closeModalCallback = () => {
+    setModalStatus("none");
+    dispatch(changeHotelBookingStatus("none"));
+    if (modalStatus === "completed") {
+      // navigation.navigate("hotelList" as any);
+    }
+  };
+
+  /* Bottom Snackbar start */
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const onToggleSnackBar = (message: string) => {
+    setSnackbarVisible(!snackbarVisible);
+    setSnackbarMessage(message)
+  }
+  const onDismissSnackBar = () => setSnackbarVisible(false);
+  /* Bottom Snackbar end */
+
+  useEffect(()=>{
+    if (hotelBookingStatus === "loading") {
+      setModalStatus("loading");
+      if (hotelBookingRequest) {
+        dispatch(amadeusHotelBookingThunk(hotelBookingRequest));
+      }
+    } else if (hotelBookingStatus === "completed") {
+      setModalStatus("completed");
+    } else if (hotelBookingStatus === "failed") {
+      setModalStatus("failed");
+    }
+  },[hotelBookingStatus])
+
 
   useEffect(() => {
     console.log("offerId: ", offerId);
@@ -209,7 +302,6 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
               : 0;
 
           setServiceOrTax(tax);
-
         }
       });
     }
@@ -1151,14 +1243,7 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
                       <TouchableHighlight
                         style={PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
                         onPress={() => {
-                          if(index < 5){
-                            carouselRef.current?.scrollTo({
-                              animated: true,
-                              index: index + 1,
-                            });
-                            setCarouselIndex(index + 1);
-                          }
-
+                          hotelBookingApiCall();
                         }}
                         underlayColor={"transparent"}>
                         <View style={PAYMENT_SCREEN_BOTTOM_BUTTON_WRAPPER}>
@@ -1175,6 +1260,83 @@ export const PaymentScreen: FC<StackScreenProps<StackNavigatorParamList, "paymen
         />
 
       </BottomSheet>
+
+      {/* Error Snackbar for not fulfilling the form fields */}
+      <PaperSnackbar
+        style={{
+          backgroundColor: colors.red
+        }}
+        visible={snackbarVisible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Close",
+          color: "white",
+          onPress: () => {
+            onDismissSnackBar();
+          },
+        }}>
+        {snackbarMessage}
+      </PaperSnackbar>
+
+      {/* Modal when loading */}
+      <PaperPortal>
+        <PaperModal
+          visible={
+            modalStatus === "loading" ||
+            modalStatus === "completed" ||
+            modalStatus === "failed"
+          }
+          onDismiss={closeModalCallback}
+          contentContainerStyle={HOTEL_SCREEN_MODAL_CONTENT_CONTAINER}>
+          <View
+            style={HOTEL_SCREEN_MODAL_CONTENT_VIEW}>
+            {/* Image */}
+            <View
+              style={{
+                height: "40%",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}>
+              <Image
+                source={
+                  modalStatus === "loading" ?
+                    require("@travelasset/images/loading.jpeg") :
+                    modalStatus === "completed" ?
+                      require("@travelasset/images/success.jpeg") :
+                      modalStatus === "failed" ?
+                        require("@travelasset/images/fail.jpeg") : undefined
+                }
+                style={{
+                  height: 250,
+                  width: 250,
+                }}
+                resizeMode="cover"
+              />
+            </View>
+            <View>
+              <PaperText style={{fontSize: 32, textAlign: "center"}}>
+                { modalStatus === "loading" ?  "Booking Selected Hotel Offer..." :
+                  modalStatus === "completed" ? "Successfully Booked Hotel Offer !" :
+                    modalStatus === "failed" ? "Cannot Book Hotel Offer ..." : ""
+                }
+              </PaperText>
+            </View>
+            <View>
+              <TouchableHighlight
+                style={HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE}
+                onPress={closeModalCallback}
+                underlayColor={"transparent"}>
+                <View style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
+                  <View style={HOTEL_SEARCH_BOTTOM_BUTTON}>
+                    <PaperText style={{color: colors.white}}>CLOSE</PaperText>
+                  </View>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </PaperModal>
+      </PaperPortal>
 
     </SafeAreaView>
   );

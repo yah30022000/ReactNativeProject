@@ -70,19 +70,21 @@ import {
   amenities,
   amenitiesSelectItems,
   ButtonItem,
-  ButtonItemAndIndex, HotelAmenities,
+  ButtonItemAndIndex,
   HotelCityCode,
   hotelCityCodes,
-} from "../../helper/amadeus";
+} from "../../helper";
 import { useSelector } from "react-redux";
-import { changeHotelSearching, HotelState, setHotelListAndOffersRequest } from "../../redux/hotel/hotelSlice";
-import { RootState } from "../../redux/store";
-import { Rating } from "react-native-ratings";
-import { useAppDispatch } from "../../redux/hooks";
 import {
+  changeHotelSearchStatus,
   getAmadeusHotelListAndOffersThunk,
   HotelListAndOffersRequest,
-} from "../../redux/hotel/thunk/getAmadeusHotelListAndOffersThunk";
+  HotelState,
+  RootState,
+  setHotelListAndOffersRequest,
+  useAppDispatch,
+} from "../../redux";
+import { Rating } from "react-native-ratings";
 import { Moment } from "moment";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
@@ -110,7 +112,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const [inputValue, setInputValue] = useState<string>("");
   const [hotelCityCodesLocalState, setHotelCityCodesLocalState] = useState<Array<HotelCityCode>>([]);
   const [modalStatus, setModalStatus] =
-    useState<HotelState["hotelListAndOffersSearching"]>("none");
+    useState<HotelState["hotelListAndOffersSearchStatus"]>("none");
   const minDate = new Date(); // Today
   const maxDate = new Date(2030, 12, 31);
 
@@ -122,7 +124,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const [ratings, setRatings] = useState<Array<number>>([]);
   const [adults, setAdults] = useState<number>(2);
   const [rooms, setRooms] = useState<number>(1);
-  const [priceRangeValue, setPriceRangeValue] = useState<number[]>([200, 15000]);
+  const [priceRangeValue, setPriceRangeValue] = useState<number[]>([0, 1000000]);
   const [amenitiesSelected, setAmenitiesSelected] = useState<typeof amenitiesSelectItems>([]);
 
 
@@ -131,9 +133,9 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     state => state.hotel.hotelListAndOffersRequest,
   ) as HotelListAndOffersRequest | null;
 
-  const hotelListAndOffersSearching = useSelector<RootState>(
-    state => state.hotel.hotelListAndOffersSearching,
-  ) as HotelState["hotelListAndOffersSearching"];
+  const hotelListAndOffersSearchStatus = useSelector<RootState>(
+    state => state.hotel.hotelListAndOffersSearchStatus,
+  ) as HotelState["hotelListAndOffersSearchStatus"];
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -174,7 +176,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
       // if price range is defined, need to have currency code that match the city (e.g. HKD in HKG)
       currency: priceRangeValue.length < 1 ? undefined : currency,
       adults: adults,
-      ratings: ratings === Array.from([]) ? undefined : ratings,
+
       roomQuantity: rooms,
       checkInDate: checkInDate?.format("yyyy-MM-DD"),
       checkOutDate: checkOutDate?.format("yyyy-MM-DD"),
@@ -182,17 +184,17 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
       // if price range is not chosen, return undefined
       priceRange: priceRangeValue.length < 1 ? undefined :
         `${priceRangeValue[0]}-${priceRangeValue[1]}`,
-
-      amenities: JSON.stringify(amenitiesIntoRequest),
+      ratings: ratings.length < 1 ? [3, 4, 5] : ratings,
+      amenities: amenitiesIntoRequest.length < 1 ? undefined : amenitiesIntoRequest,
 
       // credit card payment
-      paymentPolicy: "GUARANTEE"
+      paymentPolicy: "GUARANTEE",
     }));
   };
 
   const closeModalCallback = () => {
     setModalStatus("none");
-    dispatch(changeHotelSearching("none"));
+    dispatch(changeHotelSearchStatus("none"));
     if (modalStatus === "completed") {
       navigation.navigate("hotelList" as any);
     }
@@ -351,9 +353,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
             style={{ paddingVertical: 10 }}
             type="custom"
             ratingTextColor={colors.black}
-            startingValue={
-              hotelListAndOffersRequest?.ratings ? hotelListAndOffersRequest.ratings[0] : 3
-            }
+            startingValue={3}
             fractions={0}
             jumpValue={1}
             imageSize={30}
@@ -387,17 +387,17 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
 
   useEffect(() => {
-    if (hotelListAndOffersSearching === "loading") {
+    if (hotelListAndOffersSearchStatus === "loading") {
       setModalStatus("loading");
-      if(hotelListAndOffersRequest){
-        dispatch(getAmadeusHotelListAndOffersThunk(hotelListAndOffersRequest))
+      if (hotelListAndOffersRequest) {
+        dispatch(getAmadeusHotelListAndOffersThunk(hotelListAndOffersRequest));
       }
-    } else if (hotelListAndOffersSearching === "completed") {
+    } else if (hotelListAndOffersSearchStatus === "completed") {
       setModalStatus("completed");
-    } else if (hotelListAndOffersSearching === "failed") {
+    } else if (hotelListAndOffersSearchStatus === "failed") {
       setModalStatus("failed");
     }
-  }, [hotelListAndOffersSearching]);
+  }, [hotelListAndOffersSearchStatus]);
 
   return (
     <ImageBackground
@@ -615,8 +615,8 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                     values={priceRangeValue}
                     onValuesChange={(values: number[]) => setPriceRangeValue(values)}
                     sliderLength={dimension.width * 0.85}
-                    min={100}
-                    max={15100}
+                    min={0}
+                    max={1000000}
                     step={100}
                     trackStyle={{ backgroundColor: colors.grey }}
                     selectedStyle={{ backgroundColor: colors.mint }}

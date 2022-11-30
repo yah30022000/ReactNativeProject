@@ -1,31 +1,26 @@
-import React, {FC} from "react";
-import {TabNavigatorParamList} from "../../navigators";
-import {MaterialBottomTabScreenProps} from "@react-navigation/material-bottom-tabs";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {
-  Text as PaperText,
-  useTheme,
-  Divider as PaperDivider,
-} from "react-native-paper";
-import {Button, FlatList, Image, TouchableHighlight, View} from "react-native";
-import {logout, logoutThunk} from "../../redux/user/userSlice";
-import {useAppDispatch} from "../../redux/hooks";
+import React, { FC } from "react";
+import { TabNavigatorParamList } from "../../navigators";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
+import { FlatList, Image, TouchableHighlight, View } from "react-native";
+import { logout, logoutThunk, useAppDispatch } from "../../redux";
 
 import {
-  PROFILE_SCREEN_TITLE,
-  PROFILE_SCREEN_TITLE_TEXT,
-  PROFILE_SCREEN_USER_IMAGE_ROW,
-  PROFILE_SCREEN_USER_IMAGE,
-  PROFILE_SCREEN_DIVIDER_LINE,
-  PROFILE_SCREEN_PROFILE_USER_NAME,
-  PROFILE_SCREEN_PROFILE_USER_NAME_TEXT,
-  PROFILE_SCREEN_PROFILE_EMAIL,
-  PROFILE_SCREEN_PROFILE_EMAIL_TEXT,
-  PROFILE_SCREEN_EDIT_BUTTON,
   PROFILE_SCREEN,
+  PROFILE_SCREEN_DIVIDER_LINE,
+  PROFILE_SCREEN_EDIT_BUTTON,
   PROFILE_SCREEN_OPTION_ITEM,
   PROFILE_SCREEN_OPTION_ITEM_TEXT,
-} from "../../theme/styles";
+  PROFILE_SCREEN_PROFILE_EMAIL,
+  PROFILE_SCREEN_PROFILE_EMAIL_TEXT,
+  PROFILE_SCREEN_PROFILE_USER_NAME,
+  PROFILE_SCREEN_PROFILE_USER_NAME_TEXT,
+  PROFILE_SCREEN_TITLE,
+  PROFILE_SCREEN_TITLE_TEXT,
+  PROFILE_SCREEN_USER_IMAGE,
+  PROFILE_SCREEN_USER_IMAGE_ROW,
+} from "../../theme";
 import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
 
 export interface ProfileScreenProps {}
@@ -86,7 +81,7 @@ export const ProfileScreen: FC<
       onPress: ()=> dispatch(logoutThunk())
     }
   ]
-  
+
   return (
     <SafeAreaView style={PROFILE_SCREEN}>
       <View style={PROFILE_SCREEN_TITLE}>
@@ -159,7 +154,7 @@ export const ProfileScreen: FC<
         )}
       />
 
-      {/* 
+      {/*
 
       <TouchableHighlight onPress={() => {}} underlayColor={"transparent"}>
         <View style={PROFILE_SCREEN_PAYMENT_ICON}>

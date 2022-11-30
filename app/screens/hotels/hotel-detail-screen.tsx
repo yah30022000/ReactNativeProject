@@ -27,11 +27,15 @@ import {
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { HotelInfoIconItem, HotelInfoIconItemAndIndex } from "../../helper/amadeus/hotel-detail-util-data";
+import {
+  HotelInfoIconItem,
+  HotelInfoIconItemAndIndex,
+  HotelOffersResponse,
+  HotelOffersResponseData,
+} from "../../helper";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { HotelOffersResponse, HotelOffersResponseData } from "../../helper/amadeus";
 
 export interface HotelDetailScreenProps {
   hotelId?: string;

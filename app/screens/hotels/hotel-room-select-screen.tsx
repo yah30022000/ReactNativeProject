@@ -5,7 +5,7 @@ import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-nati
 import { FlatList, Image, StatusBar, TouchableHighlight, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { HotelOffer, HotelOffersResponse, HotelOffersResponseData } from "../../helper/amadeus";
+import { HotelOffer, HotelOffersResponse, HotelOffersResponseData } from "../../helper";
 import BottomSheet from "@gorhom/bottom-sheet";
 import {
   HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER,
@@ -30,9 +30,8 @@ import {
 } from "../../theme";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
-import { HotelInfoIconItem, HotelInfoIconItemAndIndex } from "../../helper/amadeus/hotel-detail-util-data";
+import { HotelInfoIconItem, HotelInfoIconItemAndIndex,capitalizeString } from "../../helper";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import { capitalizeString } from "../../helper/capitalizeString";
 
 
 export interface HotelRoomSelectScreenProps {
