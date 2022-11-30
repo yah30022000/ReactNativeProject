@@ -1,9 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { CodeDeliveryDetails, CognitoUser, ISignUpResult } from "amazon-cognito-identity-js";
-import { Auth as AmplifyAuth } from "aws-amplify";
-import { UserRegisterRequest } from "../../helper/user/user-register-request-response";
-import { ConfirmRegisterRequest } from "../../helper/user/confirm-register-request-response";
-import { UserLoginRequest } from "../../helper/user/user-login-request-response";
+import { createSlice } from "@reduxjs/toolkit";
+import { CodeDeliveryDetails } from "amazon-cognito-identity-js";
+import { loginAction } from "./action/loginAction";
+import { logoutAction } from "./action/logoutAction";
+import { getCurrentAuthenticatedUserThunk } from "./thunk/getCurrentAuthenticatedUserThunk";
+import { resendVerifyCodeThunk } from "./thunk/resendVerifyCodeThunk";
+import { loginThunk } from "./thunk/loginThunk";
+import { confirmRegisterThunk } from "./thunk/confirmRegisterThunk";
+import { registerThunk } from "./thunk/registerThunk";
 
 
 // Define a type for the slice state
@@ -50,143 +53,14 @@ const initialState: UserState = {
   allowRegisterVerify: false,
 };
 
-// Normal Sign Up via AWS Cognito
-// !!!!!!!! don't use try catch block inside async function, will make thunkAPI fail to work properly
-export const registerThunk = createAsyncThunk<UserState["signUpResult"], UserRegisterRequest>(
-  "user/register",
-  async (requestBody: UserRegisterRequest, thunkAPI) => {
-
-    console.log("registerThunk request body: ", requestBody);
-    const response: ISignUpResult = await AmplifyAuth.signUp({
-      username: requestBody.email,
-      password: requestBody.password,
-      attributes: {
-        email: requestBody.email,
-        name: requestBody.name,
-      },
-      autoSignIn: {
-        // TODO: turn to true
-        enabled: true,
-      },
-    });
-    if (!response) {
-      return thunkAPI.rejectWithValue(response);
-    }
-    let payload = {
-      codeDeliveryDetails: response.codeDeliveryDetails,
-      userConfirmed: response.userConfirmed,
-      userSub: response.userSub,
-      username: response.user.getUsername(),
-      // authenticationFlowType: response.user.getAuthenticationFlowType(),
-    };
-
-    return payload;
-  },
-);
-
-export const resendVerifyCodeThunk = createAsyncThunk<any, string>(
-  "user/resendVerifyCode",
-  async (requestBody: string, thunkAPI) => {
-    console.log("resendVerifyCodeThunk request body: ", requestBody);
-    const response: any = await AmplifyAuth.resendSignUp(requestBody);
-    if (!response) {
-      return thunkAPI.rejectWithValue(response);
-    }
-    return response;
-  });
-
-export const confirmRegisterThunk = createAsyncThunk<any, ConfirmRegisterRequest>(
-  "user/confirmRegister",
-  async (requestBody: ConfirmRegisterRequest, thunkAPI) => {
-    console.log("confirmRegisterThunk request body: ", requestBody);
-    const response: any = await AmplifyAuth.confirmSignUp(requestBody.username, requestBody.code);
-    if (!response) {
-      return thunkAPI.rejectWithValue(response);
-    }
-    return response;
-  },
-);
-
-export const loginThunk = createAsyncThunk<UserState["signInResult"], any>(
-  "user/login",
-  async (requestBody: any, thunkAPI) => {
-    console.log("loginThunk request body: ", requestBody);
-    const userData: CognitoUser | any = await AmplifyAuth.signIn({
-      username: requestBody.email,
-      password: requestBody.password,
-    });
-    if (!userData) {
-      return thunkAPI.rejectWithValue(userData);
-    }
-    let authProvider = null;
-    if(userData.attributes.identities){
-      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"]
-    }
-
-    return {
-      email: userData.attributes.email,
-      emailVerified: userData.attributes.email_verified,
-      authProvider: authProvider,
-      username: userData.username,
-      name: userData.attributes.name,
-    };
-  }
-)
-
-export const logoutThunk = createAsyncThunk<any, undefined> (
-  "user/logout",
-  async (_: undefined, thunkAPI) => {
-    const userData: CognitoUser | any = await AmplifyAuth.signOut();
-    // always undefined data
-    if (!userData) {
-      return thunkAPI.rejectWithValue(userData);
-    }
-    return userData
-}
-
-)
-
-
-export const getCurrentAuthenticatedUserThunk = createAsyncThunk<UserState["signInResult"], undefined>(
-  "user/getCurrentAuthenticatedUser",
-  async (_: undefined, thunkAPI) => {
-    let userData = await AmplifyAuth.currentAuthenticatedUser();
-    if (!userData) {
-      return thunkAPI.rejectWithValue(userData);
-    }
-    let authProvider = null;
-    if(userData.attributes.identities){
-      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"]
-    }
-
-    return {
-      email: userData.attributes.email,
-      emailVerified: userData.attributes.email_verified,
-      authProvider: authProvider,
-      username: userData.username,
-      name: userData.attributes.name,
-    };
-  },
-);
 
 export const userSlice = createSlice({
   name: "user",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    login: (state) => {
-      state.isLoggedIn = true;
-    },
-    logout: (state) => {
-      state.isLoggedIn = false;
-      state.allowRegisterVerify = false;
-      state.userConfirmed = false;
-      state.signUpResult = undefined;
-      state.signInResult = undefined;
-      state.signUpError = undefined;
-      state.signingUp = "none";
-      state.signingIn = "none";
-    },
+    login: loginAction,
+    logout: logoutAction,
   },
   extraReducers: (builder) => {
 

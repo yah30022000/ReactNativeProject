@@ -11,13 +11,12 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {StackNavigatorParamList} from "../../navigators";
 import {
   Divider as PaperDivider,
-  HelperText as PaperHelperText,
+  HelperText as PaperHelperText, Modal as PaperModal, Portal as PaperPortal, Snackbar as PaperSnackbar,
   Text as PaperText,
   TextInput as PaperTextInput,
   useTheme,
 } from "react-native-paper";
 import {
-  FlatList,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -27,21 +26,18 @@ import {
   View,
 } from "react-native";
 import {
-  HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER,
-  HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TEXT,
-  HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TOUCHABLE,
-  HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_WRAPPER,
   HOTEL_ROOM_SELECT_SCREEN_DIVIDER_LINE,
-  HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_BUTTON_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_CONTAINER,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_FIRST_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_FIRST_ROW_LEFT_COLUMN,
-  HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SECOND_ROW,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SUBTEXT,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_TEXT,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW,
   HOTEL_ROOM_SELECT_SCREEN_IMAGE,
   HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+  HOTEL_SCREEN_MODAL_CONTENT_CONTAINER,
+  HOTEL_SCREEN_MODAL_CONTENT_VIEW, HOTEL_SEARCH_BOTTOM_BUTTON,
+  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE, HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
   PAYMENT_SCREEN,
   PAYMENT_SCREEN_BACK_BUTTON,
   PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER,
@@ -66,18 +62,32 @@ import {
   PAYMENT_SCREEN_TITLE,
   PAYMENT_SCREEN_TITLE_TEXT,
 } from "../../theme";
-import {useAppDispatch} from "../../redux/hooks";
+import {
+  amadeusHotelBookingThunk,
+  changeHotelBookingStatus, getAmadeusHotelListAndOffersThunk, HotelListAndOffersRequest,
+  HotelState,
+  RootState, setHotelBookingsRequest,
+  setHotelListAndOffersRequest,
+  useAppDispatch,
+  UserState,
+} from "../../redux";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import BottomSheet from "@gorhom/bottom-sheet";
-import Carousel, {ICarouselInstance} from "react-native-reanimated-carousel";
-import {validateCardNumber} from "../../helper/validateCardNumber";
-import {hotelCreditCardTypes} from "../../helper/amadeus/hotel-credit-card-types";
+import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
+import {
+  amenities,
+  capitalizeString, HotelBookingsRequest,
+  HotelCreditCardType,
+  hotelCreditCardTypes,
+  HotelOffer,
+  HotelOffersResponse,
+  validateCardNumber,
+} from "../../helper";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux/store";
-import {UserState} from "../../redux/user/userSlice";
-import {capitalizeString} from "../../helper/capitalizeString";
+import { useSelector } from "react-redux";
+import moment from "moment";
+import FontistoIcon from "react-native-vector-icons/Fontisto";
 
 export interface PaymentFormData {
   cardHolderName: string;
@@ -114,23 +124,40 @@ export const PaymentScreen: FC<
     console.log("handleSheetChanges", index);
   }, []);
   const [paymentFormData, setPaymentFormData] = useState<PaymentFormData>();
-  const [creditCardShortCodeState, setCreditCardShortCodeState] =
-    useState<string>("");
-  const [creditCardLogoState, setCreditCardLogoState] =
-    useState<string>("credit-card");
+
+  let initialCreditCardType = { cardCode: "credit-card", cardName: "Credit Card", shortCode: "", regExp: /^$/}
+  const [creditCardTypeState, setCreditCardTypeState] = useState<HotelCreditCardType>(initialCreditCardType);
   const [contactFormData, setContactFormData] = useState<ContactFormData>();
+  const [hotelOffer, setHotelOffer] = useState<HotelOffer>();
+  const [nights, setNights] = useState<number>(1);
+  const [basePrice, setBasePrice] = useState<number>(0);
+  const [serviceOrTax, setServiceOrTax] = useState<number>(0);
+  const [modalStatus, setModalStatus] =
+    useState<HotelState["hotelBookingStatus"]>("none");
 
   // global variables
   let signInResult = useSelector<RootState>(
-    state => state.user.signInResult,
+    (state) => state.user.signInResult,
   ) as UserState["signInResult"] | undefined;
+
+  let hotelListAndOffersResponse = useSelector<RootState>(
+    (state) => state.hotel.hotelListAndOffersResponse,
+  ) as HotelOffersResponse | undefined;
+
+  const hotelBookingRequest = useSelector<RootState>(
+    state => state.hotel.hotelBookingRequest,
+  ) as HotelBookingsRequest | null;
+
+  const hotelBookingStatus = useSelector<RootState>(
+    state => state.hotel.hotelBookingStatus,
+  ) as HotelState["hotelBookingStatus"];
 
   /* React Hook Form Start */
   const CARD_NUMBER_MIN_LENGTH = 8;
   const CARD_NUMBER_MAX_LENGTH = 19;
   const REGEXP = {
     cardNumber:
-      /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
+      /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))|\b(?:\d[ -]*?){13,16}\b$/,
     cardHolderName: /^[a-zA-Z\s]*$/i,
     expDate: /^\d{4}\-(0[1-9]|1[012])$/,
     cvv: /^[0-9]{3,4}$/,
@@ -174,9 +201,120 @@ export const PaymentScreen: FC<
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   // scroll view end
 
-  // useEffect(() => {
-  //   console.log("carouselIndex: ", carouselIndex);
-  // }, [carouselIndex]);
+  // hotel booking and payment API Call
+  const hotelBookingApiCall = () => {
+
+    if(!contactFormData || !paymentFormData){
+      onToggleSnackBar("Please review payment form and contact form again");
+      return
+    }
+
+    dispatch(setHotelBookingsRequest({
+      data: {
+        offerId: offerId,
+        guests: [
+          {
+            name: {
+              // title: "MR",
+              firstName: contactFormData.firstName,
+              lastName: contactFormData.lastName,
+            },
+            contact: {
+              phone: "+852".concat(contactFormData.phoneNumber),
+              email: contactFormData.email
+            }
+          }
+        ],
+        payments: [
+          {
+            method: "creditCard",
+            card: {
+              vendorCode: creditCardTypeState.shortCode,
+              cardNumber: paymentFormData.cardNumber.split(" ").join(""),
+              expiryDate: paymentFormData.expDate
+            }
+          }
+        ]
+      }
+    }));
+  };
+
+  const closeModalCallback = () => {
+    setModalStatus("none");
+    dispatch(changeHotelBookingStatus("none"));
+    if (modalStatus === "completed") {
+      // navigation.navigate("hotelList" as any);
+    }
+  };
+
+  /* Bottom Snackbar start */
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [snackbarMessage, setSnackbarMessage] = useState<string>("");
+  const onToggleSnackBar = (message: string) => {
+    setSnackbarVisible(!snackbarVisible);
+    setSnackbarMessage(message)
+  }
+  const onDismissSnackBar = () => setSnackbarVisible(false);
+  /* Bottom Snackbar end */
+
+  useEffect(()=>{
+    if (hotelBookingStatus === "loading") {
+      setModalStatus("loading");
+      if (hotelBookingRequest) {
+        dispatch(amadeusHotelBookingThunk(hotelBookingRequest));
+      }
+    } else if (hotelBookingStatus === "completed") {
+      setModalStatus("completed");
+    } else if (hotelBookingStatus === "failed") {
+      setModalStatus("failed");
+    }
+  },[hotelBookingStatus])
+
+
+  useEffect(() => {
+    console.log("offerId: ", offerId);
+
+    if (hotelListAndOffersResponse) {
+      hotelListAndOffersResponse.data.forEach((hotelOfferResponse) => {
+        let offer = hotelOfferResponse.offers?.find((offer) => {
+          return offer.id === offerId;
+        });
+        if (offer) {
+          console.log('offer price: ', offer.price)
+          setHotelOffer(offer);
+
+          // calculate check in and check out date difference to get number of nights
+          let checkInDate = offer.checkInDate ? moment(offer.checkInDate, "YYYY-MM-DD") : moment();
+          let checkOutDate = offer.checkOutDate ? moment(offer.checkOutDate, "YYYY-MM-DD") : moment();
+          let duration = moment.duration(checkOutDate.diff(checkInDate));
+          let night = duration.asDays();
+          setNights(night);
+
+          // calculate base night price
+          let newBasePrice = offer.price.base ?
+            parseInt(offer.price.base)
+            : offer.price.variations?.average?.base ?
+              parseInt(offer.price.variations?.average?.base) * night
+              : offer.price.total && offer.price.taxes![0]?.percentage ?
+                (parseInt(offer.price.total) - (parseInt(offer.price.total)
+                    * parseInt(offer.price.taxes![0].percentage) / 100)
+                ) / night
+                : 0;
+
+          setBasePrice(newBasePrice);
+
+          // calculate tax percentage
+          let tax = offer.price.taxes![0]?.percentage && offer.price.base ?
+            parseInt(offer.price.taxes![0]?.percentage)/100 * parseInt(offer.price.base)
+            : offer.price.total && offer.price.base ?
+              parseInt(offer.price.total) - parseInt(offer.price.base)
+              : 0;
+
+          setServiceOrTax(tax);
+        }
+      });
+    }
+  }, [hotelListAndOffersResponse]);
 
   return (
     <SafeAreaView style={PAYMENT_SCREEN}>
@@ -515,10 +653,7 @@ export const PaymentScreen: FC<
                             <PaperTextInput
                               ref={ref}
                               right={
-                                <PaperTextInput.Icon
-                                  name={creditCardLogoState}
-                                  size={18}
-                                />
+                                <PaperTextInput.Icon name={creditCardTypeState.cardCode} size={18} />
                               }
                               value={value}
                               onChangeText={value => {
@@ -528,23 +663,18 @@ export const PaymentScreen: FC<
                                   hotelCreditCardTypes,
                                 );
                                 if (validatedCardType !== undefined) {
-                                  setCreditCardLogoState(
-                                    validatedCardType.cardCode,
-                                  );
-                                  setCreditCardShortCodeState(
-                                    validatedCardType.shortCode,
-                                  );
+                                  setCreditCardTypeState(validatedCardType);
                                 } else {
-                                  setCreditCardLogoState("credit-card");
+                                  setCreditCardTypeState(initialCreditCardType);
                                 }
-                                onChange(value);
+                                // onChange(value);
 
                                 // change "42424242" to "4242 4242"
-                                // let spacedNumberString = value.split(' ').join('');
-                                // if (spacedNumberString.length > 0) {
-                                //   spacedNumberString = spacedNumberString.match(new RegExp('.{1,4}', 'g'))?.join(' ') ?? value;
-                                // }
-                                // onChange(spacedNumberString);
+                                let spacedNumberString = value.split(" ").join("");
+                                if (spacedNumberString.length > 0) {
+                                  spacedNumberString = spacedNumberString.match(new RegExp(".{1,4}", "g"))?.join(" ") ?? value;
+                                }
+                                onChange(spacedNumberString);
                               }}
                               underlineColor={"transparent"}
                               placeholder={"Enter Card Number"}
@@ -605,7 +735,13 @@ export const PaymentScreen: FC<
                                 }
                                 value={value}
                                 onChangeText={value => {
-                                  onChange(value);
+                                  // change "202211" to "2022-11"
+                                  let hyphenNumberString = value.split("-").join("");
+                                  if (hyphenNumberString.length > 0) {
+                                    hyphenNumberString = hyphenNumberString.match(new RegExp(".{1,4}", "g"))?.join("-") ?? value;
+                                  }
+                                  onChange(hyphenNumberString);
+                                  // onChange(value);
                                 }}
                                 underlineColor={"transparent"}
                                 placeholder={"yyyy-MM"}
@@ -1023,9 +1159,9 @@ export const PaymentScreen: FC<
                             <PaperText
                               style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_TEXT}
                               numberOfLines={1}
-                              ellipsizeMode="tail">
-                              {/*{capitalizeString(item.room.typeEstimated?.category ?? "Room")}*/}
-                              Room
+                              ellipsizeMode="tail"
+                            >
+                              {capitalizeString(hotelOffer?.room.typeEstimated?.category ?? "Room")}
                             </PaperText>
                           </View>
 
@@ -1034,9 +1170,9 @@ export const PaymentScreen: FC<
                             <PaperText
                               style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SUBTEXT}
                               numberOfLines={2}
-                              ellipsizeMode="tail">
-                              {/*Adults: {item.guests?.adults ?? 0}*/}
-                              Adults:
+                              ellipsizeMode="tail"
+                            >
+                              Adults: {hotelOffer?.guests?.adults ?? 0}
                             </PaperText>
                           </View>
                           {/* Room Attribute 2 */}
@@ -1044,9 +1180,9 @@ export const PaymentScreen: FC<
                             <PaperText
                               style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SUBTEXT}
                               numberOfLines={3}
-                              ellipsizeMode="tail">
-                              {/*{capitalizeString(item.room.description?.text ?? "")}*/}
-                              Description
+                              ellipsizeMode="tail"
+                            >
+                              {capitalizeString(hotelOffer?.room.description?.text ?? "")}
                             </PaperText>
                           </View>
                         </View>
@@ -1063,42 +1199,137 @@ export const PaymentScreen: FC<
                         style={HOTEL_ROOM_SELECT_SCREEN_DIVIDER_LINE}
                       />
 
-                      {/* Price Row */}
-                      <View
-                        style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
-                        {/* Average Price */}
-                        <View style={{flexGrow: 1}}>
-                          <PaperText
-                            style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
-                            {/*{*/}
-                            {/*  item?.price.variations?.average?.total ?*/}
-                            {/*    `${item?.price.currency} ${item?.price.variations.average.total}`*/}
-                            {/*    : item?.price.variations?.average?.base ?*/}
-                            {/*      `${item?.price.currency}  ${item?.price.variations.average.base}`*/}
-                            {/*      :*/}
-                            {/*      "-"*/}
-                            {/*}*/}
-                            /night
+                      {/* Check in Row */}
+                      <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
+                        {/* Check in text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            Check - in:
                           </PaperText>
                         </View>
 
-                        {/* Total Price */}
-                        <View style={{flexGrow: 1}}>
-                          <PaperText
-                            style={{
-                              ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
-                              fontWeight: "bold",
-                            }}>
-                            {/*{*/}
-                            {/*  item?.price.total ?*/}
-                            {/*    `${item?.price.currency} ${item?.price.total}`*/}
-                            {/*    : item?.price.base ?*/}
-                            {/*      `${item?.price.currency}  ${item?.price.base}`*/}
-                            {/*      :*/}
-                            {/*      "-"*/}
-                            {/*}*/}
-                            /total
+                        {/* Check in date */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.checkInDate}
                           </PaperText>
+                        </View>
+                      </View>
+
+                      {/* Check out Row */}
+                      <View style={{ ...HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW, paddingTop: 0 }}>
+                        {/* Check out text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            Check - out:
+                          </PaperText>
+                        </View>
+
+                        {/* Check in date */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.checkOutDate}
+                          </PaperText>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_CONTAINER}>
+
+                      {/* Nights and Room Fee Row */}
+                      <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
+                        {/* Nights text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            {nights} Night(s)
+                          </PaperText>
+                        </View>
+
+                        {/* Nights base */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.price.currency} {basePrice}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                      {/* Service and Tax Row */}
+                      <View style={{ ...HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW, paddingTop: 0 }}>
+                        {/* Service and Tax text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT}>
+                            Service(Taxes & fees):
+                          </PaperText>
+                        </View>
+
+                        {/* Service and Tax */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                          }}>
+                            {hotelOffer?.price.currency} {serviceOrTax}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                      <PaperDivider style={PAYMENT_SCREEN_PAYMENT_METHOD_DIVIDER_LINE} />
+
+                      {/* Total Row */}
+                      <View style={HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW}>
+                        {/* Total text */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT, fontSize: 16}}>
+                            Total
+                          </PaperText>
+                        </View>
+
+                        {/* Total price */}
+                        <View style={{ flexGrow: 1 }}>
+                          <PaperText style={{
+                            ...HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+                            fontWeight: "bold",
+                            textAlign: "right",
+                            fontSize: 16
+                          }}>
+                            {hotelOffer?.price.currency} {hotelOffer?.price.total}
+                          </PaperText>
+                        </View>
+                      </View>
+
+                    </View>
+
+                    <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER}>
+                      {/* Added Payment Method Container */}
+                      <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW}>
+                        <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_ROW_LEFT_COLUMN}>
+                            <View style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT_VIEW}>
+                              <FontistoIcon name={creditCardTypeState.cardCode} size={18} />
+                              <PaperText
+                                style={PAYMENT_SCREEN_PAYMENT_METHOD_CONTAINER_TEXT}
+                                numberOfLines={3}
+                                ellipsizeMode="tail"
+                              >
+                                {creditCardTypeState.cardName}
+                              </PaperText>
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                          <PaperText style={{ color: colors.mint, fontWeight: "bold" }}>CREDIT CARD</PaperText>
                         </View>
                       </View>
                     </View>
@@ -1133,13 +1364,7 @@ export const PaymentScreen: FC<
                       <TouchableHighlight
                         style={PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
                         onPress={() => {
-                          if (index < 5) {
-                            carouselRef.current?.scrollTo({
-                              animated: true,
-                              index: index + 1,
-                            });
-                            setCarouselIndex(index + 1);
-                          }
+                          hotelBookingApiCall();
                         }}
                         underlayColor={"transparent"}>
                         <View style={PAYMENT_SCREEN_BOTTOM_BUTTON_WRAPPER}>
@@ -1155,6 +1380,84 @@ export const PaymentScreen: FC<
           }}
         />
       </BottomSheet>
+
+      {/* Error Snackbar for not fulfilling the form fields */}
+      <PaperSnackbar
+        style={{
+          backgroundColor: colors.red
+        }}
+        visible={snackbarVisible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Close",
+          color: "white",
+          onPress: () => {
+            onDismissSnackBar();
+          },
+        }}>
+        {snackbarMessage}
+      </PaperSnackbar>
+
+      {/* Modal when loading */}
+      <PaperPortal>
+        <PaperModal
+          visible={
+            modalStatus === "loading" ||
+            modalStatus === "completed" ||
+            modalStatus === "failed"
+          }
+          onDismiss={closeModalCallback}
+          contentContainerStyle={HOTEL_SCREEN_MODAL_CONTENT_CONTAINER}>
+          <View
+            style={HOTEL_SCREEN_MODAL_CONTENT_VIEW}>
+            {/* Image */}
+            <View
+              style={{
+                height: "40%",
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}>
+              <Image
+                source={
+                  modalStatus === "loading" ?
+                    require("@travelasset/images/loading.jpeg") :
+                    modalStatus === "completed" ?
+                      require("@travelasset/images/success.jpeg") :
+                      modalStatus === "failed" ?
+                        require("@travelasset/images/fail.jpeg") : undefined
+                }
+                style={{
+                  height: 250,
+                  width: 250,
+                }}
+                resizeMode="cover"
+              />
+            </View>
+            <View>
+              <PaperText style={{fontSize: 32, textAlign: "center"}}>
+                { modalStatus === "loading" ?  "Booking Selected Hotel Offer..." :
+                  modalStatus === "completed" ? "Successfully Booked Hotel Offer !" :
+                    modalStatus === "failed" ? "Cannot Book Hotel Offer ..." : ""
+                }
+              </PaperText>
+            </View>
+            <View>
+              <TouchableHighlight
+                style={HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE}
+                onPress={closeModalCallback}
+                underlayColor={"transparent"}>
+                <View style={HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER}>
+                  <View style={HOTEL_SEARCH_BOTTOM_BUTTON}>
+                    <PaperText style={{color: colors.white}}>CLOSE</PaperText>
+                  </View>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </PaperModal>
+      </PaperPortal>
+
     </SafeAreaView>
   );
 };

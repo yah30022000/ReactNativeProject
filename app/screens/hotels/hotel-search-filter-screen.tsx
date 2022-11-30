@@ -1,67 +1,51 @@
-import React, {FC, useState} from "react";
-import {StackScreenProps} from "@react-navigation/stack";
-import {StackNavigatorParamList} from "../../navigators";
-import {Rating} from "react-native-ratings";
-import {
-  Divider as PaperDivider,
-  Text as PaperText,
-  useTheme,
-} from "react-native-paper";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {
-  FlatList,
-  Image,
-  TouchableHighlight,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import React, { FC, useState } from "react";
+import { StackScreenProps } from "@react-navigation/stack";
+import { StackNavigatorParamList } from "../../navigators";
+import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { TouchableHighlight, useWindowDimensions, View } from "react-native";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 
 import {
-  HOTEL_SEARCH_FILTER_CROSS_BUTTON,
+  HOTEL_FILTER_BOTTOM_BUTTON,
   HOTEL_FILTER_BOTTOM_BUTTON_TOUCHABLE,
   HOTEL_FILTER_BOTTOM_BUTTON_WRAPPER,
-  HOTEL_FILTER_BOTTOM_BUTTON,
   HOTEL_FILTER_BUTTON_ICON,
-  HOTEL_SEARCH_FILTER_RIGHT_BUTTON,
-  HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT,
-  HOTEL_SEARCH_FILTER_PRICE_RANGE,
-  HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT,
+  HOTEL_FILTER_DIVIDER_LINE,
+  HOTEL_SEARCH_FILTER_BED_TYPE_COLUMN,
+  HOTEL_SEARCH_FILTER_CROSS_BUTTON,
   HOTEL_SEARCH_FILTER_DATE_COLUMN,
-  HOTEL_SEARCH_FILTER_SCREEN__DATE,
-  HOTEL_SEARCH_FILTER_SCREEN_DATE_TEXT,
   HOTEL_SEARCH_FILTER_PAYMENT_COLUMN,
   HOTEL_SEARCH_FILTER_PAYMENT_TYPE,
-  HOTEL_SEARCH_FILTER_SCREEN_PAYMENT_TEXT,
+  HOTEL_SEARCH_FILTER_PRICE_RANGE_TEXT,
+  HOTEL_SEARCH_FILTER_PRICE_TEXT,
   HOTEL_SEARCH_FILTER_ROOM_TYPE_COLUMN,
-  HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE,
-  HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE_TEXT,
-  HOTEL_SEARCH_FILTER_BED_TYPE_COLUMN,
+  HOTEL_SEARCH_FILTER_SCREEN__DATE,
   HOTEL_SEARCH_FILTER_SCREEN_BED_TYPE,
   HOTEL_SEARCH_FILTER_SCREEN_BED_TYPE_TEXT,
-  HOTEL_SEARCH_FILTER_PRICE,
-  HOTEL_FILTER_DIVIDER_LINE,
-  HOTEL_SEARCH_FILTER_PRICE_TEXT,
+  HOTEL_SEARCH_FILTER_SCREEN_DATE_TEXT,
+  HOTEL_SEARCH_FILTER_SCREEN_PAYMENT_TEXT,
+  HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE,
+  HOTEL_SEARCH_FILTER_SCREEN_ROOM_TYPE_TEXT,
+  HOTEL_SEARCH_FILTER_SCREEN_TITLE_TEXT,
 } from "../../theme";
-import {
-  // changeHotelSearching,
-  HotelState,
-  // selectRating,
-} from "../../redux/hotel/hotelSlice";
-import {useAppDispatch} from "../../redux/hooks";
+import { HotelState } from "../../redux";
+import { useAppDispatch } from "../../redux/hooks";
 
-export interface HotelSearchFilterScreenProps {}
+export interface HotelSearchFilterScreenProps {
+}
 
-export const HotelSearchFilterScreen: FC<
-  StackScreenProps<StackNavigatorParamList, "hotelSearchFilter">
-> = ({route, navigation}) => {
-  const {colors} = useTheme();
+export const HotelSearchFilterScreen: FC<StackScreenProps<StackNavigatorParamList, "hotelSearchFilter">> = ({
+                                                                                                              route,
+                                                                                                              navigation,
+                                                                                                            }) => {
+  const { colors } = useTheme();
   const dispatch = useAppDispatch();
   const [priceRangeValue, setPriceRangeValue] = useState<number[]>([500, 4000]);
   let dimension = useWindowDimensions();
   const [modalStatus, setModalStatus] =
-    useState<HotelState["hotelListAndOffersSearching"]>("none");
+    useState<HotelState["hotelListAndOffersSearchStatus"]>("none");
 
   const closeModalCallback = () => {
     setModalStatus("none");
@@ -124,13 +108,13 @@ export const HotelSearchFilterScreen: FC<
             values={priceRangeValue}
             onValuesChange={(values: number[]) => setPriceRangeValue(values)}
             sliderLength={dimension.width * 0.85}
-            min={300}
-            max={5100}
+            min={0}
+            max={295000}
             step={100}
-            trackStyle={{backgroundColor: colors.grey}}
-            selectedStyle={{backgroundColor: colors.mint}}
-            markerStyle={{borderColor: colors.mint, borderWidth: 3}}
-            pressedMarkerStyle={{borderColor: colors.mint, borderWidth: 2}}
+            trackStyle={{ backgroundColor: colors.grey }}
+            selectedStyle={{ backgroundColor: colors.mint }}
+            markerStyle={{ borderColor: colors.mint, borderWidth: 3 }}
+            pressedMarkerStyle={{ borderColor: colors.mint, borderWidth: 2 }}
           />
         </View>
       </View>

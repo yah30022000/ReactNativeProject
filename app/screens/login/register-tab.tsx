@@ -20,7 +20,7 @@ import {
 } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import { RegisterFormData } from "./login-screen";
-import { UserState } from "../../redux/user/userSlice";
+import { UserState } from "../../redux";
 
 export interface RegisterTabProps {
   PASSWORD_MIN_LENGTH: number;

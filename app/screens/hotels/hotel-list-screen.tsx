@@ -27,7 +27,7 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { hotelCityCodes, HotelOffersResponse, HotelOffersResponseData } from "../../helper/amadeus";
+import { hotelCityCodes, HotelOffersResponse, HotelOffersResponseData } from "../../helper";
 
 export interface HotelSearchListProps {
 }

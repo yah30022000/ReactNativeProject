@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
 import { StackNavigatorParamList } from "../../navigators";
-import { login, loginThunk, registerThunk, resendVerifyCodeThunk, UserState } from "../../redux/user/userSlice";
 import { StackScreenProps } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, useWindowDimensions } from "react-native";
@@ -11,6 +10,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { RegisterTab } from "./register-tab";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { loginThunk, registerThunk, resendVerifyCodeThunk, UserState } from "../../redux";
 
 export interface LoginScreenProps {
   initialPage?: "login" | "register";

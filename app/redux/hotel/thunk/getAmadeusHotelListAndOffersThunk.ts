@@ -11,14 +11,19 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
   "hotel/getAmadeusHotelListAndOffers",
   async (queryParams: HotelListAndOffersRequest, thunkAPI) => {
 
-    console.log("getAmadeusHotelListAndOffersThunk query params: ", queryParams);
-    if(queryParams.amenities == '[]'){
+    if(!queryParams.amenities){
       delete queryParams.amenities
+    }else{
+      queryParams.amenities = JSON.stringify(queryParams.amenities)
     }
 
-    if(queryParams.ratings && queryParams.ratings.length < 1){
+    if(!queryParams.ratings){
       delete queryParams.ratings
+    }else{
+      queryParams.ratings = JSON.stringify(queryParams.ratings)
     }
+
+    console.log("getAmadeusHotelListAndOffersThunk query params: ", queryParams);
 
     let apiName = "amadeusAPI";
     const path = "/amadeus/hotel-list-and-offers";
@@ -36,7 +41,7 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
       return thunkAPI.rejectWithValue(response);
     }
 
-    console.log("getAmadeusHotelListAndOffersThunk data: ", response.data);
+    console.log("getAmadeusHotelListAndOffersThunk data length: ", response.data.length);
 
     return response;
   },

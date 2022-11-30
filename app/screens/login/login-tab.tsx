@@ -21,7 +21,7 @@ import {
 } from "react-native-paper";
 import React, { useEffect, useState } from "react";
 import {LoginFormData} from "./login-screen";
-import { UserState } from "../../redux/user/userSlice";
+import { UserState } from "../../redux";
 
 export interface LoginTabProps {
   PASSWORD_MIN_LENGTH: number;

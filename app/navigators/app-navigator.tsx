@@ -1,8 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { OnboardingScreen, PaymentScreen } from "../screens";
-import { OnboardingDemoScreen } from "../screens/login/onboarding-demo-screen";
-import { PaymentDemoScreen } from "../screens/payment/PaymentDemoScreen";
 import { AppStack } from "./app-stack";
 
 

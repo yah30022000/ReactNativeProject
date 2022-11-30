@@ -42,7 +42,9 @@ app.use(function(req, res, next) {
 
 app.post("/amadeus/hotel-bookings", async function(req, res) {
 
-  console.log("POST /amadeus/hotel-bookings: ", req.body);
+  console.log("POST /amadeus/hotel-bookings offerId: ", req.body.data.offerId);
+  console.log("POST /amadeus/hotel-bookings guests: ", req.body.data.guests);
+  console.log("POST /amadeus/hotel-bookings payments: ", req.body.data.payments);
 
   try {
 
@@ -56,8 +58,7 @@ app.post("/amadeus/hotel-bookings", async function(req, res) {
     // guests array
     if(!req.body.data.guests || req.body.data.guests.length < 1){
       throw new Error ("missing body params: guests")
-    }else if(!req.body.data.guests[0].name.title ||
-      !req.body.data.guests[0].name.firstName ||
+    }else if(!req.body.data.guests[0].name.firstName ||
       !req.body.data.guests[0].name.lastName
     ){
       throw new Error ("missing body params: title/firstName/lastName")

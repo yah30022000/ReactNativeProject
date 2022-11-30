@@ -29,7 +29,7 @@ import { RootState } from "../redux/store";
 import { useEffect } from "react";
 import { Hub as AmplifyHub } from "aws-amplify";
 import { useAppDispatch } from "../redux/hooks";
-import { getCurrentAuthenticatedUserThunk, logout } from "../redux/user/userSlice";
+import { getCurrentAuthenticatedUserThunk, logout } from "../redux";
 
 
 /**
@@ -125,7 +125,6 @@ export const AppStack = () => {
           <Stack.Screen name="paymentComplete" component={PaymentCompleteScreen} />
         </Stack.Group>
       )
-
 
       }
 

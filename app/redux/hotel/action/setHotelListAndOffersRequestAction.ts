@@ -8,6 +8,6 @@ import {
 
 export const setHotelListAndOffersRequestAction: CaseReducer<HotelState, PayloadAction<HotelListAndOffersRequest>> = (state, action) => {
   state.hotelListAndOffersRequest = action.payload
-  state.hotelListAndOffersSearching = "loading"
+  state.hotelListAndOffersSearchStatus = "loading"
   console.log('setHotelListAndOffersRequest: ', state.hotelListAndOffersRequest)
 }
