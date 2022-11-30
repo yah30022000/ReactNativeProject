@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
-import { StackNavigatorParamList } from "../../navigators";
-import { StackScreenProps } from "@react-navigation/stack";
+import React, {FC, useEffect, useState} from "react";
+import {StackNavigatorParamList} from "../../navigators";
+import {StackScreenProps} from "@react-navigation/stack";
 import {
   Modal as PaperModal,
   Modal as PaparModal,
@@ -9,14 +9,21 @@ import {
   Text as PaperText,
   useTheme,
 } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {SafeAreaView} from "react-native-safe-area-context";
 import OtpInputs from "react-native-otp-inputs";
-import { Image, KeyboardAvoidingView, Platform, TouchableHighlight, View } from "react-native";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableHighlight,
+  View,
+} from "react-native";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store";
 import {
   HOTEL_SEARCH_BOTTOM_BUTTON,
-  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE, HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
+  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE,
+  HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
   REGISTER_VERIFY_SCREEN_MISC_STYLE,
   REGISTER_VERIFY_SCREEN_OTP_FOCUS,
   REGISTER_VERIFY_SCREEN_OTP_INPUT,
@@ -34,75 +41,77 @@ import {
   REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_TOUCHABLE,
   REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_WRAPPER,
 } from "../../theme";
-import { useAppDispatch } from "../../redux/hooks";
-import { confirmRegisterThunk, login, resendVerifyCodeThunk } from "../../redux/user/userSlice";
-import { changeHotelSearching } from "../../redux/hotel/hotelSlice";
+import {useAppDispatch} from "../../redux/hooks";
+import {
+  confirmRegisterThunk,
+  login,
+  resendVerifyCodeThunk,
+} from "../../redux/user/userSlice";
+import {changeHotelSearching} from "../../redux/hotel/hotelSlice";
 import theme from "../../theme/theme";
 
 export interface RegisterVerifyScreenProps {
-  exception: string | undefined
+  exception: string | undefined;
 }
 
-export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, "registerVerify">> = ({
-                                                                                                        route,
-                                                                                                        navigation,
-                                                                                                      }) => {
-
-  const { colors } = useTheme();
+export const RegisterVerifyScreen: FC<
+  StackScreenProps<StackNavigatorParamList, "registerVerify">
+> = ({route, navigation}) => {
+  const {colors} = useTheme();
   const dispatch = useAppDispatch();
 
-  const props = route.params
+  const props = route.params;
 
   // local variables
   const [verifyCode, setVerifyCode] = useState<string>("");
   const [snackbarVisible, setSnackbarVisible] = useState<boolean>(
-    !!props.exception
-  )
+    !!props.exception,
+  );
   const [resendTimer, setResendTimer] = useState<number>(10000);
 
   // global variables
   let emailDestination = useSelector<RootState>(
-    (state) => state.user.signUpResult?.codeDeliveryDetails.Destination,
+    state => state.user.signUpResult?.codeDeliveryDetails.Destination,
   ) as string | undefined;
 
   let username = useSelector<RootState>(
-    (state) => state.user.signUpResult?.username
-  ) as string | undefined
+    state => state.user.signUpResult?.username,
+  ) as string | undefined;
 
   let usernameFromError = useSelector<RootState>(
-    (state) => state.user.signUpError?.username
-  ) as string | undefined
+    state => state.user.signUpError?.username,
+  ) as string | undefined;
 
   let userConfirmedFromSignupResult = useSelector<RootState>(
-    (state) => state.user.signUpResult?.userConfirmed
-  ) as boolean | undefined
+    state => state.user.signUpResult?.userConfirmed,
+  ) as boolean | undefined;
 
   let userConfirmed = useSelector<RootState>(
-    (state) => state.user.userConfirmed
-  ) as boolean | undefined
+    state => state.user.userConfirmed,
+  ) as boolean | undefined;
 
   const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
   const onDismissSnackBar = () => setSnackbarVisible(false);
 
   const resendVerifyCode = () => {
-    if(username || usernameFromError){
-      dispatch(resendVerifyCodeThunk(username? username : usernameFromError!))
+    if (username || usernameFromError) {
+      dispatch(resendVerifyCodeThunk(username ? username : usernameFromError!));
     }
-  }
+  };
 
   const confirmRegister = () => {
-    if(username || usernameFromError){
+    if (username || usernameFromError) {
       let requestBody = {
-        username : username? username : usernameFromError!,
-        code: verifyCode
-      }
-      dispatch(confirmRegisterThunk(requestBody))
+        username: username ? username : usernameFromError!,
+        code: verifyCode,
+      };
+      dispatch(confirmRegisterThunk(requestBody));
     }
-  }
+  };
 
   const closeModalCallback = () => {
     dispatch(login());
-  }
+  };
 
   // useEffect(() => {
   // if(!!props.exception){
@@ -120,19 +129,19 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
   }, [resendTimer]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={["right", "bottom", "left"]}>
-
+    <SafeAreaView style={{flex: 1}} edges={["right", "bottom", "left"]}>
       {/* Title Row */}
       <View style={REGISTER_VERIFY_SCREEN_TITLE_ROW}>
         <PaperText style={{fontSize: 16, textAlign: "center"}}>
-          Code has been sent to {emailDestination ? emailDestination : "Your email"}
+          Code has been sent to{" "}
+          {emailDestination ? emailDestination : "Your email"}
         </PaperText>
       </View>
 
       {/* One Time Password */}
       <View style={REGISTER_VERIFY_SCREEN_OTP_ROW}>
         <OtpInputs
-          handleChange={(code) => setVerifyCode(code)}
+          handleChange={code => setVerifyCode(code)}
           numberOfInputs={6}
           autofillFromClipboard={false}
           placeholder={""}
@@ -148,36 +157,41 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
 
       {/* Resend Code */}
       <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_ROW_WRAPPER}>
-
-          <TouchableHighlight
-            style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TOUCHABLE}
-            onPress={!resendTimer || resendTimer <= 0 ? () => {
-              setResendTimer(10000);
-              resendVerifyCode();
-            }: ()=>{}}
-            underlayColor={"transparent"}>
-            <View style={{...REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER,
-              backgroundColor: !resendTimer || resendTimer <= 0 ?
-                colors.coral: colors.grey
+        <TouchableHighlight
+          style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TOUCHABLE}
+          onPress={
+            !resendTimer || resendTimer <= 0
+              ? () => {
+                  setResendTimer(10000);
+                  resendVerifyCode();
+                }
+              : () => {}
+          }
+          underlayColor={"transparent"}>
+          <View
+            style={{
+              ...REGISTER_VERIFY_SCREEN_RESEND_BUTTON_WRAPPER,
+              backgroundColor:
+                !resendTimer || resendTimer <= 0 ? colors.coral : colors.grey,
             }}>
-              <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON}>
-                <PaperText style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TEXT}>
-                  RESEND CODE ({resendTimer / 1000}s)
-                </PaperText>
-              </View>
+            <View style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON}>
+              <PaperText style={REGISTER_VERIFY_SCREEN_RESEND_BUTTON_TEXT}>
+                RESEND CODE ({resendTimer / 1000}s)
+              </PaperText>
             </View>
-          </TouchableHighlight>
+          </View>
+        </TouchableHighlight>
       </View>
 
       {/* Bottom Verify Code Button */}
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding": "height"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={150}
         style={REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_ROW_WRAPPER}>
         <TouchableHighlight
           style={REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_TOUCHABLE}
           onPress={() => {
-            confirmRegister()
+            confirmRegister();
           }}
           underlayColor={"transparent"}>
           <View style={REGISTER_VERIFY_SCREEN_VERIFY_BUTTON_WRAPPER}>
@@ -201,17 +215,14 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
           label: "Close",
           onPress: onDismissSnackBar,
         }}>
-        {
-          props.exception && props.exception == "UsernameExistsException" ?
-           "User exists, re-sent Verify Code to email" : ""
-        }
+        {props.exception && props.exception == "UsernameExistsException"
+          ? "User exists, re-sent Verify Code to email"
+          : ""}
       </PaperSnackbar>
 
       <PaperPortal>
         <PaperModal
-          visible={
-            !!userConfirmedFromSignupResult || !!userConfirmed
-          }
+          visible={!!userConfirmedFromSignupResult || !!userConfirmed}
           onDismiss={closeModalCallback}
           contentContainerStyle={{
             backgroundColor: "white",
@@ -265,9 +276,6 @@ export const RegisterVerifyScreen: FC<StackScreenProps<StackNavigatorParamList, 
           </View>
         </PaperModal>
       </PaperPortal>
-
-
     </SafeAreaView>
   );
-
 };

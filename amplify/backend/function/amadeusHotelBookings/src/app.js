@@ -10,7 +10,8 @@ See the License for the specific language governing permissions and limitations 
 /* Amplify Params - DO NOT EDIT
 	ENV
 	REGION
-	API_ID
+	client_id
+	client_secret
 Amplify Params - DO NOT EDIT */
 
 const express = require('express')
@@ -39,52 +40,59 @@ app.use(function(req, res, next) {
 });
 
 
-/****************************
-* Example post method *
-****************************/
+app.post("/amadeus/hotel-bookings", async function(req, res) {
 
-amadeus.shopping.hotelOffers.get({
-  cityCode: 'LON'
-}).then(function (hotels) {
-  return amadeus.shopping.hotelOffersByHotel.get({
-    'hotelId': hotels.data[0].hotel.hotelId,
-    'checkInDate': '2022-11-21',
-    'checkOutDate': '2022-11-22'
-  });
-}).then(function (hotelOffers) {
-  return amadeus.shopping.hotelOffer(hotelOffers.data.offers[0].id).get();
-}).then(function (pricingResponse) {
-  return amadeus.booking.hotelBookings.post(
-    JSON.stringify({
-      'data': {
-        'offerId': pricingResponse.data.offers[0].id,
-        'guests': [{
-          'id': 1,
-          'name': {
-            'title': 'MR',
-            'firstName': 'BOB',
-            'lastName': 'SMITH'
-          },
-          'contact': {
-            'phone': '+33679278416',
-            'email': 'bob.smith@email.com'
-          }
-        }],
-        'payments': [{
-          'id': 1,
-          'method': 'creditCard',
-          'card': {
-            'vendorCode': 'VI',
-            'cardNumber': '4151289722471370',
-            'expiryDate': '2027-08'
-          }
-        }]
-      }
-    }));
-}).then(function (response) {
-  console.log(response);
-}).catch(function (response) {
-  console.error(response);
+  console.log("POST /amadeus/hotel-bookings: ", req.body);
+
+  try {
+
+    /* check request params starts */
+
+    // offerId
+    if(!req.body.data.offerId){
+      throw new Error ("missing body params: offerId")
+    };
+
+    // guests array
+    if(!req.body.data.guests || req.body.data.guests.length < 1){
+      throw new Error ("missing body params: guests")
+    }else if(!req.body.data.guests[0].name.title ||
+      !req.body.data.guests[0].name.firstName ||
+      !req.body.data.guests[0].name.lastName
+    ){
+      throw new Error ("missing body params: title/firstName/lastName")
+    }else if (!req.body.data.guests[0].contact.phone ||
+      !req.body.data.guests[0].contact.email
+    ){
+      throw new Error ("missing body params: phone/email")
+    }
+
+    if(!req.body.data.payments || req.body.data.payments.length < 1){
+      throw new Error ("missing body params: payments")
+    }else if (!req.body.data.payments[0].method ||
+      !req.body.data.payments[0].card.vendorCode ||
+      !req.body.data.payments[0].card.cardNumber ||
+      !req.body.data.payments[0].card.expiryDate
+    ){
+      throw new Error ("missing body params: method/vendorCode/cardNumber/expiryDate")
+    }
+
+    /* check request params ends */
+
+    let hotelBookingRequest = req.body
+
+    console.log('hotelBookingRequest: ', hotelBookingRequest)
+
+    let hotelBookingResponse = await amadeusInstance.booking.hotelBookings.post(
+      JSON.stringify(hotelBookingRequest)
+    )
+
+    console.log("hotelBookingResponse: ", hotelBookingResponse.data);
+
+    res.json({ status: 200, data: hotelBookingResponse.data });
+  } catch (err) {
+    res.status(500).send({error: err.message});
+  }
 });
 
 

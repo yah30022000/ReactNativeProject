@@ -31,7 +31,7 @@
           "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
           "clientSecret": "rJqfpmT2WtKTKUBs",
           "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
-          "s3Key": "amplify-builds/amadeusHotelBookings-67532f4d307667307141-build.zip"
+          "s3Key": "amplify-builds/amadeusHotelBookings-646a774347387379334b-build.zip"
         },
         "amadeusHotelListAndOffers": {
           "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
