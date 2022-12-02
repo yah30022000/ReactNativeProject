@@ -46,8 +46,8 @@ import {
   confirmRegisterThunk,
   login,
   resendVerifyCodeThunk,
-} from "../../redux/user/userSlice";
-import {changeHotelSearching} from "../../redux/hotel/hotelSlice";
+} from "../../redux";
+import {changeHotelSearchStatus} from '../../redux'
 import theme from "../../theme/theme";
 
 export interface RegisterVerifyScreenProps {

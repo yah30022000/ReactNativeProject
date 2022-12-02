@@ -36,7 +36,9 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
   const [visibleIndex, setVisibleIndex] = useState<number>(0);
 
   // animated background and dot indicator
+  // 橫向坐標
   const scrollX = useRef(new Animated.Value(0)).current;
+  // 滑動偏差值，影響點點果條線
   let scrollOffset = useRef(new Animated.Value(0)).current;
   const keyExtractor = React.useCallback(
     (_: BoardingItem, index: number) => index.toString(),
