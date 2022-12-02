@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { HotelListRequest, HotelListResponse } from "../../../helper/amadeus";
+import { HotelListRequest, HotelListResponse } from "../../../helper";
 import { API as AmplifyAPI } from "@aws-amplify/api/lib-esm/API";
 
 

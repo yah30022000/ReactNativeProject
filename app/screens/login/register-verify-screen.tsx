@@ -43,11 +43,13 @@ import {
 } from "../../theme";
 import {useAppDispatch} from "../../redux/hooks";
 import {
+  changeUserConfirmingStatus,
   confirmRegisterThunk,
   login,
   resendVerifyCodeThunk,
+  UserState,
 } from "../../redux";
-import {changeHotelSearchStatus} from '../../redux'
+import {changeHotelSearchStatus} from "../../redux";
 import theme from "../../theme/theme";
 
 export interface RegisterVerifyScreenProps {
@@ -90,8 +92,17 @@ export const RegisterVerifyScreen: FC<
     state => state.user.userConfirmed,
   ) as boolean | undefined;
 
+  let userConfirming = useSelector<RootState>(
+    state => state.user.userConfirming,
+  ) as UserState["userConfirming"];
+
   const onToggleSnackBar = () => setSnackbarVisible(!snackbarVisible);
-  const onDismissSnackBar = () => setSnackbarVisible(false);
+  const onDismissSnackBar = () => {
+    setSnackbarVisible(false);
+    if(userConfirming == "failed"){
+      dispatch(changeUserConfirmingStatus("none"));
+    }
+  }
 
   const resendVerifyCode = () => {
     if (username || usernameFromError) {
@@ -117,6 +128,12 @@ export const RegisterVerifyScreen: FC<
   // if(!!props.exception){
   //   resendVerifyCode()
   // }},[]);
+
+  useEffect(() => {
+    if (userConfirming == "failed") {
+      onToggleSnackBar();
+    }
+  }, [userConfirming]);
 
   useEffect(() => {
     // resend time, reduce every second
@@ -217,6 +234,8 @@ export const RegisterVerifyScreen: FC<
         }}>
         {props.exception && props.exception == "UsernameExistsException"
           ? "User exists, re-sent Verify Code to email"
+          : userConfirming == "failed"
+          ? "Invalid verification code provided, please try again."
           : ""}
       </PaperSnackbar>
 

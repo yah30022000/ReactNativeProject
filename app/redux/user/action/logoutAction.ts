@@ -11,4 +11,5 @@ export const logoutAction: CaseReducer<UserState> = (state) => {
   state.signUpError = undefined;
   state.signingUp = "none";
   state.signingIn = "none";
+  state.userConfirming = "none";
 }

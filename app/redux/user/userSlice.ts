@@ -38,8 +38,10 @@ export interface UserState {
     message?: string
     username?: string
   };
+
   signingUp: "loading" | "completed" | "failed" | "none";
   signingIn: "loading" | "completed" | "failed" | "none";
+  userConfirming: "loading" | "completed" | "failed" | "none";
   userConfirmed: boolean; // in case not following normal sign up process
   allowRegisterVerify: boolean;
 };
@@ -49,6 +51,7 @@ const initialState: UserState = {
   isLoggedIn: false,
   signingUp: "none",
   signingIn: "none",
+  userConfirming: "none",
   userConfirmed: false,
   allowRegisterVerify: false,
 };
@@ -61,6 +64,9 @@ export const userSlice = createSlice({
   reducers: {
     login: loginAction,
     logout: logoutAction,
+    changeUserConfirmingStatus:  (state, action) => {
+      state.userConfirming = action.payload;
+    }
   },
   extraReducers: (builder) => {
 
@@ -113,6 +119,7 @@ export const userSlice = createSlice({
       state.userConfirmed = true;
     });
     builder.addCase(confirmRegisterThunk.rejected, (state, action) => {
+      state.userConfirming = "failed";
       console.log("confirmRegisterThunk failed: ", action.error.message);
     });
 
@@ -167,7 +174,7 @@ export const userSlice = createSlice({
 });
 
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, changeUserConfirmingStatus } = userSlice.actions;
 
 
 // Other code such as selectors can use the imported `RootState` type
