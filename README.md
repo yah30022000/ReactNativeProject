@@ -25,6 +25,7 @@
     - [Deployment Tracker - AWS Amplify -\> AWS CloudFormation ](#deployment-tracker---aws-amplify---aws-cloudformation-)
     - [Logger - AWS Amplify -\> AWS CloudWatch ](#logger---aws-amplify---aws-cloudwatch-)
     - [Auth - AWS Amplify -\> AWS Cognito ](#auth---aws-amplify---aws-cognito-)
+    - [NoSQL Database - AWS Amplify Datastore -\> AWS AppSync -\> AWS DynamoDB ](#amplify-datastore)
   - [Amadeus - Hotel \& Flight Booking API ](#amadeus---hotel--flight-booking-api-)
     - [API Call Sample (without Node SDK) ](#api-call-sample-without-node-sdk-)
       - [Get Access Token API (expires every 30 minutes) ](#get-access-token-api-expires-every-30-minutes-)
@@ -947,6 +948,54 @@ console**](https://ap-southeast-1.console.aws.amazon.com/cognito/users/?region=a
 
 [**AWS Cognito Identity Pool
 console**](https://ap-southeast-1.console.aws.amazon.com/cognito/pool/?region=ap-southeast-1&id=ap-southeast-1:5b3bb07c-a22a-4438-8971-04c10238fe20)
+
+### NoSQL Database - AWS Amplify Datastore -> AWS AppSync -> AWS DynamoDB <a name="amplify-datastore"/>
+
+1. Setup Datastore
+
+   ```bash
+   # add new datastore setting via API
+   amplify api add
+   
+   Select from one of the below mentioned services: 
+   > GraphQL
+   
+   Here is the GraphQL API that we will create. Select a setting to edit or continue:
+   ** arrow up or down to choose
+   > Name
+   -> Provide API name:
+      > TripTroopDatastoreAPI
+   
+   Here is the GraphQL API that we will create. Select a setting to edit or continue:
+   ** arrow up or down to choose
+   > API key
+   -> Enter a description for the API key:
+      > TripTroopDatastoreAPIKey
+   -> After how many days from now the API key should expire (1-365):
+      > 365
+   -> Configure additional auth types?
+      > No
+   
+   Here is the GraphQL API that we will create. Select a setting to edit or continue:
+   ** arrow up or down to choose
+   > Conflict detection (required for DataStore)
+   -> Enable conflict detection?
+      > Yes
+   -> Select the default resolution strategy
+      > Auto Merge
+   
+   Here is the GraphQL API that we will create. Select a setting to edit or continue:
+   ** arrow up or down to choose
+   > Continue
+   
+   Choose a schema template:
+   > One-to-many relationship (e.g., “Blogs” with “Posts” and “Comments”)
+   
+   Do you want to edit the schema now?
+   > No
+   ```
+
+
 
 ---
 

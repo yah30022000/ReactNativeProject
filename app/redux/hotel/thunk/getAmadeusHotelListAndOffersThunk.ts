@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { API as AmplifyAPI } from "@aws-amplify/api/lib-esm/API";
-import { HotelOffersRequest,HotelListRequest, HotelListResponse, HotelOffersResponse } from "../../../helper";
+import { API as AmplifyAPI } from "aws-amplify";
+import { HotelListRequest, HotelOffersRequest, HotelOffersResponse } from "../../../helper";
 
 export interface HotelListAndOffersRequest extends HotelListRequest, Omit<HotelOffersRequest, 'hotelIds'> {
   hotelIds?: Array<string>

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { HotelListRequest, HotelListResponse } from "../../../helper";
-import { API as AmplifyAPI } from "@aws-amplify/api/lib-esm/API";
+import { API as AmplifyAPI } from "aws-amplify";
 
 
 export const getAmadeusHotelListThunk = createAsyncThunk<HotelListResponse, HotelListRequest>(

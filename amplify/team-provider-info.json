@@ -41,7 +41,8 @@
         }
       },
       "api": {
-        "amadeusAPI": {}
+        "amadeusAPI": {},
+        "TripTroopDatastoreAPI": {}
       },
       "auth": {
         "TripTroopAuth": {

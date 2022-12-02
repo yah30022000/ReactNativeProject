@@ -7,6 +7,7 @@ import { setHotelListAndOffersRequestAction } from "./action/setHotelListAndOffe
 import { HotelBookingsRequest, HotelBookingsResponse, HotelOffersResponse } from "../../helper";
 import { amadeusHotelBookingThunk } from "./thunk/amadeusHotelBookingThunk";
 import { setHotelBookingsRequestAction } from "./action/setHotelBookingsRequestAction";
+import { saveHotelBookingThunk } from "./thunk/saveHotelBookingThunk";
 
 export interface HotelState {
   hotelListAndOffersSearchStatus: "loading" | "completed" | "failed" | "none";
@@ -77,6 +78,18 @@ export const hotelSlice = createSlice({
       builder.addCase(amadeusHotelBookingThunk.rejected, (state, action) => {
         console.error("amadeusHotelBookingThunk error: ", action.error.message);
         state.hotelBookingStatus = "failed";
+      });
+
+      // saveHotelBookingThunk
+      builder.addCase(saveHotelBookingThunk.pending, (state, action) => {
+        // state.hotelBookingStatus = "loading";
+      });
+      builder.addCase(saveHotelBookingThunk.fulfilled, (state, action) => {
+        console.log("saveHotelBookingThunk fulfilled")
+      });
+      builder.addCase(saveHotelBookingThunk.rejected, (state, action) => {
+        console.error("saveHotelBookingThunk error: ", action.error.message);
+        // state.hotelBookingStatus = "failed";
       });
     },
   })

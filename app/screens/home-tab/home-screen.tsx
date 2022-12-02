@@ -33,9 +33,7 @@ import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorB
 import { TabNavigatorParamList } from "../../navigators";
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { HotelOffersResponse } from "../../helper/amadeus";
-import { UserState } from "../../redux/user/userSlice";
+import { RootState, UserState } from "../../redux";
 
 export interface HomeScreenProps {}
 

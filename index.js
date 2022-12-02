@@ -8,7 +8,8 @@ import { name as appName } from "./app.json";
 import "react-native-gesture-handler";
 import { Amplify } from "aws-amplify";
 import awsmobile from "./src/aws-exports";
-import InAppBrowser from 'react-native-inappbrowser-reborn';
+import InAppBrowser from "react-native-inappbrowser-reborn";
+import '@azure/core-asynciterator-polyfill';
 
 // OAuth require in-app browser
 async function urlOpener(url, redirectUrl) {
@@ -33,7 +34,6 @@ Amplify.configure({
     urlOpener,
   },
 });
-
 
 
 AppRegistry.registerComponent(appName, () => App);
