@@ -1,17 +1,13 @@
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {Controller as FormController, useForm} from "react-hook-form";
-import {StackScreenProps} from "@react-navigation/stack";
-import {StackNavigatorParamList} from "../../navigators";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Controller as FormController, useForm } from "react-hook-form";
+import { StackScreenProps } from "@react-navigation/stack";
+import { StackNavigatorParamList } from "../../navigators";
 import {
   Divider as PaperDivider,
-  HelperText as PaperHelperText, Modal as PaperModal, Portal as PaperPortal, Snackbar as PaperSnackbar,
+  HelperText as PaperHelperText,
+  Modal as PaperModal,
+  Portal as PaperPortal,
+  Snackbar as PaperSnackbar,
   Text as PaperText,
   TextInput as PaperTextInput,
   useTheme,
@@ -36,8 +32,10 @@ import {
   HOTEL_ROOM_SELECT_SCREEN_IMAGE,
   HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
   HOTEL_SCREEN_MODAL_CONTENT_CONTAINER,
-  HOTEL_SCREEN_MODAL_CONTENT_VIEW, HOTEL_SEARCH_BOTTOM_BUTTON,
-  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE, HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
+  HOTEL_SCREEN_MODAL_CONTENT_VIEW,
+  HOTEL_SEARCH_BOTTOM_BUTTON,
+  HOTEL_SEARCH_BOTTOM_BUTTON_TOUCHABLE,
+  HOTEL_SEARCH_BOTTOM_BUTTON_WRAPPER,
   PAYMENT_SCREEN,
   PAYMENT_SCREEN_BACK_BUTTON,
   PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER,
@@ -64,10 +62,10 @@ import {
 } from "../../theme";
 import {
   amadeusHotelBookingThunk,
-  changeHotelBookingStatus, getAmadeusHotelListAndOffersThunk, HotelListAndOffersRequest,
+  changeHotelBookingStatus,
   HotelState,
-  RootState, setHotelBookingsRequest,
-  setHotelListAndOffersRequest,
+  RootState,
+  setHotelBookingsRequest,
   useAppDispatch,
   UserState,
 } from "../../redux";
@@ -75,8 +73,9 @@ import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import {
-  amenities,
-  capitalizeString, HotelBookingsRequest,
+  capitalizeString,
+  HotelBookingsRequest,
+  HotelBookingsResponse,
   HotelCreditCardType,
   hotelCreditCardTypes,
   HotelOffer,
@@ -88,6 +87,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import FontistoIcon from "react-native-vector-icons/Fontisto";
+import { saveHotelBookingThunk } from "../../redux/hotel/thunk/saveHotelBookingThunk";
 
 export interface PaymentFormData {
   cardHolderName: string;
@@ -144,9 +144,13 @@ export const PaymentScreen: FC<
     (state) => state.hotel.hotelListAndOffersResponse,
   ) as HotelOffersResponse | undefined;
 
-  const hotelBookingRequest = useSelector<RootState>(
+  const hotelBookingsRequest = useSelector<RootState>(
     state => state.hotel.hotelBookingRequest,
   ) as HotelBookingsRequest | null;
+
+  const hotelBookingsResponse = useSelector<RootState>(
+    state => state.hotel.hotelBookingResponse,
+  ) as HotelBookingsResponse | null;
 
   const hotelBookingStatus = useSelector<RootState>(
     state => state.hotel.hotelBookingStatus,
@@ -260,15 +264,27 @@ export const PaymentScreen: FC<
   useEffect(()=>{
     if (hotelBookingStatus === "loading") {
       setModalStatus("loading");
-      if (hotelBookingRequest) {
-        dispatch(amadeusHotelBookingThunk(hotelBookingRequest));
+      if (hotelBookingsRequest) {
+        dispatch(amadeusHotelBookingThunk(hotelBookingsRequest));
       }
     } else if (hotelBookingStatus === "completed") {
       setModalStatus("completed");
+      if (signInResult &&
+        hotelListAndOffersResponse &&
+        hotelBookingsRequest &&
+        hotelBookingsResponse
+      ) {
+        dispatch(saveHotelBookingThunk({
+          username: signInResult.username,
+          hotelListAndOffersResponse: hotelListAndOffersResponse.data[0],
+          hotelBookingsRequest: hotelBookingsRequest,
+          hotelBookingsResponse: hotelBookingsResponse.data[0],
+        }));
+      }
     } else if (hotelBookingStatus === "failed") {
       setModalStatus("failed");
     }
-  },[hotelBookingStatus])
+  }, [hotelBookingStatus, hotelBookingsResponse])
 
 
   useEffect(() => {

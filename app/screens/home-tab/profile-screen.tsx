@@ -4,7 +4,7 @@ import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
 import { FlatList, Image, TouchableHighlight, View } from "react-native";
-import { logout, logoutThunk, useAppDispatch } from "../../redux";
+import { logout, logoutThunk, RootState, useAppDispatch, UserState } from "../../redux";
 
 import {
   PROFILE_SCREEN,
@@ -22,6 +22,7 @@ import {
   PROFILE_SCREEN_USER_IMAGE_ROW,
 } from "../../theme";
 import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
+import { useSelector } from "react-redux";
 
 export interface ProfileScreenProps {}
 
@@ -37,6 +38,11 @@ export const ProfileScreen: FC<
   /* props */
   const {colors} = useTheme();
   const dispatch = useAppDispatch();
+
+  // global variables
+  let signInResult = useSelector<RootState>(
+    (state) => state.user.signInResult
+  ) as UserState["signInResult"] | undefined;
 
   const buttonList: Array<ProfileOptionItem> = [
     {
@@ -117,13 +123,13 @@ export const ProfileScreen: FC<
 
       <View style={PROFILE_SCREEN_PROFILE_USER_NAME}>
         <PaperText style={PROFILE_SCREEN_PROFILE_USER_NAME_TEXT}>
-          Daniel Austin
+          {signInResult?.name}
         </PaperText>
       </View>
 
       <View style={PROFILE_SCREEN_PROFILE_EMAIL}>
         <PaperText style={PROFILE_SCREEN_PROFILE_EMAIL_TEXT}>
-          daniel_austin@gmail.com
+          {signInResult?.email}
         </PaperText>
       </View>
 

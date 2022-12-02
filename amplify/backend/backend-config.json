@@ -63,6 +63,24 @@
           ]
         }
       ]
+    },
+    "TripTroopDatastoreAPI": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2023-12-02T03:48:15.772Z",
+              "description": "TripTroopDatastoreAPIKey"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
     }
   },
   "auth": {

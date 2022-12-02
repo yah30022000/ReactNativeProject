@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Auth as AmplifyAuth } from "@aws-amplify/auth/lib-esm/Auth";
+import { Auth as AmplifyAuth, DataStore as AmplifyDatastore } from "aws-amplify";
 import { UserState } from "../userSlice";
+import { HotelBooking, User } from "../../../../src/models";
 
 
 export const getCurrentAuthenticatedUserThunk = createAsyncThunk<UserState["signInResult"], undefined>(
@@ -11,9 +12,32 @@ export const getCurrentAuthenticatedUserThunk = createAsyncThunk<UserState["sign
       return thunkAPI.rejectWithValue(userData);
     }
     let authProvider = null;
-    if(userData.attributes.identities){
-      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"]
+    if (userData.attributes.identities) {
+      authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"];
     }
+
+    // find existing user by email with same auth provider
+
+    let savedUser = await AmplifyDatastore.save(
+      new User({
+        email: userData.attributes.email,
+        emailVerified: userData.attributes.email_verified,
+        username: userData.username,
+        name: userData.attributes.name,
+        authProvider: authProvider,
+        // phoneNumber: null,
+        // image: null
+      }));
+
+    console.log("getCurrentAuthenticatedUserThunk datastore savedUser: ", savedUser);
+
+    // let queryUser = await AmplifyDatastore.query(User, userData.username);
+    // console.log("getCurrentAuthenticatedUserThunk queryUser: ", queryUser);
+    //
+    // let queryHotelBooking = await AmplifyDatastore.query(
+    //   HotelBooking, field => field.username.eq(userData.username)
+    // );
+    // console.log("getCurrentAuthenticatedUserThunk queryHotelBooking: ", queryHotelBooking);
 
     return {
       email: userData.attributes.email,

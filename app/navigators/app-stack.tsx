@@ -6,7 +6,6 @@ import {
   HotelListScreen,
   HotelRoomSelectScreen,
   HotelRoomSelectScreenProps,
-  HotelSearchFilterScreen,
   HotelSearchFilterScreenProps,
   HotelSearchListProps,
   HotelSearchScreen,
@@ -25,11 +24,10 @@ import {
   RegisterVerifyScreenProps,
 } from "../screens";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { getCurrentAuthenticatedUserThunk, logout, RootState, useAppDispatch } from "../redux";
 import { useEffect } from "react";
 import { Hub as AmplifyHub } from "aws-amplify";
-import { useAppDispatch } from "../redux/hooks";
-import { getCurrentAuthenticatedUserThunk, logout } from "../redux";
+import SplashScreen from "react-native-splash-screen";
 
 
 /**
@@ -64,24 +62,27 @@ const Stack = createNativeStackNavigator<StackNavigatorParamList>();
 export const AppStack = () => {
 
   const isLoggedIn = useSelector<RootState>((state) => state.user.isLoggedIn);
+
   const dispatch = useAppDispatch();
 
   // AWS Cognito OAuth - Hub is a radio to receive message instantly
   useEffect(() => {
-    const unsubscribe = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
+    SplashScreen.hide(); //hides the splash screen on app load.
+
+    const unsubscribeAmplifyHub = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
       // console.log("AmplifyHub Auth event: ", event, " data: ", data);
       switch (event) {
-        case 'signIn':
-        case 'cognitoHostedUI':
+        case "signIn":
+        case "cognitoHostedUI":
           dispatch(getCurrentAuthenticatedUserThunk());
           break;
-        case 'signOut':
+        case "signOut":
           console.log("AmplifyHub received request of logout from user!!");
-          dispatch(logout())
+          dispatch(logout());
           break;
-        case 'signIn_failure':
-        case 'cognitoHostedUI_failure':
-          console.log('Sign in failure', data);
+        case "signIn_failure":
+        case "cognitoHostedUI_failure":
+          console.log("Sign in failure", data);
           break;
       }
 
@@ -89,7 +90,9 @@ export const AppStack = () => {
       //   .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))
       //   .catch(() => console.log('Not signed in'));
     });
-    return unsubscribe;
+
+
+    return unsubscribeAmplifyHub;
   }, []);
 
   return (

@@ -1,4 +1,6 @@
 // Request
+import { HotelOffersResponse, HotelOffersResponseData } from "./hotel-offers-request-response";
+
 export interface HotelBookingsRequest {
   data: {
     offerId: string
@@ -55,8 +57,16 @@ export interface HotelBookingsResponseData {
   id: string
   providerConfirmationId: string
   self?: string
-  associatedRecords: {
+  associatedRecords?: {
     reference: string
     originSystemCode: string
   }[]
+}
+
+// for save at Amplify Datastore
+export interface HotelBookingDataModelBefore {
+  username: string,
+  hotelListAndOffersResponse: HotelOffersResponseData,
+  hotelBookingsRequest: HotelBookingsRequest,
+  hotelBookingsResponse: HotelBookingsResponseData
 }
