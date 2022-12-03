@@ -1372,6 +1372,64 @@ export const PAYMENT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 
 /* PaymentScreen end */
 
+/* Payment Complete Screen start */
+
+export const PAYMENT_COMPLETE_SCREEN: ViewStyle = {
+  flex: 1,
+  paddingHorizontal: 25,
+};
+
+export const PAYMENT_COMPLETE_SCREEN_HEADER_ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "center",
+}
+
+export const PAYMENT_COMPLETE_BACK_BUTTON: ViewStyle = {
+  justifyContent: "space-between",
+  flexDirection: "row",
+  marginLeft: 20,
+  paddingTop: 20,
+};
+
+export const PAYMENT_COMPLETE_TITLE: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  marginHorizontal: 60,
+};
+
+export const PAYMENT_COMPLETE_TITLE_TEXT: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
+  color: "black",
+};
+
+export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST: ViewStyle = {
+  paddingVertical: 20,
+  paddingHorizontal: 20,
+};
+
+export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_FIRST_CONTAINER: ViewStyle= {
+  padding: 20,
+  flexDirection: "row",
+  justifyContent: "space-between",
+};
+
+export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_FIRST_ROW_LEFT_COLUMN: ViewStyle = {
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  width: "70%",
+};
+
+export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_TEXT: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
+};
+
+export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_SUBTEXT: TextStyle ={
+
+};
+
 /* profile Screen start */
 
 export const PROFILE_SCREEN:ViewStyle = {

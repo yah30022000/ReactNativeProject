@@ -245,8 +245,8 @@ export const PaymentScreen: FC<
   const closeModalCallback = () => {
     setModalStatus("none");
     dispatch(changeHotelBookingStatus("none"));
-    if (modalStatus === "completed") {
-      // navigation.navigate("hotelList" as any);
+    if (modalStatus === "completed" && hotelBookingsResponse && hotelBookingsResponse.data.length > 0) {
+      navigation.navigate("paymentComplete" as any, { bookingId: hotelBookingsResponse?.data[0].id });
     }
   };
 

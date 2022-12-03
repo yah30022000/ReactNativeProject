@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import hotelReducer from "./hotel/hotelSlice";
 
@@ -7,6 +7,10 @@ export const store = configureStore({
     user: userReducer,
     hotel: hotelReducer,
   },
+  middleware: getDefaultMiddleware =>
+  getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

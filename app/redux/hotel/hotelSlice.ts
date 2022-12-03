@@ -8,6 +8,8 @@ import { HotelBookingsRequest, HotelBookingsResponse, HotelOffersResponse } from
 import { amadeusHotelBookingThunk } from "./thunk/amadeusHotelBookingThunk";
 import { setHotelBookingsRequestAction } from "./action/setHotelBookingsRequestAction";
 import { saveHotelBookingThunk } from "./thunk/saveHotelBookingThunk";
+import { LazyHotelBooking } from "../../../src/models";
+import { getSavedHotelBookingThunk } from "./thunk/getSavedHotelBookingThunk";
 
 export interface HotelState {
   hotelListAndOffersSearchStatus: "loading" | "completed" | "failed" | "none";
@@ -17,6 +19,8 @@ export interface HotelState {
   hotelBookingStatus: "loading" | "completed" | "failed" | "none";
   hotelBookingRequest?: HotelBookingsRequest;
   hotelBookingResponse?: HotelBookingsResponse;
+
+  currentQueryHotelBooking?: LazyHotelBooking
 }
 
 // Define the initial state using that type
@@ -90,6 +94,15 @@ export const hotelSlice = createSlice({
       builder.addCase(saveHotelBookingThunk.rejected, (state, action) => {
         console.error("saveHotelBookingThunk error: ", action.error.message);
         // state.hotelBookingStatus = "failed";
+      });
+      
+      // getSavedHotelBookingThunk
+      builder.addCase(getSavedHotelBookingThunk.fulfilled, (state, action) => {
+        console.log("getSavedHotelBookingThunk fulfilled")
+        state.currentQueryHotelBooking = action.payload;
+      });
+      builder.addCase(getSavedHotelBookingThunk.rejected, (state, action) => {
+        console.error("getSavedHotelBookingThunk error: ", action.error.message);
       });
     },
   })
