@@ -371,6 +371,13 @@ export const schema = {
                     "type": "Int",
                     "isRequired": false,
                     "attributes": []
+                },
+                "imageFileName": {
+                    "name": "imageFileName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
@@ -379,6 +386,13 @@ export const schema = {
             "fields": {
                 "offerId": {
                     "name": "offerId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "roomImageFileName": {
+                    "name": "roomImageFileName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -592,5 +606,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.2",
-    "version": "bf920ca52a6e315ec57e2830de455df4"
+    "version": "cbe3dd3dc275d1f36eb546074613327d"
 };

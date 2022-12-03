@@ -193,11 +193,15 @@ export interface Hotel {
   brandCode?: string
   rating?: number
   amenities?: Array<HotelAmenities>
+  imageFileName?: string
+  imageFilePath?: string
 }
 
 export interface HotelOffer {
   type?: string
   id: string
+  roomImageFileName?: string
+  roomImageFilePath?: string
   checkInDate?: string
   checkOutDate?: string
   roomQuantity?: string

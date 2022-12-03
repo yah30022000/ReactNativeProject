@@ -190,7 +190,10 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
                 <View>
                   <Image
                     style={HOTEL_ROOM_SELECT_SCREEN_IMAGE}
-                    source={require("@travelasset/images/crown-hotel.jpeg")}
+                    source={
+                      item.roomImageFilePath ? {uri: item.roomImageFilePath} :
+                        require("@travelasset/images/crown-hotel.jpeg")
+                    }
                   />
                 </View>
 

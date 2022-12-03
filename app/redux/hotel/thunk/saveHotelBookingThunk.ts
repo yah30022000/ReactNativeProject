@@ -82,9 +82,12 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
           longitude: hotelListAndOffersResponse.hotel.longitude,
           brandCode: hotelListAndOffersResponse.hotel.brandCode,
           rating: hotelListAndOffersResponse.hotel.rating,
+          imageFileName: hotelListAndOffersResponse.hotel.imageFileName,
+
         },
         offer: {
           offerId: hotelBookingsRequest.data.offerId,
+          roomImageFileName: hotelListAndOffersResponse.offers[0].roomImageFileName,
           checkInDate: hotelListAndOffersResponse.offers[0].checkInDate,
           checkOutDate: hotelListAndOffersResponse.offers[0].checkOutDate,
           rateCode: hotelListAndOffersResponse.offers[0].rateCode,

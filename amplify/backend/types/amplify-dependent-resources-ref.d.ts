@@ -51,5 +51,11 @@ export type AmplifyDependentResourcesAttributes = {
             "GoogleWebClient": "string",
             "FacebookWebClient": "string"
         }
+    },
+    "storage": {
+        "TripTroopStorage": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

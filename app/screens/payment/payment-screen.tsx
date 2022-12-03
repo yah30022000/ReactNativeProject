@@ -232,7 +232,7 @@ export const PaymentScreen: FC<
           {
             method: "creditCard",
             card: {
-              vendorCode: creditCardTypeState.shortCode,
+              vendorCode: creditCardTypeState.shortCode === "" ? "VI" : creditCardTypeState.shortCode,
               cardNumber: paymentFormData.cardNumber.split(" ").join(""),
               expiryDate: paymentFormData.expDate
             }
@@ -1207,7 +1207,10 @@ export const PaymentScreen: FC<
                         <View>
                           <Image
                             style={HOTEL_ROOM_SELECT_SCREEN_IMAGE}
-                            source={require("@travelasset/images/crown-hotel.jpeg")}
+                            source={
+                              hotelOffer?.roomImageFilePath ? {uri: hotelOffer.roomImageFilePath} :
+                                require("@travelasset/images/crown-hotel.jpeg")
+                            }
                           />
                         </View>
                       </View>
