@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Rating } from "react-native-ratings";
@@ -28,6 +28,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { hotelCityCodes, HotelOffersResponse, HotelOffersResponseData } from "../../helper";
+import { Storage as AmplifyS3Storage } from "@aws-amplify/storage";
 
 export interface HotelSearchListProps {
 }
@@ -60,7 +61,10 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
           <View style={HOTEL_LIST_SCREEN_IMAGE_WRAPPER}>
             <Image
               style={HOTEL_LIST_SCREEN_IMAGE}
-              source={require("@travelasset/images/crown-hotel.jpeg")}
+              source={
+              item.hotel?.imageFilePath ? {uri: item.hotel?.imageFilePath} :
+              require("@travelasset/images/crown-hotel.jpeg")
+            }
             />
           </View>
         </View>

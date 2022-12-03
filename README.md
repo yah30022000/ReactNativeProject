@@ -26,6 +26,7 @@
     - [Logger - AWS Amplify -\> AWS CloudWatch ](#logger---aws-amplify---aws-cloudwatch-)
     - [Auth - AWS Amplify -\> AWS Cognito ](#auth---aws-amplify---aws-cognito-)
     - [NoSQL Database - AWS Amplify Datastore -\> AWS AppSync -\> AWS DynamoDB ](#amplify-datastore)
+    - [Storage - AWS Amplify -\> AWS S3 ](#aws-s3)
   - [Amadeus - Hotel \& Flight Booking API ](#amadeus---hotel--flight-booking-api-)
     - [API Call Sample (without Node SDK) ](#api-call-sample-without-node-sdk-)
       - [Get Access Token API (expires every 30 minutes) ](#get-access-token-api-expires-every-30-minutes-)
@@ -1096,8 +1097,40 @@ started**](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/rea
 
    ![Amplify DataStore Architecture!](assets/images/readme/amplify-datastore-architecture.png "Amplify DataStore Architecture")
 
-  
 
+### Storage - AWS Amplify -> AWS S3  <a name="aws-s3"/>
+
+1. Create a new Bucket
+
+   ```bash
+   amplify add storage
+   
+   Select from one of the below mentioned services: 
+   > Content (Images, audio, video, etc.)
+   
+   Provide a friendly name for your resource that will be used to label this category in the project:
+   > TripTroopStorage
+   
+   Provide bucket name:
+   > triptroopbucket
+   
+   Who should have access:
+   > Auth and guest users
+   
+   What kind of access do you want for Authenticated users?
+   press <space> to pick
+   > create/update
+   > read 
+   > delete
+   
+   What kind of access do you want for Guest users?
+   press <space> to pick
+   > read
+   
+   Do you want to add a Lambda Trigger for your S3 Bucket?
+   > No
+   ```
+   
 
 
 ---

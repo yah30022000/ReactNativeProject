@@ -121,7 +121,10 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
 
     return (
       <ImageBackground
-        source={require("@travelasset/images/merlion.jpeg")}
+        source={
+          hotelOfferResponseData?.hotel?.imageFilePath ? {uri: hotelOfferResponseData?.hotel?.imageFilePath} :
+            require("@travelasset/images/crown-hotel.jpeg")
+        }
         style={{ flex: 1 }}
         resizeMode="cover">
         <SafeAreaView style={HOTEL_DETAIL_SCREEN}>

@@ -52,6 +52,7 @@ type EagerHotel = {
   readonly longitude?: number | null;
   readonly brandCode?: string | null;
   readonly rating?: number | null;
+  readonly imageFileName?: string | null;
 }
 
 type LazyHotel = {
@@ -64,6 +65,7 @@ type LazyHotel = {
   readonly longitude?: number | null;
   readonly brandCode?: string | null;
   readonly rating?: number | null;
+  readonly imageFileName?: string | null;
 }
 
 export declare type Hotel = LazyLoading extends LazyLoadingDisabled ? EagerHotel : LazyHotel
@@ -72,6 +74,7 @@ export declare const Hotel: (new (init: ModelInit<Hotel>) => Hotel)
 
 type EagerHotelOffer = {
   readonly offerId?: string | null;
+  readonly roomImageFileName?: string | null;
   readonly checkInDate?: string | null;
   readonly checkOutDate?: string | null;
   readonly rateCode?: string | null;
@@ -96,6 +99,7 @@ type EagerHotelOffer = {
 
 type LazyHotelOffer = {
   readonly offerId?: string | null;
+  readonly roomImageFileName?: string | null;
   readonly checkInDate?: string | null;
   readonly checkOutDate?: string | null;
   readonly rateCode?: string | null;

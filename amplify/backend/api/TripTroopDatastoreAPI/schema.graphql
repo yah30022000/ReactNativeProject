@@ -81,10 +81,12 @@ type Hotel {
     longitude: Float
     brandCode: String
     rating: Int
+    imageFileName: String
 }
 
 type HotelOffer {
     offerId: String
+    roomImageFileName: String
     checkInDate: String
     checkOutDate: String
     rateCode: String

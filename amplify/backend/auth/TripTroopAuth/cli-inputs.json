@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "TripTroopIdentityPool",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "hotela62efdb9f",
     "userPoolName": "TripTroopUserPool",
     "autoVerifiedAttributes": [

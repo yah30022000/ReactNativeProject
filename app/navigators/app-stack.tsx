@@ -26,7 +26,7 @@ import {
 import { useSelector } from "react-redux";
 import { getCurrentAuthenticatedUserThunk, logout, RootState, useAppDispatch } from "../redux";
 import { useEffect } from "react";
-import { Hub as AmplifyHub } from "aws-amplify";
+import { Hub as AmplifyHub, Storage as AmplifyS3Storage } from "aws-amplify";
 import SplashScreen from "react-native-splash-screen";
 
 
@@ -90,7 +90,6 @@ export const AppStack = () => {
       //   .then(userData => console.log("AmplifyAuth.currentAuthenticatedUser: ", userData))
       //   .catch(() => console.log('Not signed in'));
     });
-
 
     return unsubscribeAmplifyHub;
   }, []);
