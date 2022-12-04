@@ -1377,20 +1377,39 @@ export const PAYMENT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 export const PAYMENT_COMPLETE_SCREEN: ViewStyle = {
   flex: 1,
   paddingHorizontal: 25,
+  backgroundColor: theme.colors.mint,
 };
 
 export const PAYMENT_COMPLETE_SCREEN_HEADER_ROW: ViewStyle = {
   flexDirection: "row",
-  justifyContent: "flex-start",
+  justifyContent: "center",
   alignItems: "center",
+  marginTop: 20
 }
 
-export const PAYMENT_COMPLETE_BACK_BUTTON: ViewStyle = {
-  justifyContent: "space-between",
-  flexDirection: "row",
-  marginLeft: 20,
-  paddingTop: 20,
+export const PAYMENT_COMPLETE_SCREEN_BACK_BUTTON_TOUCHABLE_WRAPPER: ViewStyle = {
+  width: "30%",
+  height: 40,
+  flexDirection:"row",
+  justifyContent: "center"
+}
+
+export const PAYMENT_COMPLETE_SCREEN_BACK_BUTTON_TOUCHABLE: ViewStyle = {
+  width: "80%",
+  height: "100%",
+  backgroundColor: theme.colors.white,
+  flexDirection:"row",
+  justifyContent: "center",
+  alignItems: "center",
+  borderRadius: 25
+}
+
+export const PAYMENT_COMPLETE_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
+  color: theme.colors.mint,
+  fontWeight: "bold",
+  fontSize: 20,
 };
+
 
 export const PAYMENT_COMPLETE_TITLE: ViewStyle = {
   justifyContent: "center",
@@ -1404,31 +1423,18 @@ export const PAYMENT_COMPLETE_TITLE_TEXT: TextStyle = {
   color: "black",
 };
 
-export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST: ViewStyle = {
-  paddingVertical: 20,
-  paddingHorizontal: 20,
-};
-
-export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_FIRST_CONTAINER: ViewStyle= {
-  padding: 20,
+export const PAYMENT_COMPLETE_SCREEN_BOTTOM_SHEET: ViewStyle = {
+  borderRadius: 30,
+  paddingHorizontal: 25,
+  paddingTop: 20,
+  paddingBottom: 50,
+  overflow: "hidden",
   flexDirection: "row",
-  justifyContent: "space-between",
+  justifyContent: "center",
+  // height: "200%"
 };
 
-export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_FIRST_ROW_LEFT_COLUMN: ViewStyle = {
-  flexDirection: "column",
-  justifyContent: "flex-start",
-  width: "70%",
-};
-
-export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_TEXT: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-};
-
-export const PAYMENT_COMPLETE_SCREEN_FLAT_LIST_SUBTEXT: TextStyle ={
-
-};
+/* payment complete screen end */
 
 /* profile Screen start */
 

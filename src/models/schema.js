@@ -99,6 +99,25 @@ export const schema = {
                             "username"
                         ]
                     }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "username",
+                                "allow": "owner",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -461,6 +480,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "night": {
+                    "name": "night",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "commissionPercentage": {
                     "name": "commissionPercentage",
                     "isArray": false,
@@ -606,5 +632,5 @@ export const schema = {
         }
     },
     "codegenVersion": "3.3.2",
-    "version": "cbe3dd3dc275d1f36eb546074613327d"
+    "version": "a15f3aa138302a095ce1fd8ab6cdceca"
 };

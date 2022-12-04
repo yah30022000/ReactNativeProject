@@ -32,7 +32,6 @@ export type AmplifyDependentResourcesAttributes = {
             "ApiId": "string"
         },
         "TripTroopDatastoreAPI": {
-            "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }

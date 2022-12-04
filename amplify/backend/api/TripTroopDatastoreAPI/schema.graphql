@@ -1,6 +1,6 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
-input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+#input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
 
 """
 type Blog @model {
@@ -27,7 +27,15 @@ content: String!
 
 type User
 @model
-#@auth(rules: [{ allow: owner}])
+@auth(
+    rules: [
+        {
+            allow: owner
+            ownerField: "username"
+            operations: [create, update, delete, read]
+        }
+    ]
+)
 {
     username: String! @primaryKey
     email: String!
@@ -42,7 +50,18 @@ type User
 
 ### Hotel Related =========================================
 
-type HotelBooking @model {
+type HotelBooking
+@model
+@auth(
+    rules: [
+        {
+            allow: owner
+            ownerField: "username"
+            operations: [create, update, delete, read]
+        }
+    ]
+)
+{
     username: String! @index(name: "byUsername", sortKeyFields: ["bookingId"])
     user: User! @belongsTo(fields: ["username"])
     ## hotel booking
@@ -96,6 +115,7 @@ type HotelOffer {
     roomBedType: String
     roomDescription: String
     adults: Int
+    night: Int
     commissionPercentage: Float
     commissionAmount: Float
     boardType: String

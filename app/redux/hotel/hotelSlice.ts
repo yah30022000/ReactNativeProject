@@ -10,6 +10,7 @@ import { setHotelBookingsRequestAction } from "./action/setHotelBookingsRequestA
 import { saveHotelBookingThunk } from "./thunk/saveHotelBookingThunk";
 import { LazyHotelBooking } from "../../../src/models";
 import { getSavedHotelBookingThunk } from "./thunk/getSavedHotelBookingThunk";
+import { getAllSavedHotelBookingByUsernameThunk } from "./thunk/getAllSavedHotelBookingByUsernameThunk";
 
 export interface HotelState {
   hotelListAndOffersSearchStatus: "loading" | "completed" | "failed" | "none";
@@ -21,6 +22,7 @@ export interface HotelState {
   hotelBookingResponse?: HotelBookingsResponse;
 
   currentQueryHotelBooking?: LazyHotelBooking
+  allQueryHotelBooking?: Array<LazyHotelBooking>
 }
 
 // Define the initial state using that type
@@ -95,7 +97,7 @@ export const hotelSlice = createSlice({
         console.error("saveHotelBookingThunk error: ", action.error.message);
         // state.hotelBookingStatus = "failed";
       });
-      
+
       // getSavedHotelBookingThunk
       builder.addCase(getSavedHotelBookingThunk.fulfilled, (state, action) => {
         console.log("getSavedHotelBookingThunk fulfilled")
@@ -103,6 +105,15 @@ export const hotelSlice = createSlice({
       });
       builder.addCase(getSavedHotelBookingThunk.rejected, (state, action) => {
         console.error("getSavedHotelBookingThunk error: ", action.error.message);
+      });
+
+      // getSavedHotelBookingThunk
+      builder.addCase(getAllSavedHotelBookingByUsernameThunk.fulfilled, (state, action) => {
+        console.log("getAllSavedHotelBookingByUsernameThunk fulfilled")
+        state.allQueryHotelBooking = action.payload;
+      });
+      builder.addCase(getAllSavedHotelBookingByUsernameThunk.rejected, (state, action) => {
+        console.error("getAllSavedHotelBookingByUsernameThunk error: ", action.error.message);
       });
     },
   })

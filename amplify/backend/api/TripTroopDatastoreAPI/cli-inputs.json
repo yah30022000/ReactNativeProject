@@ -4,15 +4,14 @@
     "apiName": "TripTroopDatastoreAPI",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2023-12-02T03:48:15.772Z",
-      "keyDescription": "TripTroopDatastoreAPIKey"
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authTripTroopAuth"
     },
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
       }
-    }
+    },
+    "additionalAuthTypes": []
   }
 }

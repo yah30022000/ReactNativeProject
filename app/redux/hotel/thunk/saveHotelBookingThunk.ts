@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { DataStore as AmplifyDatastore } from "aws-amplify";
 import { HotelBooking, LazyHotelBooking, User } from "../../../../src/models";
 import { HotelBookingDataModelBefore } from "../../../helper";
+import moment from "moment";
 
 
 export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBookingDataModelBefore>(
@@ -47,10 +48,41 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
       };
     });
 
+    let checkInDate =
+      hotelListAndOffersResponse.offers[0].checkInDate ?
+        moment(hotelListAndOffersResponse.offers[0].checkInDate, "YYYY-MM-DD") :
+        moment();
+    let checkOutDate =
+      hotelListAndOffersResponse.offers[0].checkOutDate ?
+        moment(hotelListAndOffersResponse.offers[0].checkOutDate, "YYYY-MM-DD") :
+        moment();
+    let duration = moment.duration(checkOutDate.diff(checkInDate));
+    let night = duration.asDays();
+
+    let newBasePrice = hotelListAndOffersResponse.offers[0].price.base ?
+      parseFloat(hotelListAndOffersResponse.offers[0].price.base)
+      : hotelListAndOffersResponse.offers[0].price.variations?.average?.base ?
+        parseFloat(hotelListAndOffersResponse.offers[0].price.variations?.average?.base) * night
+        : hotelListAndOffersResponse.offers[0].price.total &&
+        hotelListAndOffersResponse.offers[0].price.taxes![0]?.percentage ?
+          (parseFloat(hotelListAndOffersResponse.offers[0].price.total) -
+            (parseFloat(hotelListAndOffersResponse.offers[0].price.total)
+              * parseFloat(hotelListAndOffersResponse.offers[0].price.taxes![0].percentage) / 100)
+          ) / night
+          : 0;
+
     let hotelOfferTax = hotelListAndOffersResponse.offers[0].price.taxes?.map((tax) => {
       return {
         code: tax.code,
-        amount: tax.amount ? parseFloat(tax.amount) : 0,
+        amount: tax.amount ? parseFloat(tax.amount) : tax.percentage ?
+          (parseFloat(tax.percentage) / 100) *
+          newBasePrice :
+          hotelListAndOffersResponse.offers &&
+          hotelListAndOffersResponse.offers[0].price.total &&
+          hotelListAndOffersResponse.offers[0].price.base ?
+            parseFloat(hotelListAndOffersResponse.offers[0].price.total) -
+            parseFloat(hotelListAndOffersResponse.offers[0].price.base) :
+            0,
         currency: tax.currency,
         included: tax.included,
         percentage: tax.percentage ? parseFloat(tax.percentage) : 0,
@@ -97,6 +129,7 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
           roomBedType: hotelListAndOffersResponse.offers[0].room.typeEstimated?.bedType,
           roomDescription: hotelListAndOffersResponse.offers[0].room.description?.text,
           adults: hotelListAndOffersResponse.offers[0].guests?.adults,
+          night: night,
           commissionPercentage:
             hotelListAndOffersResponse.offers[0].commission?.percentage ?
               parseFloat(hotelListAndOffersResponse.offers[0].commission?.percentage) : undefined,
@@ -105,9 +138,7 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
               parseFloat(hotelListAndOffersResponse.offers[0].commission?.amount) : undefined,
           boardType: hotelListAndOffersResponse.offers[0].boardType,
           priceCurrency: hotelListAndOffersResponse.offers[0].price.currency,
-          priceBase:
-            hotelListAndOffersResponse.offers[0].price.base ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.base) : undefined,
+          priceBase: newBasePrice,
           priceTotal:
             hotelListAndOffersResponse.offers[0].price.total ?
               parseFloat(hotelListAndOffersResponse.offers[0].price.total) : undefined,

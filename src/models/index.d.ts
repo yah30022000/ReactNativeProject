@@ -84,6 +84,7 @@ type EagerHotelOffer = {
   readonly roomBedType?: string | null;
   readonly roomDescription?: string | null;
   readonly adults?: number | null;
+  readonly night?: number | null;
   readonly commissionPercentage?: number | null;
   readonly commissionAmount?: number | null;
   readonly boardType?: string | null;
@@ -109,6 +110,7 @@ type LazyHotelOffer = {
   readonly roomBedType?: string | null;
   readonly roomDescription?: string | null;
   readonly adults?: number | null;
+  readonly night?: number | null;
   readonly commissionPercentage?: number | null;
   readonly commissionAmount?: number | null;
   readonly boardType?: string | null;
