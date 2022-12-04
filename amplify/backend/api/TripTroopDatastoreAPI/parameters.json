@@ -2,11 +2,11 @@
   "AppSyncApiName": "TripTroopDatastoreAPI",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2022-12-04T08:39:14.211Z",
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
       "authTripTroopAuth",
       "Outputs.UserPoolId"
     ]
-  },
-  "AuthModeLastUpdated": "2022-12-03T14:52:09.753Z"
+  }
 }

@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
-import { FlatList, Image, StatusBar, TouchableHighlight, View } from "react-native";
+import { FlatList, Image, StatusBar, TouchableHighlight, useWindowDimensions, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { HotelOffer, HotelOffersResponse, HotelOffersResponseData } from "../../helper";
@@ -62,6 +62,8 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
   }, []);
   /* bottom sheet end */
 
+  let dimension = useWindowDimensions();
+
   const buttonList: Array<HotelInfoIconItem> = [
     {
       key: 1,
@@ -81,7 +83,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
   ];
 
   const renderIcon = ({ item, index }: HotelInfoIconItemAndIndex) => (
-    <View style={{ flexDirection: "row", width: 120, height: 20 }} key={item.key}>
+    <View style={{ flexDirection: "row", justifyContent: "space-around", width: dimension.width/3.5, height: 20 }} key={item.key}>
       <View style={{ width: "30%" }}>
         <FontAwesome5Icon name={item.iconName} size={item.iconSize ?? 16} />
       </View>
@@ -112,7 +114,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
 
       {/* Header Row Back Button */}
       <View style={HOTEL_ROOM_SELECT_SCREEN_BACK_BUTTON_ROW}>
-        <View style={{ width: "30%" }}>
+        <View style={{ width: "25%" }}>
           <ButtonWithColorBg
             size={25}
             color={colors.black}
@@ -123,7 +125,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
           />
         </View>
 
-        <View style={{ width: "40%" }}>
+        <View style={{ width: "50%" }}>
           <PaperText
             numberOfLines={1}
             style={HOTEL_ROOM_SELECT_SCREEN_TITLE_TEXT}
@@ -132,7 +134,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
           </PaperText>
         </View>
 
-        <View style={{ width: "30%" }} />
+        <View style={{ width: "25%" }} />
       </View>
 
       <BottomSheet
@@ -207,8 +209,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
                   horizontal={true}
                   data={buttonList.slice(0, 3)}
                   renderItem={renderIcon}
-                  // style={HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST}
-                  contentContainerStyle={HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER}
+                  contentContainerStyle={{...HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER}}
                 />
               </View>
 

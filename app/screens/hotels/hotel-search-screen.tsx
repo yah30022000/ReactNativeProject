@@ -104,7 +104,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // local variables
-  const snapPoints = useMemo<Array<string>>(() => ["60%", "80%", "90%"], []);
+  const snapPoints = useMemo<Array<string>>(() => ["65%", "80%", "90%"], []);
   const [snapState, setSnapState] = useState<number>(0);
   const [destinationViewOn, setDestinationViewOn] = useState<boolean>(false);
   const [calendarViewOn, setCalendarViewOn] = useState<boolean>(false);
@@ -730,7 +730,7 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
               <View
                 style={{
                   height: "40%",
-                  width: "100%",
+                  width: "80%",
                   flexDirection: "row",
                   justifyContent: "center",
                 }}>
@@ -744,8 +744,8 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
                     require("@travelasset/images/fail.jpeg") : undefined
                   }
                   style={{
-                    height: 250,
-                    width: 250,
+                    height: dimension.width/2,
+                    width: dimension.width/2,
                   }}
                   resizeMode="cover"
                 />

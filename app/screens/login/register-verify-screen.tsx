@@ -15,7 +15,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  TouchableHighlight,
+  TouchableHighlight, useWindowDimensions,
   View,
 } from "react-native";
 import {useSelector} from "react-redux";
@@ -70,6 +70,8 @@ export const RegisterVerifyScreen: FC<
     !!props.exception,
   );
   const [resendTimer, setResendTimer] = useState<number>(10000);
+
+  const dimension = useWindowDimensions();
 
   // global variables
   let emailDestination = useSelector<RootState>(
@@ -269,8 +271,8 @@ export const RegisterVerifyScreen: FC<
               <Image
                 source={require("@travelasset/images/success.jpeg")}
                 style={{
-                  height: 250,
-                  width: 250,
+                  height: dimension.width/2,
+                  width: dimension.width/2,
                 }}
                 resizeMode="cover"
               />

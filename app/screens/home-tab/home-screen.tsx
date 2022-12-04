@@ -27,7 +27,7 @@ import {
   HOME_SCREEN_UPPER_ROW,
   HOME_SCREEN_VIEW,
 } from "../../theme";
-import { ImageBackground, ScrollView, TouchableOpacity, View } from "react-native";
+import { ImageBackground, ScrollView, StatusBar, TouchableOpacity, View } from "react-native";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import ButtonWithColorBg, { ButtonProp } from "../../components/ButtonWithColorBg";
 import { TabNavigatorParamList } from "../../navigators";
@@ -126,6 +126,12 @@ export const HomeScreen: FC<
 
   return (
     <SafeAreaView style={HOME_SCREEN_VIEW}>
+      <StatusBar
+        animated={true}
+        barStyle={"dark-content"}
+        // hidden={true}
+      />
+
       {/* Upper Row */}
       <View style={HOME_SCREEN_UPPER_ROW}>
         <View>

@@ -127,6 +127,7 @@ export const PRE_LOGIN_SCREEN_VIEW: ViewStyle = {
   flex: 1,
   alignItems: "center",
   justifyContent: "center",
+  paddingHorizontal: 20
 };
 
 export const PRE_LOGIN_SCREEN_UPPER_ROW: ViewStyle = {
@@ -150,12 +151,18 @@ export const PRE_LOGIN_SCREEN_LOWER_ROW: ViewStyle = {
 };
 
 export const PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE: ViewStyle = {
-  width: "80%",
+  width: "100%",
   height: 50,
   display: "flex",
   justifyContent: "center",
   flexDirection: "row",
 };
+
+export const PRE_LOGIN_SCREEN_TOUCHABLE_LOGO_WRAPPER: ViewStyle = {
+  width: "30%",
+  flexDirection: "row",
+  justifyContent:"center"
+}
 
 export const PRE_LOGIN_SCREEN_LOWER_ROW_LOGIN_REGISTER: ViewStyle = {
   width: "100%",
@@ -163,9 +170,7 @@ export const PRE_LOGIN_SCREEN_LOWER_ROW_LOGIN_REGISTER: ViewStyle = {
   justifyContent: "space-around",
 };
 
-export const PRE_LOGIN_SCREEN_LOGIN_REGISTER_BUTTON_CUSTOM: ViewStyle = {
-  width: "50%",
-};
+
 /* PreLogin Screen ends */
 
 /* Login Screen start*/
@@ -461,14 +466,14 @@ export const HOME_SCREEN_IMAGE_TEXT_CONTAINER: ViewStyle = {
 };
 
 export const HOME_SCREEN_IMAGE_FIRST_WRAPPER: ViewStyle = {
-  width: "60%",
+  width: "100%",
 };
 
 export const HOME_SCREEN_IMAGE_RATING_WRAPPER: ViewStyle = {
   backgroundColor: "rgba(150, 150, 150, 0.7)",
   borderRadius: 25,
   margin: 10,
-  width: "40%",
+  width: "45%",
 };
 
 export const HOME_SCREEN_IMAGE_TEXT: TextStyle = {
@@ -545,8 +550,8 @@ export const HOTEL_SEARCH_SCREEN_FILTER_TEXT: TextStyle = {
 export const HOTEL_SEARCH_SCREEN_TITLE_ROW: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
-  marginVertical: 20,
-  height: "15%",
+  marginVertical: 10,
+  height: "12%",
 };
 
 export const HOTEL_SEARCH_CITYNAME: ViewStyle = {
@@ -1024,9 +1029,9 @@ export const HOTEL_DETAIL_SCREEN_BACK_BUTTON_ROW: ViewStyle = {
 };
 
 export const HOTEL_DETAIL_SCREEN_TITLE_WRAPPER: ViewStyle = {
-  marginVertical: 20,
+  marginVertical: 10,
   marginHorizontal: 20,
-  height: "15%",
+  height: "12%",
   flexDirection: "column",
   justifyContent: "flex-end"
 };
@@ -1098,7 +1103,7 @@ export const HOTEL_DETAIL_SCREEN_HOTEL_INFO_FLAT_LIST_CONTAINER: ViewStyle = {
 
 export const HOTEL_ROOM_SELECT_SCREEN: ViewStyle = {
   flex: 1,
-  paddingTop: 60,
+  paddingTop: 40,
   backgroundColor: theme.colors.mint,
 };
 
@@ -1160,8 +1165,6 @@ export const HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SUBTEXT: TextStyle = {
 
 export const HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_SECOND_ROW: ViewStyle = {
   padding: 20,
-  flexDirection: "column",
-  justifyContent: "space-between",
 };
 export const HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW: ViewStyle = {
   padding: 20,
@@ -1180,6 +1183,7 @@ export const HOTEL_ROOM_SELECT_SCREEN_IMAGE: ImageStyle = {
   width: 100,
   height: 100,
   borderRadius: 20,
+  marginHorizontal: 10,
 };
 
 export const HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT: TextStyle = {
@@ -1222,32 +1226,39 @@ export const HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TEXT: TextStyle = {
 export const PAYMENT_SCREEN: ViewStyle = {
   flex: 1,
   backgroundColor: theme.colors.mint,
-  paddingHorizontal: 25,
+  paddingHorizontal: 20,
 };
 
 export const PAYMENT_SCREEN_HEADER_ROW: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "flex-start",
+  width: "100%",
   alignItems: "center",
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingTop: 20,
+  paddingHorizontal: 20
 };
 
 export const PAYMENT_SCREEN_BACK_BUTTON: ViewStyle = {
   justifyContent: "space-between",
   flexDirection: "row",
-  marginLeft: 20,
+  // marginLeft: 20,
   paddingTop: 20,
 };
 
 export const PAYMENT_SCREEN_TITLE_TEXT: TextStyle = {
   fontWeight: "bold",
-  color: "white",
+  lineHeight: 60,
+  maxHeight: 80,
   fontSize: 18,
+  color: "white",
+  textAlign: "center",
 };
 
 export const PAYMENT_SCREEN_TITLE: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
-  marginHorizontal: 60,
+  flexDirection: "row"
+  // marginHorizontal: 60,
 };
 
 export const PAYMENT_SCREEN_BOTTOM_SHEET: ViewStyle = {
@@ -1322,8 +1333,7 @@ export const PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE: ViewStyle = {
 };
 
 export const PAYMENT_SCREEN_INPUT_TITLE: ViewStyle = {
-  paddingTop: 10,
-  paddingBottom: 10,
+  paddingVertical: 10
 };
 
 export const PAYMENT_SCREEN_INPUT_TITLE_TEXT: TextStyle = {

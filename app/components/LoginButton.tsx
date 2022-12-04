@@ -1,14 +1,15 @@
 import { TouchableOpacity, View, ViewStyle } from "react-native";
 import { Text as PaperText, useTheme } from "react-native-paper";
-import { PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE } from "../theme";
+import { PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE, PRE_LOGIN_SCREEN_TOUCHABLE_LOGO_WRAPPER } from "../theme";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import React from "react";
 
 export interface LoginButtonProps {
   label: string;
-  authProvider: "aws" | "apple" | "facebook" | "google" | "register" | "login" | "logout"
+  authProvider: "aws" | "apple" | "facebook" | "google" | "register" | "login" | "logout";
   onPress: () => void;
-  customStyle?: ViewStyle;
+  // customStyle?: ViewStyle;
+  haveLogo: boolean;
 }
 
 export function LoginButton(props: LoginButtonProps) {
@@ -35,33 +36,46 @@ export function LoginButton(props: LoginButtonProps) {
   return (
     // wrapper
     <TouchableOpacity
-      style={PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE}
+      style={!props.haveLogo ?
+        {
+          ...{
+            ...PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE,
+            flexDirection: "row",
+            justifyContent: "center",
+          }, width: "45%",
+        } :
+        PRE_LOGIN_SCREEN_LOWER_ROW_TOUCHABLE
+      }
       onPress={props.onPress}
     >
       {/* touchable button */}
-      <View style={
-        props.customStyle ? { ...loginButtonViewStyle, ...props.customStyle } :
-          loginButtonViewStyle
-      }>
+      <View style={!props.haveLogo ? {...loginButtonViewStyle, width: "100%"} : loginButtonViewStyle}>
         {(props.authProvider != "login" && props.authProvider != "logout" && props.authProvider != "register") ? (
-          <FontAwesome5Icon
-            name={props.authProvider == "facebook" ? "facebook-f" : props.authProvider}
-            size={25}
-            color={
-              props.authProvider == "aws" ? "#FF9900" :
-                props.authProvider == "apple" ? colors.black :
-                  props.authProvider == "facebook" ? colors.white :
-                    props.authProvider == "google" ? colors.yellow :
-                      colors.black
-            }
-          />
+          <View style={PRE_LOGIN_SCREEN_TOUCHABLE_LOGO_WRAPPER}>
+            <FontAwesome5Icon
+              name={props.authProvider == "facebook" ? "facebook-f" : props.authProvider}
+              size={25}
+              color={
+                props.authProvider == "aws" ? "#FF9900" :
+                  props.authProvider == "apple" ? colors.black :
+                    props.authProvider == "facebook" ? colors.white :
+                      props.authProvider == "google" ? colors.yellow :
+                        colors.black
+              }
+            />
+          </View>
         ) : null
         }
-        <View style={{
-          width:
-            (props.authProvider != "login" && props.authProvider != "logout" && props.authProvider != "register") ?
-              "80%" : "90%"
-        }}>
+        <View
+          style={{
+            width:
+              (props.authProvider != "login" && props.authProvider != "logout" && props.authProvider != "register") ?
+                "80%" : "100%",
+            flexDirection: "row",
+            justifyContent: (props.authProvider != "login" && props.authProvider != "logout" && props.authProvider != "register") ?
+              "flex-start" : "center",
+          }}
+        >
           <PaperText style={{
             fontSize: 20,
             fontWeight: "bold",
@@ -70,7 +84,7 @@ export function LoginButton(props: LoginButtonProps) {
               props.authProvider == "login" ||
               props.authProvider == "aws") ?
               colors.white : colors.black,
-          }}>          {props.label}
+          }}>{props.label}
           </PaperText>
         </View>
 

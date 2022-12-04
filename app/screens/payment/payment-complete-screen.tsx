@@ -95,12 +95,12 @@ export const PaymentCompleteScreen: FC<StackScreenProps<StackNavigatorParamList,
           </TouchableHighlight>
         </View>
 
-        <View style={{ ...PAYMENT_SCREEN_TITLE, width: "40%", marginHorizontal: 0 }}>
+        <View style={{ ...PAYMENT_SCREEN_TITLE, width: "55%", marginHorizontal: 0 ,justifyContent: "flex-start"}}>
           <PaperText style={PAYMENT_SCREEN_TITLE_TEXT}>
             BOOKING RECORD
           </PaperText>
         </View>
-        <View style={{ width: "30%" }} />
+        <View style={{ width: "15%" }} />
       </View>
 
       <BottomSheet
@@ -169,17 +169,17 @@ export const PaymentCompleteScreen: FC<StackScreenProps<StackNavigatorParamList,
                 </View>
               </View>
 
-              <View>
+              <View style={{width: "30%", flexDirection: "row", justifyContent: "center"}}>
                 <Image
                   style={{
                     ...HOTEL_ROOM_SELECT_SCREEN_IMAGE,
-                    height: 140, width: 110,
                   }}
                   source={
                     roomImagePath ?
                       { uri: roomImagePath } :
                       require("@travelasset/images/crown-hotel.jpeg")
                   }
+                  resizeMode={"cover"}
                 />
               </View>
             </View>

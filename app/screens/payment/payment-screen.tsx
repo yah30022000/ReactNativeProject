@@ -22,6 +22,7 @@ import {
   View,
 } from "react-native";
 import {
+  HOTEL_ROOM_SELECT_SCREEN_BACK_BUTTON_ROW,
   HOTEL_ROOM_SELECT_SCREEN_DIVIDER_LINE,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_CONTAINER,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_FIRST_ROW,
@@ -30,7 +31,7 @@ import {
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_TEXT,
   HOTEL_ROOM_SELECT_SCREEN_FLAT_LIST_THIRD_ROW,
   HOTEL_ROOM_SELECT_SCREEN_IMAGE,
-  HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
+  HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT, HOTEL_ROOM_SELECT_SCREEN_TITLE_TEXT,
   HOTEL_SCREEN_MODAL_CONTENT_CONTAINER,
   HOTEL_SCREEN_MODAL_CONTENT_VIEW,
   HOTEL_SEARCH_BOTTOM_BUTTON,
@@ -134,6 +135,8 @@ export const PaymentScreen: FC<
   const [serviceOrTax, setServiceOrTax] = useState<number>(0);
   const [modalStatus, setModalStatus] =
     useState<HotelState["hotelBookingStatus"]>("none");
+
+  let dimension = useWindowDimensions();
 
   // global variables
   let signInResult = useSelector<RootState>(
@@ -335,11 +338,13 @@ export const PaymentScreen: FC<
 
   return (
     <SafeAreaView style={PAYMENT_SCREEN}>
+
+      {/* Header Row Back Button */}
       <View style={PAYMENT_SCREEN_HEADER_ROW}>
-        <TouchableHighlight
-          //   onPress={() => navigation.goBack()}
-          underlayColor={"transparent"}>
-          <View style={PAYMENT_SCREEN_BACK_BUTTON}>
+        <View style={{...PAYMENT_SCREEN_BACK_BUTTON, width: "20%"}}>
+          <TouchableHighlight
+            //   onPress={() => navigation.goBack()}
+            underlayColor={"transparent"}>
             <ButtonWithColorBg
               size={25}
               color={colors.black}
@@ -348,20 +353,22 @@ export const PaymentScreen: FC<
               backgroundColor={colors.white}
               onPress={() => navigation.goBack()}
             />
-          </View>
-        </TouchableHighlight>
-        <View style={PAYMENT_SCREEN_TITLE}>
+          </TouchableHighlight>
+        </View>
+        <View style={{...PAYMENT_SCREEN_TITLE, width: "60%"}}>
           <PaperText style={PAYMENT_SCREEN_TITLE_TEXT}>
             {carouselIndex == 0
               ? "PAYMENT METHODS"
               : carouselIndex == 1
-              ? "ADD PAYMENT CARD"
-              : carouselIndex == 2
-              ? "ADD CONTACT"
-              : "CONFIRM PAYMENT"}
+                ? "ADD PAYMENT CARD"
+                : carouselIndex == 2
+                  ? "ADD CONTACT"
+                  : "CONFIRM PAYMENT"}
           </PaperText>
         </View>
+        <View style={{ width: "20%" }} />
       </View>
+
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -626,6 +633,7 @@ export const PaymentScreen: FC<
                               autoCapitalize="none"
                               onBlur={onBlur}
                               mode={"outlined"}
+                              returnKeyType={"done"}
                               selectionColor={colors.mint}
                               outlineColor={"transparent"}
                               activeOutlineColor={colors.mint}
@@ -702,6 +710,7 @@ export const PaymentScreen: FC<
                               outlineColor={"transparent"}
                               activeOutlineColor={colors.mint}
                               keyboardType={"number-pad"}
+                              returnKeyType={"done"}
                               maxLength={20}
                               mode={"outlined"}
                               style={PAYMENT_SCREEN_INPUT}
@@ -764,6 +773,7 @@ export const PaymentScreen: FC<
                                 placeholder={"yyyy-MM"}
                                 autoCapitalize="none"
                                 keyboardType="numbers-and-punctuation"
+                                returnKeyType={"done"}
                                 onBlur={onBlur}
                                 maxLength={7}
                                 textContentType="oneTimeCode"
@@ -818,6 +828,7 @@ export const PaymentScreen: FC<
                                 placeholder={"CVV"}
                                 maxLength={4}
                                 keyboardType="number-pad"
+                                returnKeyType={"done"}
                                 textContentType="oneTimeCode"
                                 autoCapitalize="none"
                                 onBlur={onBlur}
@@ -894,7 +905,7 @@ export const PaymentScreen: FC<
                   <View style={{height: "100%"}}>
                     {/* Title and First Name Row */}
                     <View>
-                      <View style={PAYMENT_SCREEN_INPUT_TITLE}>
+                      <View style={{...PAYMENT_SCREEN_INPUT_TITLE, paddingVertical: dimension.height/1000}}>
                         <PaperText style={PAYMENT_SCREEN_INPUT_TITLE_TEXT}>
                           First Name
                         </PaperText>
@@ -925,6 +936,7 @@ export const PaymentScreen: FC<
                                 onChange(value);
                               }}
                               placeholder={"Enter your first name"}
+                              returnKeyType={"done"}
                               autoCapitalize="none"
                               onBlur={onBlur}
                               mode={"outlined"}
@@ -946,7 +958,7 @@ export const PaymentScreen: FC<
 
                     {/* Last Name Row */}
                     <View>
-                      <View style={PAYMENT_SCREEN_INPUT_TITLE}>
+                      <View style={{...PAYMENT_SCREEN_INPUT_TITLE, paddingVertical: dimension.height/1000}}>
                         <PaperText style={PAYMENT_SCREEN_INPUT_TITLE_TEXT}>
                           Last Name
                         </PaperText>
@@ -977,6 +989,7 @@ export const PaymentScreen: FC<
                                 onChange(value);
                               }}
                               placeholder={"Enter your last name"}
+                              returnKeyType={"done"}
                               autoCapitalize="none"
                               onBlur={onBlur}
                               mode={"outlined"}
@@ -998,7 +1011,7 @@ export const PaymentScreen: FC<
 
                     {/* Email Row */}
                     <View>
-                      <View style={PAYMENT_SCREEN_INPUT_TITLE}>
+                      <View style={{...PAYMENT_SCREEN_INPUT_TITLE, paddingVertical: dimension.height/1000}}>
                         <PaperText style={PAYMENT_SCREEN_INPUT_TITLE_TEXT}>
                           Email Address
                         </PaperText>
@@ -1033,6 +1046,7 @@ export const PaymentScreen: FC<
                               placeholder={"Enter your email address"}
                               autoCapitalize="none"
                               onBlur={onBlur}
+                              returnKeyType={"done"}
                               mode={"outlined"}
                               selectionColor={colors.mint}
                               outlineColor={"transparent"}
@@ -1053,7 +1067,7 @@ export const PaymentScreen: FC<
 
                     {/* Phone Number Row */}
                     <View>
-                      <View style={PAYMENT_SCREEN_INPUT_TITLE}>
+                      <View style={{...PAYMENT_SCREEN_INPUT_TITLE, paddingVertical: dimension.height/1000}}>
                         <PaperText style={PAYMENT_SCREEN_INPUT_TITLE_TEXT}>
                           Phone Number
                         </PaperText>
@@ -1092,6 +1106,7 @@ export const PaymentScreen: FC<
                               autoCapitalize="none"
                               onBlur={onBlur}
                               mode={"outlined"}
+                              returnKeyType={"done"}
                               selectionColor={colors.mint}
                               outlineColor={"transparent"}
                               activeOutlineColor={colors.mint}
@@ -1204,7 +1219,7 @@ export const PaymentScreen: FC<
                           </View>
                         </View>
 
-                        <View>
+                        <View style={{width: "30%", flexDirection: "row", justifyContent: "center"}}>
                           <Image
                             style={HOTEL_ROOM_SELECT_SCREEN_IMAGE}
                             source={
@@ -1357,7 +1372,7 @@ export const PaymentScreen: FC<
                     <KeyboardAvoidingView
                       // behavior={Platform.OS === "ios" ? "padding" : "height"}
                       keyboardVerticalOffset={20}
-                      style={PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER}>
+                      style={{...PAYMENT_SCREEN_BOTTOM_BUTTON_ROW_WRAPPER, bottom: dimension.height/13}}>
                       {/* Back Button */}
                       <TouchableHighlight
                         style={PAYMENT_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
@@ -1448,8 +1463,8 @@ export const PaymentScreen: FC<
                         require("@travelasset/images/fail.jpeg") : undefined
                 }
                 style={{
-                  height: 250,
-                  width: 250,
+                  height: dimension.width/2,
+                  width: dimension.width/2,
                 }}
                 resizeMode="cover"
               />

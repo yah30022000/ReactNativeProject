@@ -56,7 +56,7 @@ const clientSchemaExtensions = gql`
     ) repeatable on FIELD_DEFINITION
     
     ## auth
-    directive @auth(rules: [AuthRule!]!) on OBJECT | FIELD_DEFINITION
+    directive @auth(rules: [AuthRule!]!) repeatable on OBJECT | FIELD_DEFINITION
     input AuthRule {
         allow: AuthStrategy!
         provider: AuthProvider

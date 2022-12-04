@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import { TabNavigatorParamList } from "../../navigators/home-bottom-tab";
+import { TabNavigatorParamList } from "../../navigators";
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
@@ -25,15 +25,21 @@ import {
   HOTEL_ROOM_SELECT_SCREEN_PRICE_TEXT,
   HOTEL_ROOM_SELECT_SCREEN_TITLE_TEXT,
 } from "../../theme";
-import { FlatList, Image, ImageBackground, StatusBar, TouchableHighlight, View } from "react-native";
-import { useAppDispatch } from "../../redux/hooks";
+import {
+  FlatList,
+  Image,
+  ImageBackground,
+  StatusBar,
+  TouchableHighlight,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { getAllSavedHotelBookingByUsernameThunk, HotelState, RootState, useAppDispatch, UserState } from "../../redux";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { capitalizeString, HotelInfoIconItem, HotelInfoIconItemAndIndex } from "../../helper";
 import { useSelector } from "react-redux";
-import { HotelState, RootState, UserState } from "../../redux";
 import { Storage as AmplifyS3Storage } from "@aws-amplify/storage";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import { getAllSavedHotelBookingByUsernameThunk } from "../../redux/hotel/thunk/getAllSavedHotelBookingByUsernameThunk";
 import { LazyHotelBooking } from "../../../src/models";
 
 export interface HistoryScreenProps {
@@ -52,6 +58,8 @@ export const HistoryScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
   const snapPoints = useMemo<Array<string>>(() => ["85%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [roomImagePathList, setRoomImagePathList] = useState<Array<string | undefined>>([]);
+
+  const dimension = useWindowDimensions();
 
   /* props */
   // const {}: HistoryScreenProps = route.params;
@@ -75,7 +83,7 @@ export const HistoryScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
   ];
 
   const renderIcon = ({ item, index }: HotelInfoIconItemAndIndex) => (
-    <View style={{ flexDirection: "row", width: 120, height: 20 }} key={item.key}>
+    <View style={{ flexDirection: "row", justifyContent: "space-around", width: dimension.width/3.5, height: 20 }} key={item.key}>
       <View style={{ width: "30%" }}>
         <FontAwesome5Icon name={item.iconName} size={item.iconSize ?? 16} />
       </View>
@@ -200,7 +208,7 @@ export const HistoryScreen: FC<MaterialBottomTabScreenProps<TabNavigatorParamLis
                     </View>
                   </View>
 
-                  <View>
+                  <View style={{width: "30%", flexDirection: "row", justifyContent: "center"}}>
                     <Image
                       style={HOTEL_ROOM_SELECT_SCREEN_IMAGE}
                       source={

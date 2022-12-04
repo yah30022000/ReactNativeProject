@@ -130,7 +130,7 @@ npx react-native start
 # open another terminal
 npx react-native run-ios
 # or specific simulator
-xcrun simctl list devices # <- find all available iOS simulators
+xcrun xctrace list devices # <- find all available iOS connected device and simulators
 npx react-native run-ios --simulator="iPhone 13 Pro Max"
 # or plug in USB to deploy to real iPhone device, "iPhone" is the name of your device
 npx react-native run-ios --device "iPhone"

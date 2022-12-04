@@ -17,7 +17,7 @@ import {
   ONBOARDING_SKIP_BUTTON_WRAPPER,
 } from "../../theme";
 import { LiquidLike } from "react-native-animated-pagination-dots";
-import { Animated, Dimensions, FlatList, Image, TouchableHighlight, View, ViewToken } from "react-native";
+import { Animated, Dimensions, FlatList, Image, StatusBar, TouchableHighlight, View, ViewToken } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { BoardingItem, boardingList } from "../../helper";
@@ -79,6 +79,14 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
     //   style={{flex: 1}}
     //   resizeMode="cover">
     <SafeAreaView style={ONBOARDING_SCREEN} edges={["right", "left"]}>
+      <StatusBar
+        animated={true}
+        barStyle={visibleIndex < 1 ?
+          "dark-content": "light-content"}
+        // hidden={true}
+      />
+
+
       <View style={ONBOARDING_SCREEN_TITLE_ROW}>
         <Image
           source={require("@travelasset/icon/TripTroop-circle-outer.png")}
@@ -186,17 +194,3 @@ export const OnboardingScreen: FC<StackScreenProps<StackNavigatorParamList, "onB
   );
 }
 
-[
-  {
-    index: 1,
-    isViewable: true,
-    item: {
-      backgroundPath: 2,
-      key: 2,
-      subtitle:
-        "Where to go in 2023? Discover best fight deal around you! Top airlines airbus is ready for you.",
-      title: "Best Flight Booking Service",
-    },
-    key: "1",
-  },
-];

@@ -4,7 +4,7 @@ import { StackNavigatorParamList } from "../../navigators";
 import { Rating } from "react-native-ratings";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FlatList, Image, TouchableHighlight, View } from "react-native";
+import { FlatList, Image, StatusBar, TouchableHighlight, View } from "react-native";
 import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 
 import {
@@ -141,6 +141,11 @@ export const HotelListScreen: FC<StackScreenProps<StackNavigatorParamList, "hote
 
   return (
     <SafeAreaView>
+      <StatusBar
+        animated={true}
+        barStyle={"dark-content"}
+        // hidden={true}
+      />
       <View style={{flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20}}>
         <TouchableHighlight
           style={{flexGrow: 0.4}}

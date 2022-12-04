@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackNavigatorParamList } from "../../navigators";
 import { Divider as PaperDivider, Text as PaperText, useTheme } from "react-native-paper";
-import { FlatList, ImageBackground, StatusBar, TouchableHighlight, View } from "react-native";
+import { FlatList, ImageBackground, StatusBar, TouchableHighlight, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   HOTEL_DETAIL_SCREEN,
@@ -47,6 +47,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     /* props */
     const hotelId = route.params?.hotelId ?? "HOTEL_ID";
     const { colors } = useTheme();
+    let dimension = useWindowDimensions();
 
     const [hotelOfferResponseData, setHotelOfferResponseData] = useState<HotelOffersResponseData>();
 
@@ -109,7 +110,7 @@ export const HotelDetailScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     ];
 
     const renderItem = ({ item, index }: HotelInfoIconItemAndIndex) => (
-      <View style={{ flexDirection: "row", width: 130, height: 40 }} key={item.key}>
+      <View style={{ flexDirection: "row", width: dimension.width/3.2, height: 40 }} key={item.key}>
         <View style={{ width: "30%" }}>
           <FontAwesome5Icon name={item.iconName} size={item.iconSize ?? 16} />
         </View>
