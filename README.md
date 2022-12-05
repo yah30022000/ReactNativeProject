@@ -981,11 +981,9 @@ started**](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/rea
    
    Here is the GraphQL API that we will create. Select a setting to edit or continue:
    ** arrow up or down to choose
-   > API key
-   -> Enter a description for the API key:
-      > TripTroopDatastoreAPIKey
-   -> After how many days from now the API key should expire (1-365):
-      > 365
+   > Authorization modes
+   -> Choose the default authorization type for the API
+      > Amazon Cognito User Pool
    -> Configure additional auth types?
       > No
    
@@ -1097,6 +1095,21 @@ started**](https://docs.amplify.aws/lib/datastore/getting-started/q/platform/rea
 
    ![Amplify DataStore Architecture!](assets/images/readme/amplify-datastore-architecture.png "Amplify DataStore Architecture")
 
+
+#### Deleting Local Async Storage at iOS Simulator
+
+```bash
+## find devices list (look for your simulator model)
+xcrun xctrace list devices
+
+cd /Users/waichunwong/Library/Developer/CoreSimulator/Devices/<device-id>/data/Containers/Data/Application/
+
+## find the latest APP ID (it generates every time the simulator turn on, find the most top one)
+ls -halt
+
+
+
+```
 
 ### Storage - AWS Amplify -> AWS S3  <a name="aws-s3"/>
 

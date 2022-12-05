@@ -2,14 +2,14 @@
  * @format
  */
 
-import { AppRegistry, Linking } from "react-native";
+import { AppRegistry, Linking, LogBox } from "react-native";
 import App from "./app/App";
 import { name as appName } from "./app.json";
 import "react-native-gesture-handler";
-import { Amplify } from "aws-amplify";
+import { Amplify, DataStore as AmplifyDatastore } from "aws-amplify";
 import awsmobile from "./src/aws-exports";
 import InAppBrowser from "react-native-inappbrowser-reborn";
-import '@azure/core-asynciterator-polyfill';
+import "@azure/core-asynciterator-polyfill";
 
 // OAuth require in-app browser
 async function urlOpener(url, redirectUrl) {
@@ -35,5 +35,10 @@ Amplify.configure({
   },
 });
 
+// AmplifyDatastore.configure({
+//   errorHandler: (error) => console.log("AmplifyDatastore error: ", error)
+// });
+
+LogBox.ignoreAllLogs();
 
 AppRegistry.registerComponent(appName, () => App);

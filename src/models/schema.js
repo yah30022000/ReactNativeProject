@@ -99,6 +99,25 @@ export const schema = {
                             "username"
                         ]
                     }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "username",
+                                "allow": "owner",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -225,6 +244,25 @@ export const schema = {
                         "fields": [
                             "username",
                             "bookingId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "username",
+                                "allow": "owner",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ],
+                                "identityClaim": "cognito:username"
+                            }
                         ]
                     }
                 }

@@ -48,20 +48,25 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
       return thunkAPI.rejectWithValue(response);
     }
 
+    console.log("getAmadeusHotelListAndOffersThunk data length: ", response.data.length);
+
     // fill in online image filename (key) from S3 Bucket
     if(images && randomImages){
 
       response.data = await Promise.all(response.data.map(async (res) => {
         if (res.hotel && res.hotel.hotelId) {
 
-          // load images list from S3 bucket
-          // let images = await AmplifyS3Storage.list("hotel-image/".concat(res.hotel.hotelId), {
-          //   pageSize: "ALL",
-          // });
-          if (images.length > 1) {
+          console.log('hotelId filtering for images key: ', res.hotel.hotelId)
+
+          let filteredHotelImages = images.filter((image)=>{
+            return image.key && image.key.includes(res.hotel?.hotelId ?? "")
+          });
+
+          // allocate images that got from S3 buckets by filename
+          if (filteredHotelImages.length > 1) {
 
             // sort hotel image and room image file name
-            let sortedResult = images.sort((first, second) => {
+            let sortedResult = filteredHotelImages.sort((first, second) => {
               let firstKeyLength = first.key?.length ?? 0;
               let secondKeyLength = second.key?.length ?? 0;
               return firstKeyLength - secondKeyLength;
@@ -75,15 +80,15 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
               res.offers[0]["roomImageFileName"] = sortedResult[1].key;
             }
           } else {
-            // let randomImages = await AmplifyS3Storage.list("hotel-image/hotel", {
-            //   pageSize: "ALL",
-            // });
-            // add random hotel imageFileName (as a key)
-            res.hotel["imageFileName"] = randomImages[Math.floor(Math.random() * 10)].key;
+            let filteredRandomHotelImages = randomImages.filter((image)=>{
+              return image.key && image.key.includes(res.hotel?.hotelId ?? "")
+            });
+
+            res.hotel["imageFileName"] = filteredRandomHotelImages[Math.floor(Math.random() * 10)].key;
 
             // add random hotel roomImageFileName (as a key)
             if (res.offers && res.offers.length > 0) {
-              res.offers[0]["roomImageFileName"] = randomImages[Math.floor(Math.random() * 10)].key;
+              res.offers[0]["roomImageFileName"] = filteredRandomHotelImages[Math.floor(Math.random() * 10)].key;
             }
           }
 
@@ -95,15 +100,16 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
             res.offers[0]["roomImageFilePath"] = await AmplifyS3Storage.get(res.offers[0].roomImageFileName);
           }
         }
+
+        // console.log('allocated image for hotel res.hotel.hotelId ', res.hotel?.hotelId, ' - res.hotel["imageFilePath"]: ', res.hotel?.imageFilePath)
+
         return res;
       }));
 
     }
 
+    console.log("getAmadeusHotelListAndOffersThunk allocated images");
 
-
-
-    console.log("getAmadeusHotelListAndOffersThunk data length: ", response.data.length);
 
     return response;
   },

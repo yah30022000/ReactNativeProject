@@ -23,13 +23,13 @@ export const getS3HotelImagesThunk = createAsyncThunk<{
       return image.key && !image.key.startsWith("hotel-image/hotel");
     });
 
-    console.log("getS3HotelImagesThunk images: ", images);
+    console.log("getS3HotelImagesThunk images: ", images.length);
 
     let randomImages = imageResponse.results.filter((image) => {
       return image.key && image.key.startsWith("hotel-image/hotel");
     });
 
-    console.log("getS3HotelImagesThunk randomImages: ", randomImages);
+    console.log("getS3HotelImagesThunk randomImages: ", randomImages.length);
 
 
     return {

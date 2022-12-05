@@ -84,7 +84,16 @@
               "userPoolId": "authTripTroopAuth"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-12-05T05:03:15.112Z",
+                "description": "TripTroopDatastoreAPIKey"
+              }
+            }
+          ]
         }
       }
     }

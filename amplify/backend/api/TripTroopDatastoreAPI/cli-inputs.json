@@ -12,6 +12,13 @@
         "type": "AUTOMERGE"
       }
     },
-    "additionalAuthTypes": []
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-12-05T05:03:15.112Z",
+        "keyDescription": "TripTroopDatastoreAPIKey"
+      }
+    ]
   }
 }

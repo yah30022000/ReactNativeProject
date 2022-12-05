@@ -26,7 +26,7 @@ import {
 import { useSelector } from "react-redux";
 import { getCurrentAuthenticatedUserThunk, logout, RootState, useAppDispatch } from "../redux";
 import { useEffect } from "react";
-import { Hub as AmplifyHub, Storage as AmplifyS3Storage } from "aws-amplify";
+import { Hub as AmplifyHub } from "aws-amplify";
 import SplashScreen from "react-native-splash-screen";
 
 
@@ -69,7 +69,7 @@ export const AppStack = () => {
   useEffect(() => {
     SplashScreen.hide(); //hides the splash screen on app load.
 
-    const unsubscribeAmplifyHub = AmplifyHub.listen("auth", ({ payload: { event, data } }) => {
+    const unsubscribeAmplifyHubAuth = AmplifyHub.listen("auth", async ({ payload: { event, data } }) => {
       // console.log("AmplifyHub Auth event: ", event, " data: ", data);
       switch (event) {
         case "signIn":
@@ -91,7 +91,20 @@ export const AppStack = () => {
       //   .catch(() => console.log('Not signed in'));
     });
 
-    return unsubscribeAmplifyHub;
+    const unsubscribeAmplifyHubDatastore = AmplifyHub.listen("datastore", async ({ payload: { event, data } }) => {
+      console.log("AmplifyHub Datastore event: ", event, " data: ", data);
+    });
+
+    // AmplifyDatastore.clear().then((result)=>{
+    //   console.log('AmplifyDatastore.clear() result: ', result)
+    // }).catch((error)=>{
+    //   console.error("AmplifyDatastore.clear() error: ", error)
+    // })
+
+    return () => {
+      unsubscribeAmplifyHubAuth();
+      unsubscribeAmplifyHubDatastore();
+    };
   }, []);
 
   return (
