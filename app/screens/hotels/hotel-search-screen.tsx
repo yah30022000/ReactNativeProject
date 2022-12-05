@@ -90,6 +90,8 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EntypoIcon from "react-native-vector-icons/Entypo";
+import { S3ProviderListOutputItem } from "@aws-amplify/storage";
+import { getS3HotelImagesThunk } from "../../redux/hotel/thunk/getS3HotelImagesThunk";
 
 export interface HotelSearchScreenProps {
 }
@@ -136,6 +138,14 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
   const hotelListAndOffersSearchStatus = useSelector<RootState>(
     state => state.hotel.hotelListAndOffersSearchStatus,
   ) as HotelState["hotelListAndOffersSearchStatus"];
+
+  const hotelImages = useSelector<RootState>(
+    state => state.hotel.images,
+  ) as Array<S3ProviderListOutputItem> | undefined
+
+  const randomHotelImages = useSelector<RootState>(
+    state => state.hotel.randomImages,
+  ) as Array<S3ProviderListOutputItem> | undefined
 
   // callbacks
   const handleSheetChanges = useCallback((index: number) => {
@@ -385,12 +395,22 @@ export const HotelSearchScreen: FC<StackScreenProps<StackNavigatorParamList, "ho
     },
   ];
 
+  // will load hotel images filename from S3 bucket once, if we haven't got it
+  useEffect(()=>{
+    if(!hotelImages || !randomHotelImages){
+      dispatch(getS3HotelImagesThunk())
+    }
+  },[hotelImages, randomHotelImages])
 
   useEffect(() => {
     if (hotelListAndOffersSearchStatus === "loading") {
       setModalStatus("loading");
       if (hotelListAndOffersRequest) {
-        dispatch(getAmadeusHotelListAndOffersThunk(hotelListAndOffersRequest));
+        dispatch(getAmadeusHotelListAndOffersThunk({
+          queryParams: hotelListAndOffersRequest,
+          images: hotelImages,
+          randomImages: randomHotelImages
+        }));
       }
     } else if (hotelListAndOffersSearchStatus === "completed") {
       setModalStatus("completed");

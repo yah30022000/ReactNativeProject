@@ -11,6 +11,8 @@ import { saveHotelBookingThunk } from "./thunk/saveHotelBookingThunk";
 import { LazyHotelBooking } from "../../../src/models";
 import { getSavedHotelBookingThunk } from "./thunk/getSavedHotelBookingThunk";
 import { getAllSavedHotelBookingByUsernameThunk } from "./thunk/getAllSavedHotelBookingByUsernameThunk";
+import { getS3HotelImagesThunk } from "./thunk/getS3HotelImagesThunk";
+import { S3ProviderListOutputItem } from "@aws-amplify/storage";
 
 export interface HotelState {
   hotelListAndOffersSearchStatus: "loading" | "completed" | "failed" | "none";
@@ -23,6 +25,9 @@ export interface HotelState {
 
   currentQueryHotelBooking?: LazyHotelBooking
   allQueryHotelBooking?: Array<LazyHotelBooking>
+
+  images?: Array<S3ProviderListOutputItem>,
+  randomImages?: Array<S3ProviderListOutputItem>
 }
 
 // Define the initial state using that type
@@ -115,6 +120,17 @@ export const hotelSlice = createSlice({
       builder.addCase(getAllSavedHotelBookingByUsernameThunk.rejected, (state, action) => {
         console.error("getAllSavedHotelBookingByUsernameThunk error: ", action.error.message);
       });
+
+      // getS3HotelImagesThunk
+      builder.addCase(getS3HotelImagesThunk.fulfilled, (state, action) => {
+        console.log("getS3HotelImagesThunk fulfilled")
+        state.images = action.payload.images;
+        state.randomImages = action.payload.randomImages;
+      });
+      builder.addCase(getS3HotelImagesThunk.rejected, (state, action) => {
+        console.error("getS3HotelImagesThunk error: ", action.error.message);
+      });
+
     },
   })
 ;

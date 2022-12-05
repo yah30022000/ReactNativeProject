@@ -1,25 +1,35 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API as AmplifyAPI, Storage as AmplifyS3Storage } from "aws-amplify";
+import { S3ProviderListOutputItem } from "@aws-amplify/storage";
 import { HotelListRequest, HotelOffersRequest, HotelOffersResponse } from "../../../helper";
 
 export interface HotelListAndOffersRequest extends HotelListRequest, Omit<HotelOffersRequest, 'hotelIds'> {
   hotelIds?: Array<string>
 }
 
-export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersResponse, HotelListAndOffersRequest>(
+export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersResponse,
+  {
+    queryParams: HotelListAndOffersRequest,
+    images?: Array<S3ProviderListOutputItem>,
+    randomImages?: Array<S3ProviderListOutputItem>
+  }>(
   "hotel/getAmadeusHotelListAndOffers",
-  async (queryParams: HotelListAndOffersRequest, thunkAPI) => {
+  async ({ queryParams, images, randomImages }: {
+    queryParams: HotelListAndOffersRequest,
+    images?: Array<S3ProviderListOutputItem>,
+    randomImages?: Array<S3ProviderListOutputItem>
+  }, thunkAPI) => {
 
-    if(!queryParams.amenities){
-      delete queryParams.amenities
-    }else{
-      queryParams.amenities = JSON.stringify(queryParams.amenities)
+    if (!queryParams.amenities) {
+      delete queryParams.amenities;
+    } else {
+      queryParams.amenities = JSON.stringify(queryParams.amenities);
     }
 
-    if(!queryParams.ratings){
-      delete queryParams.ratings
-    }else{
-      queryParams.ratings = JSON.stringify(queryParams.ratings)
+    if (!queryParams.ratings) {
+      delete queryParams.ratings;
+    } else {
+      queryParams.ratings = JSON.stringify(queryParams.ratings);
     }
 
     console.log("getAmadeusHotelListAndOffersThunk query params: ", queryParams);
@@ -38,54 +48,60 @@ export const getAmadeusHotelListAndOffersThunk = createAsyncThunk<HotelOffersRes
       return thunkAPI.rejectWithValue(response);
     }
 
-
     // fill in online image filename (key) from S3 Bucket
-    response.data = await Promise.all(response.data.map(async (res) => {
-      if (res.hotel && res.hotel.hotelId) {
+    if(images && randomImages){
 
-        // load images list from S3 bucket
-        let images = await AmplifyS3Storage.list("hotel-image/".concat(res.hotel.hotelId), {
-          pageSize: "ALL",
-        });
-        if (images.results.length > 1) {
+      response.data = await Promise.all(response.data.map(async (res) => {
+        if (res.hotel && res.hotel.hotelId) {
 
-          // sort hotel image and room image file name
-          let sortedResult = images.results.sort((first, second)=> {
-            let firstKeyLength = first.key?.length ?? 0
-            let secondKeyLength = second.key?.length?? 0
-            return firstKeyLength - secondKeyLength
-          });
+          // load images list from S3 bucket
+          // let images = await AmplifyS3Storage.list("hotel-image/".concat(res.hotel.hotelId), {
+          //   pageSize: "ALL",
+          // });
+          if (images.length > 1) {
 
-          // add imageFileName (as a key)
-          res.hotel["imageFileName"] = sortedResult[0].key;
+            // sort hotel image and room image file name
+            let sortedResult = images.sort((first, second) => {
+              let firstKeyLength = first.key?.length ?? 0;
+              let secondKeyLength = second.key?.length ?? 0;
+              return firstKeyLength - secondKeyLength;
+            });
 
-          // add roomImageFileName (as a key)
-          if(res.offers && res.offers.length > 0){
-            res.offers[0]["roomImageFileName"] = sortedResult[1].key;
+            // add imageFileName (as a key)
+            res.hotel["imageFileName"] = sortedResult[0].key;
+
+            // add roomImageFileName (as a key)
+            if (res.offers && res.offers.length > 0) {
+              res.offers[0]["roomImageFileName"] = sortedResult[1].key;
+            }
+          } else {
+            // let randomImages = await AmplifyS3Storage.list("hotel-image/hotel", {
+            //   pageSize: "ALL",
+            // });
+            // add random hotel imageFileName (as a key)
+            res.hotel["imageFileName"] = randomImages[Math.floor(Math.random() * 10)].key;
+
+            // add random hotel roomImageFileName (as a key)
+            if (res.offers && res.offers.length > 0) {
+              res.offers[0]["roomImageFileName"] = randomImages[Math.floor(Math.random() * 10)].key;
+            }
           }
-        } else {
-          let randomImages = await AmplifyS3Storage.list("hotel-image/hotel", {
-            pageSize: "ALL",
-          });
-          // add random hotel imageFileName (as a key)
-          res.hotel["imageFileName"] = randomImages.results[Math.floor(Math.random() * 10)].key;
 
-          // add random hotel roomImageFileName (as a key)
-          if(res.offers && res.offers.length > 0){
-            res.offers[0]["roomImageFileName"] = randomImages.results[Math.floor(Math.random() * 10)].key;
+          // use the filename as a key, get 15 minutes valid image path and fill it in
+          if (res.hotel.imageFileName) {
+            res.hotel["imageFilePath"] = await AmplifyS3Storage.get(res.hotel.imageFileName);
+          }
+          if (res.offers && res.offers.length > 0 && res.offers[0].roomImageFileName) {
+            res.offers[0]["roomImageFilePath"] = await AmplifyS3Storage.get(res.offers[0].roomImageFileName);
           }
         }
+        return res;
+      }));
 
-        // use the filename as a key, get 15 minutes valid image path and fill it in
-        if (res.hotel.imageFileName) {
-          res.hotel["imageFilePath"] = await AmplifyS3Storage.get(res.hotel.imageFileName);
-        }
-        if (res.offers && res.offers.length > 0 && res.offers[0].roomImageFileName) {
-          res.offers[0]["roomImageFilePath"] = await AmplifyS3Storage.get(res.offers[0].roomImageFileName);
-        }
-      }
-      return res;
-    }));
+    }
+
+
+
 
     console.log("getAmadeusHotelListAndOffersThunk data length: ", response.data.length);
 
