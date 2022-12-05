@@ -66,7 +66,7 @@ export interface HotelBookingsResponseData {
 // for save at Amplify Datastore
 export interface HotelBookingDataModelBefore {
   username: string,
-  hotelListAndOffersResponse: HotelOffersResponseData,
+  hotelOffersResponseData: HotelOffersResponseData,
   hotelBookingsRequest: HotelBookingsRequest,
   hotelBookingsResponse: HotelBookingsResponseData
 }

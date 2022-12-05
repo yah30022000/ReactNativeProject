@@ -257,7 +257,7 @@ export const HotelRoomSelectScreen: FC<StackScreenProps<StackNavigatorParamList,
                 <TouchableHighlight
                   style={HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_TOUCHABLE}
                   onPress={() => {
-                    navigation.navigate("payment" as any, { offerId: item.id });
+                    navigation.navigate("payment" as any, { hotelId: hotelId, offerId: item.id });
                   }}
                   underlayColor={"transparent"}>
                   <View style={HOTEL_ROOM_SELECT_SCREEN_BOTTOM_BUTTON_WRAPPER}>

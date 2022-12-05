@@ -9,7 +9,7 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
   "hotel/saveHotelBooking",
   async (
     {
-      username, hotelListAndOffersResponse, hotelBookingsRequest, hotelBookingsResponse,
+      username, hotelOffersResponseData, hotelBookingsRequest, hotelBookingsResponse,
     }: HotelBookingDataModelBefore,
     thunkAPI,
   ) => {
@@ -21,11 +21,11 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
       return thunkAPI.rejectWithValue(queryUser);
     }
 
-    if (!hotelListAndOffersResponse.hotel) {
+    if (!hotelOffersResponseData.hotel) {
       return thunkAPI.rejectWithValue("hotelListAndOffersResponse hotel array is undefined");
     }
 
-    if (!hotelListAndOffersResponse.offers || hotelListAndOffersResponse.offers.length < 1) {
+    if (!hotelOffersResponseData.offers || hotelOffersResponseData.offers.length < 1) {
       return thunkAPI.rejectWithValue("hotelListAndOffersResponse offers array is either undefined or empty");
     }
 
@@ -49,39 +49,39 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
     });
 
     let checkInDate =
-      hotelListAndOffersResponse.offers[0].checkInDate ?
-        moment(hotelListAndOffersResponse.offers[0].checkInDate, "YYYY-MM-DD") :
+      hotelOffersResponseData.offers[0].checkInDate ?
+        moment(hotelOffersResponseData.offers[0].checkInDate, "YYYY-MM-DD") :
         moment();
     let checkOutDate =
-      hotelListAndOffersResponse.offers[0].checkOutDate ?
-        moment(hotelListAndOffersResponse.offers[0].checkOutDate, "YYYY-MM-DD") :
+      hotelOffersResponseData.offers[0].checkOutDate ?
+        moment(hotelOffersResponseData.offers[0].checkOutDate, "YYYY-MM-DD") :
         moment();
     let duration = moment.duration(checkOutDate.diff(checkInDate));
     let night = duration.asDays();
 
-    let newBasePrice = hotelListAndOffersResponse.offers[0].price.base ?
-      parseFloat(hotelListAndOffersResponse.offers[0].price.base)
-      : hotelListAndOffersResponse.offers[0].price.variations?.average?.base ?
-        parseFloat(hotelListAndOffersResponse.offers[0].price.variations?.average?.base) * night
-        : hotelListAndOffersResponse.offers[0].price.total &&
-        hotelListAndOffersResponse.offers[0].price.taxes![0]?.percentage ?
-          (parseFloat(hotelListAndOffersResponse.offers[0].price.total) -
-            (parseFloat(hotelListAndOffersResponse.offers[0].price.total)
-              * parseFloat(hotelListAndOffersResponse.offers[0].price.taxes![0].percentage) / 100)
+    let newBasePrice = hotelOffersResponseData.offers[0].price.base ?
+      parseFloat(hotelOffersResponseData.offers[0].price.base)
+      : hotelOffersResponseData.offers[0].price.variations?.average?.base ?
+        parseFloat(hotelOffersResponseData.offers[0].price.variations?.average?.base) * night
+        : hotelOffersResponseData.offers[0].price.total &&
+        hotelOffersResponseData.offers[0].price.taxes![0]?.percentage ?
+          (parseFloat(hotelOffersResponseData.offers[0].price.total) -
+            (parseFloat(hotelOffersResponseData.offers[0].price.total)
+              * parseFloat(hotelOffersResponseData.offers[0].price.taxes![0].percentage) / 100)
           ) / night
           : 0;
 
-    let hotelOfferTax = hotelListAndOffersResponse.offers[0].price.taxes?.map((tax) => {
+    let hotelOfferTax = hotelOffersResponseData.offers[0].price.taxes?.map((tax) => {
       return {
         code: tax.code,
         amount: tax.amount ? parseFloat(tax.amount) : tax.percentage ?
           (parseFloat(tax.percentage) / 100) *
           newBasePrice :
-          hotelListAndOffersResponse.offers &&
-          hotelListAndOffersResponse.offers[0].price.total &&
-          hotelListAndOffersResponse.offers[0].price.base ?
-            parseFloat(hotelListAndOffersResponse.offers[0].price.total) -
-            parseFloat(hotelListAndOffersResponse.offers[0].price.base) :
+          hotelOffersResponseData.offers &&
+          hotelOffersResponseData.offers[0].price.total &&
+          hotelOffersResponseData.offers[0].price.base ?
+            parseFloat(hotelOffersResponseData.offers[0].price.total) -
+            parseFloat(hotelOffersResponseData.offers[0].price.base) :
             0,
         currency: tax.currency,
         included: tax.included,
@@ -105,63 +105,63 @@ export const saveHotelBookingThunk = createAsyncThunk<LazyHotelBooking, HotelBoo
         guests: hotelBookingGuests,
         payments: hotelBookingsPayment,
         hotel: {
-          hotelId: hotelListAndOffersResponse.hotel.hotelId,
-          name: hotelListAndOffersResponse.hotel.name,
-          cityCode: hotelListAndOffersResponse.hotel.cityCode,
-          chainCode: hotelListAndOffersResponse.hotel.chainCode,
-          dupeId: hotelListAndOffersResponse.hotel.dupeId,
-          latitude: hotelListAndOffersResponse.hotel.latitude,
-          longitude: hotelListAndOffersResponse.hotel.longitude,
-          brandCode: hotelListAndOffersResponse.hotel.brandCode,
-          rating: hotelListAndOffersResponse.hotel.rating,
-          imageFileName: hotelListAndOffersResponse.hotel.imageFileName,
+          hotelId: hotelOffersResponseData.hotel.hotelId,
+          name: hotelOffersResponseData.hotel.name,
+          cityCode: hotelOffersResponseData.hotel.cityCode,
+          chainCode: hotelOffersResponseData.hotel.chainCode,
+          dupeId: hotelOffersResponseData.hotel.dupeId,
+          latitude: hotelOffersResponseData.hotel.latitude,
+          longitude: hotelOffersResponseData.hotel.longitude,
+          brandCode: hotelOffersResponseData.hotel.brandCode,
+          rating: hotelOffersResponseData.hotel.rating,
+          imageFileName: hotelOffersResponseData.hotel.imageFileName,
 
         },
         offer: {
           offerId: hotelBookingsRequest.data.offerId,
-          roomImageFileName: hotelListAndOffersResponse.offers[0].roomImageFileName,
-          checkInDate: hotelListAndOffersResponse.offers[0].checkInDate,
-          checkOutDate: hotelListAndOffersResponse.offers[0].checkOutDate,
-          rateCode: hotelListAndOffersResponse.offers[0].rateCode,
-          roomCategory: hotelListAndOffersResponse.offers[0].room.typeEstimated?.category,
-          roomQuantity: hotelListAndOffersResponse.offers[0].roomQuantity,
-          roomBeds: hotelListAndOffersResponse.offers[0].room.typeEstimated?.beds,
-          roomBedType: hotelListAndOffersResponse.offers[0].room.typeEstimated?.bedType,
-          roomDescription: hotelListAndOffersResponse.offers[0].room.description?.text,
-          adults: hotelListAndOffersResponse.offers[0].guests?.adults,
+          roomImageFileName: hotelOffersResponseData.offers[0].roomImageFileName,
+          checkInDate: hotelOffersResponseData.offers[0].checkInDate,
+          checkOutDate: hotelOffersResponseData.offers[0].checkOutDate,
+          rateCode: hotelOffersResponseData.offers[0].rateCode,
+          roomCategory: hotelOffersResponseData.offers[0].room.typeEstimated?.category,
+          roomQuantity: hotelOffersResponseData.offers[0].roomQuantity,
+          roomBeds: hotelOffersResponseData.offers[0].room.typeEstimated?.beds,
+          roomBedType: hotelOffersResponseData.offers[0].room.typeEstimated?.bedType,
+          roomDescription: hotelOffersResponseData.offers[0].room.description?.text,
+          adults: hotelOffersResponseData.offers[0].guests?.adults,
           night: night,
           commissionPercentage:
-            hotelListAndOffersResponse.offers[0].commission?.percentage ?
-              parseFloat(hotelListAndOffersResponse.offers[0].commission?.percentage) : undefined,
+            hotelOffersResponseData.offers[0].commission?.percentage ?
+              parseFloat(hotelOffersResponseData.offers[0].commission?.percentage) : undefined,
           commissionAmount:
-            hotelListAndOffersResponse.offers[0].commission?.amount ?
-              parseFloat(hotelListAndOffersResponse.offers[0].commission?.amount) : undefined,
-          boardType: hotelListAndOffersResponse.offers[0].boardType,
-          priceCurrency: hotelListAndOffersResponse.offers[0].price.currency,
+            hotelOffersResponseData.offers[0].commission?.amount ?
+              parseFloat(hotelOffersResponseData.offers[0].commission?.amount) : undefined,
+          boardType: hotelOffersResponseData.offers[0].boardType,
+          priceCurrency: hotelOffersResponseData.offers[0].price.currency,
           priceBase: newBasePrice,
           priceTotal:
-            hotelListAndOffersResponse.offers[0].price.total ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.total) : undefined,
+            hotelOffersResponseData.offers[0].price.total ?
+              parseFloat(hotelOffersResponseData.offers[0].price.total) : undefined,
           priceSellingTotal:
-            hotelListAndOffersResponse.offers[0].price.sellingTotal ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.sellingTotal) : undefined,
+            hotelOffersResponseData.offers[0].price.sellingTotal ?
+              parseFloat(hotelOffersResponseData.offers[0].price.sellingTotal) : undefined,
           priceTaxes: hotelOfferTax,
           priceMarkup:
-            hotelListAndOffersResponse.offers[0].price.markups &&
-            hotelListAndOffersResponse.offers[0].price.markups.length > 0 &&
-            hotelListAndOffersResponse.offers[0].price.markups[0].amount
+            hotelOffersResponseData.offers[0].price.markups &&
+            hotelOffersResponseData.offers[0].price.markups.length > 0 &&
+            hotelOffersResponseData.offers[0].price.markups[0].amount
               ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.markups[0].amount) : undefined,
+              parseFloat(hotelOffersResponseData.offers[0].price.markups[0].amount) : undefined,
           priceVariationAverageBase:
-            hotelListAndOffersResponse.offers[0].price.variations &&
-            hotelListAndOffersResponse.offers[0].price.variations.average &&
-            hotelListAndOffersResponse.offers[0].price.variations.average.base ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.variations.average.base) : undefined,
+            hotelOffersResponseData.offers[0].price.variations &&
+            hotelOffersResponseData.offers[0].price.variations.average &&
+            hotelOffersResponseData.offers[0].price.variations.average.base ?
+              parseFloat(hotelOffersResponseData.offers[0].price.variations.average.base) : undefined,
           priceVariationAverageTotal:
-            hotelListAndOffersResponse.offers[0].price.variations &&
-            hotelListAndOffersResponse.offers[0].price.variations.average &&
-            hotelListAndOffersResponse.offers[0].price.variations.average.total ?
-              parseFloat(hotelListAndOffersResponse.offers[0].price.variations.average.total) : undefined,
+            hotelOffersResponseData.offers[0].price.variations &&
+            hotelOffersResponseData.offers[0].price.variations.average &&
+            hotelOffersResponseData.offers[0].price.variations.average.total ?
+              parseFloat(hotelOffersResponseData.offers[0].price.variations.average.total) : undefined,
         },
 
       }),

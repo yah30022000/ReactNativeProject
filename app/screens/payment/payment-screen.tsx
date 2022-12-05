@@ -74,13 +74,13 @@ import ButtonWithColorBg from "../../components/ButtonWithColorBg";
 import BottomSheet from "@gorhom/bottom-sheet";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import {
-  capitalizeString,
+  capitalizeString, Hotel,
   HotelBookingsRequest,
   HotelBookingsResponse,
   HotelCreditCardType,
   hotelCreditCardTypes,
   HotelOffer,
-  HotelOffersResponse,
+  HotelOffersResponse, HotelOffersResponseData,
   validateCardNumber,
 } from "../../helper";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
@@ -106,6 +106,7 @@ export interface ContactFormData {
 }
 
 export interface PaymentScreenProps {
+  hotelId?: string;
   offerId?: string;
 }
 
@@ -113,7 +114,8 @@ export const PaymentScreen: FC<
   StackScreenProps<StackNavigatorParamList, "payment">
 > = ({route, navigation}) => {
   /* props */
-  const offerId = route.params?.offerId ?? "OFFER_ID";
+  const hotelId = route.params?.hotelId ?? "";
+  const offerId = route.params?.offerId ?? "";
 
   const {colors} = useTheme();
   const dispatch = useAppDispatch();
@@ -129,6 +131,7 @@ export const PaymentScreen: FC<
   let initialCreditCardType = { cardCode: "credit-card", cardName: "Credit Card", shortCode: "", regExp: /^$/}
   const [creditCardTypeState, setCreditCardTypeState] = useState<HotelCreditCardType>(initialCreditCardType);
   const [contactFormData, setContactFormData] = useState<ContactFormData>();
+  const [localHotelListAndOffersResponse, setLocalLotelListAndOffersResponse] = useState< HotelOffersResponseData >();
   const [hotelOffer, setHotelOffer] = useState<HotelOffer>();
   const [nights, setNights] = useState<number>(1);
   const [basePrice, setBasePrice] = useState<number>(0);
@@ -272,13 +275,13 @@ export const PaymentScreen: FC<
     } else if (hotelBookingStatus === "completed") {
       setModalStatus("completed");
       if (signInResult &&
-        hotelListAndOffersResponse &&
+        localHotelListAndOffersResponse &&
         hotelBookingsRequest &&
         hotelBookingsResponse
       ) {
         dispatch(saveHotelBookingThunk({
           username: signInResult.username,
-          hotelListAndOffersResponse: hotelListAndOffersResponse.data[0],
+          hotelOffersResponseData: localHotelListAndOffersResponse,
           hotelBookingsRequest: hotelBookingsRequest,
           hotelBookingsResponse: hotelBookingsResponse.data[0],
         }));
@@ -290,9 +293,17 @@ export const PaymentScreen: FC<
 
 
   useEffect(() => {
-    console.log("offerId: ", offerId);
+    console.log("paymentScreen hotelId: ", hotelId, ", offerId: ", offerId);
 
     if (hotelListAndOffersResponse) {
+      let filteredHotelListAndOffersResponse = hotelListAndOffersResponse.data.find((hotel)=>{
+        return hotel.hotel && hotel.hotel.hotelId && hotel.hotel.hotelId === hotelId
+      })
+
+      if(filteredHotelListAndOffersResponse){
+        setLocalLotelListAndOffersResponse(filteredHotelListAndOffersResponse)
+      }
+
       hotelListAndOffersResponse.data.forEach((hotelOfferResponse) => {
         let offer = hotelOfferResponse.offers?.find((offer) => {
           return offer.id === offerId;

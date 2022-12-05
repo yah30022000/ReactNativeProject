@@ -16,23 +16,23 @@ export const getCurrentAuthenticatedUserThunk = createAsyncThunk<UserState["sign
       authProvider = JSON.parse(userData.attributes.identities)[0]["providerName"];
     }
 
-    //
-    await AmplifyDatastore.delete(HotelBooking, Predicates.ALL);
-    await AmplifyDatastore.delete(User, Predicates.ALL);
+    // uncomment in case need to delete all data for local async storage
+    // await AmplifyDatastore.delete(HotelBooking, Predicates.ALL);
+    // await AmplifyDatastore.delete(User, Predicates.ALL);
 
     // find existing user by email with same auth provider
-    // let savedUser = await AmplifyDatastore.save(
-    //   new User({
-    //     email: userData.attributes.email,
-    //     emailVerified: userData.attributes.email_verified,
-    //     username: userData.username,
-    //     name: userData.attributes.name,
-    //     authProvider: authProvider,
-    //     // phoneNumber: null,
-    //     // image: null
-    //   }));
+    let savedUser = await AmplifyDatastore.save(
+      new User({
+        email: userData.attributes.email,
+        emailVerified: userData.attributes.email_verified,
+        username: userData.username,
+        name: userData.attributes.name,
+        authProvider: authProvider
+        // phoneNumber: null,
+        // image: null
+      }));
 
-    // console.log("getCurrentAuthenticatedUserThunk datastore savedUser: ", savedUser);
+    console.log("getCurrentAuthenticatedUserThunk datastore savedUser: ", savedUser);
 
     // let queryUser = await AmplifyDatastore.query(User, userData.username);
     // console.log("getCurrentAuthenticatedUserThunk queryUser: ", queryUser);
