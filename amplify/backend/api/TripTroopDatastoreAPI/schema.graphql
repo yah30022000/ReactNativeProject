@@ -1,0 +1,119 @@
+#input AMPLIFY { globalAuthRule: AuthRule = { allow: public } } # FOR TESTING ONLY!
+
+
+### User Related =========================================
+
+type User
+@model
+@auth(
+    rules: [
+        {
+            allow: owner
+            ownerField: "username"
+            operations: [create, update, delete, read]
+        }
+    ]
+)
+{
+    username: String! @primaryKey
+    email: String!
+    emailVerified: Boolean!
+    name: String!
+    authProvider: String
+    phoneNumber: String
+    image: String
+    hotelOrder: [HotelBooking] @hasMany (indexName: "byUsername", fields: ["username"])
+    ## flightOffer:
+}
+
+### Hotel Related =========================================
+
+type HotelBooking
+@model
+@auth(
+    rules: [
+        {
+            allow: owner
+            ownerField: "username"
+            operations: [create, update, delete, read]
+        }
+    ]
+)
+{
+    username: String! @index(name: "byUsername", sortKeyFields: ["bookingId"])
+    user: User! @belongsTo(fields: ["username"])
+    ## hotel booking
+    bookingId: String! @primaryKey
+    providerConfirmationId: String!
+    associatedRecordReference: String
+    guests: [HotelBookingsStakeholder]
+    payments: [HotelBookingsPayment]
+    ## hotel offer
+    hotel: Hotel!
+    offer: HotelOffer!
+}
+
+type HotelBookingsStakeholder {
+    title: String
+    firstName: String!
+    lastName: String!
+    phone: String!
+    email: String!
+}
+
+type HotelBookingsPayment {
+    method: String!
+    cardVendorCode: String
+    cardNumber: String
+    expiryDate: String
+}
+
+type Hotel {
+    hotelId: String
+    name: String
+    cityCode: String
+    chainCode: String
+    dupeId: String
+    latitude: Float
+    longitude: Float
+    brandCode: String
+    rating: Int
+    imageFileName: String
+}
+
+type HotelOffer {
+    offerId: String
+    roomImageFileName: String
+    checkInDate: String
+    checkOutDate: String
+    rateCode: String
+    roomCategory: String
+    roomQuantity: String
+    roomBeds: Int
+    roomBedType: String
+    roomDescription: String
+    adults: Int
+    night: Int
+    commissionPercentage: Float
+    commissionAmount: Float
+    boardType: String
+    priceCurrency: String
+    priceBase: Float
+    priceTotal: Float
+    priceSellingTotal: Float
+    priceTaxes: [HotelOfferTax]
+    priceMarkup: Float
+    priceVariationAverageBase: Float
+    priceVariationAverageTotal: Float
+}
+
+type HotelOfferTax {
+    code: String
+    amount: Float
+    currency: String
+    included: Boolean
+    percentage: Float
+    description: String
+    pricingFrequency: String
+    pricingMode: String
+}

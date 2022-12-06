@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "paths": {
+    "/amadeus/hotel-list": {
+      "name": "/amadeus/hotel-list",
+      "lambdaFunction": "amadeusHotelList",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/amadeus/hotel-offers": {
+      "name": "/amadeus/hotel-offers",
+      "lambdaFunction": "amadeusHotelOffers",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/amadeus/hotel-bookings": {
+      "name": "/amadeus/hotel-bookings",
+      "lambdaFunction": "amadeusHotelBookings",
+      "permissions": {
+        "setting": "open"
+      }
+    },
+    "/amadeus/hotel-list-and-offers": {
+      "name": "/amadeus/hotel-list-and-offers",
+      "lambdaFunction": "amadeusHotelListAndOffers",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

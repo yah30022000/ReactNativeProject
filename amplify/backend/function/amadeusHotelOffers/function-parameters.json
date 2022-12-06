@@ -1,0 +1,13 @@
+{
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "clientId",
+      "environmentVariableName": "client_id"
+    },
+    {
+      "cloudFormationParameterName": "clientSecret",
+      "environmentVariableName": "client_secret"
+    }
+  ]
+}

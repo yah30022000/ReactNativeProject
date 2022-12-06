@@ -1,0 +1,57 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hotelapp-dev-120912-authRole",
+      "UnauthRoleArn": "arn:aws:iam::479503181726:role/amplify-hotelapp-dev-120912-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::479503181726:role/amplify-hotelapp-dev-120912-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+      "UnauthRoleName": "amplify-hotelapp-dev-120912-unauthRole",
+      "StackName": "amplify-hotelapp-dev-120912",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:479503181726:stack/amplify-hotelapp-dev-120912/c3480b60-66f6-11ed-a894-02aa7fad9754",
+      "AmplifyAppId": "d1448zlrk0oot2"
+    },
+    "categories": {
+      "function": {
+        "amadeusfunction": {},
+        "hotelapp76cfda0e": {},
+        "amadeusHotelList": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelList-7878444c516931365779-build.zip"
+        },
+        "amadeusHotelOffers": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelOffers-4859704343704a6d3948-build.zip"
+        },
+        "amadeusHotelBookings": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelBookings-79334e30753966536169-build.zip"
+        },
+        "amadeusHotelListAndOffers": {
+          "clientId": "J20KEoQTro0eDuZkni0fpswlKlmXTQun",
+          "clientSecret": "rJqfpmT2WtKTKUBs",
+          "deploymentBucketName": "amplify-hotelapp-dev-120912-deployment",
+          "s3Key": "amplify-builds/amadeusHotelListAndOffers-58336832574a43394162-build.zip"
+        }
+      },
+      "api": {
+        "amadeusAPI": {}
+      },
+      "auth": {
+        "TripTroopAuth": {
+          "googleClientId": "341018990169-0qdo4hp9i9sbps8bm34u95kfv78aqdea.apps.googleusercontent.com",
+          "facebookAppId": "665104985011432"
+        }
+      },
+      "storage": {
+        "TripTroopStorage": {}
+      }
+    }
+  }
+}
